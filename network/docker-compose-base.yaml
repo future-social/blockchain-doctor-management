@@ -9,7 +9,7 @@ services:
       - CORE_LOGGING_PEER=info
       - CORE_CHAINCODE_LOGGING_LEVEL=INFO
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/msp # msp certificate
-      - CORE_LEDGER_STATE_STATEDATABASE=goleveldb # store engine of state database 参考https://github.com/saravit-soeng/hyperledger-fabric-sample-app/blob/master/network/docker-compose.yaml
+      #  - CORE_LEDGER_STATE_STATEDATABASE=goleveldb # store engine of state database 参考https://github.com/saravit-soeng/hyperledger-fabric-sample-app/blob/master/network/docker-compose.yaml
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=fabric_network # docker network
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
