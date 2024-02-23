@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /*overflow-x: hidden;*/
+        }
+        h1, p{
+            padding-left: 50px;
+        }
+        .document-container {
+            width: 80%;
+            margin: 0 auto 25px;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .document-container button{
+            padding:20px;
+            background-color: #CA1F7B; 
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #8E004A;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <script>
+        fetch("adminheader.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+    </script>
+    <h1>Supportive Documents</h1>
+    <p>Please upload the relevant certificates.</p>
+    <div class="document-container">
+            <button type="button" class="upload">Upload File</button>
+            <br><br><br><br><br>
+            <button type="submit" class="submit">Submit</button>
+    </div>
+    <div id="footerContainer"></div>
+    <script>
+      fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+    </script>
+</body>
+</html>
