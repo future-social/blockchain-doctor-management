@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1, p {
+            margin-left: 50px;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+        .searchbar {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+        .dropdown {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .button-container {
+            display: flex;
+            align-items: center;
+        }
+        .button-gap {
+            margin-left: 0px;
+        }
+        .search-container input[type="text"] {
+            padding: 8px;
+            margin-right: 0;
+            width: 200px;
+        }
+        .search-container select {
+            padding: 8px;
+            width: 200px;
+        }
+        .search-container select option {
+            color: #999; /* Placeholder color */
+        }
+        .search-container .search-button {
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            background: #CA1F7B center center;
+            background-size: cover;
+        }
+        .search-container .search-button:hover {
+            background-color: #8E004A;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .action-images {
+            display: flex;
+            justify-content: space-around;
+        }
+        .action-images img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <script>
+        fetch("adminheader.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+    </script>
+    <h1>Doctor Personal Information</h1>
+    <p>Search doctor Information</p>
+    <div class="container">
+        <div class="search-container">
+            <div class="searchbar">
+                <input type="text" placeholder="Search...">
+                <div class="button-container">
+                <img class="search-button" src="search.png" alt="Search">
+                <span class="button-gap"></span>
+                </div>
+            </div>
+            <div class="dropdown">
+                <div class="button-container">
+                <span class="button-gap"></span>
+                <img class="search-button" src="filter.png" alt="Filter">
+                </div>
+                <select>
+                    <option value="" disabled selected>Filter by...</option>
+                    <option value="gender">Gender</option>
+                    <option value="specialization">Specialization</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>NO.</th>
+                    <th>Doctor ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Specialization</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample data, replace with actual data -->
+                <tr>
+                    <td>1</td>
+                    <td>doc002</td>
+                    <td>Dr. John Tan</td>
+                    <td>Male</td>
+                    <td>Pediatrics</td>
+                    <td class="action-images">
+                        <img src="view.png" alt="View">
+                        <img src="edit.png" alt="Edit">
+                        <img src="delete.png" alt="Delete">
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>doc002</td>
+                    <td>Dr. Mary Lee</td>
+                    <td>Female</td>
+                    <td>Dermatologist</td>
+                    <td class="action-images">
+                        <img src="view.png" alt="View">
+                        <img src="edit.png" alt="Edit">
+                        <img src="delete.png" alt="Delete">
+                    </td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+    <div id="footerContainer"></div>
+    <script>
+      fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+    </script>
+</body>
+</html>
