@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, '..', 'front')));
 
 // Serve index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'front', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'front','HTML', 'LoginPage.html'));
 });
 
 // Start server
