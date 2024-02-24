@@ -24,6 +24,9 @@ Organizations:
     Name: MedicFootprintsMSP
     ID: MedicFootprintsMSP
     MSPDir: crypto-config/peerOrganizations/medicfootprints.com/msp
+    AnchorPeers:
+      - Host: peer0.medicfootprints.com
+        Port: 7051
     Policies:
       Readers:
         Type: Signature

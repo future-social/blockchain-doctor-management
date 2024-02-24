@@ -6,14 +6,8 @@ OrdererOrgs:
     EnableNodeOUs: true
     Specs:
       - Hostname: orderer1
-        SANS:
-          - 127.0.0.1
       - Hostname: orderer2
-        SANS:
-          - 127.0.0.1
       - Hostname: orderer3
-        SANS:
-          - 127.0.0.1
 
 # Organization managing peer nodes
 PeerOrgs:
@@ -22,7 +16,5 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - 127.0.0.1
     Users:
       Count: 1
