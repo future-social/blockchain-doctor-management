@@ -67,7 +67,35 @@
 	.round-button:hover {
             background-color: #8E004A;
         }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -99,9 +127,15 @@
 	    <button class="round-button">
             <img src="notification.png" alt="Noti Logo">
         </button>
-        <button class="round-button">
-            <img src="logout.png" alt="Logout Logo">
-        </button>
+        <div class="dropdown">
+            <button class="round-button">
+                <img src="logout.png" alt="Logout Logo">
+            </button>
+            <div class="dropdown-content">
+                <a href="doctor change password.html">Change Password</a>
+                <a href="LoginPage.html">Logout</a>
+            </div>
+        </div>
     </header>
 </body>
 </html>
