@@ -113,24 +113,24 @@
             <div class="row">
                 <div class="column">
                     <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required disabled> <!-- Disabled input -->
+                    <input type="text" id="first_name" name="first_name" required disabled> 
                 </div>
                 <div class="column">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required disabled> <!-- Disabled input -->
+                    <input type="text" id="last_name" name="last_name" required disabled> 
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required disabled> <!-- Disabled input -->
+                    <input type="text" id="ic_passport" name="ic_passport" required disabled> 
                 </div>
                 <div class="column">
                     <label>Gender:</label>
                     <div>
-                        <input type="radio" id="male" name="gender" value="male" required disabled> <!-- Disabled input -->
+                        <input type="radio" id="male" name="gender" value="male" required disabled> 
                         <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required disabled> <!-- Disabled input -->
+                        <input type="radio" id="female" name="gender" value="female" required disabled> 
                         <label for="female">Female</label>
                     </div>
                 </div>
@@ -138,46 +138,46 @@
             <div class="row">
                 <div class="column">
                     <label for="staff_id">Staff ID:</label>
-                    <input type="text" id="staff_id" name="staff_id" required disabled> <!-- Disabled input -->
+                    <input type="text" id="staff_id" name="staff_id" required disabled> 
                 </div>
                 <div class="column">
                     <label for="dob">DOB:</label>
-                    <input type="text" id="dob" name="dob" required disabled> <!-- Disabled input -->
+                    <input type="text" id="dob" name="dob" required disabled> 
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required disabled> <!-- Disabled input -->
+                    <input type="tel" id="mobile" name="mobile" required disabled> 
                 </div>
                 <div class="column">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required disabled> <!-- Disabled input -->
+                    <input type="email" id="email" name="email" required disabled> 
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" required disabled> <!-- Disabled input -->
+                    <input type="text" id="address" name="address" required disabled> 
                 </div>
                 <div class="column">
                     <label for="specialization">Specialization:</label>
-                    <input type="text" id="specialization" name="specialization" required disabled> <!-- Disabled input -->
+                    <input type="text" id="specialization" name="specialization" required disabled>
                 </div>
             </div>
             <h2>Emergency Contact</h2>
             <div class="row">
                 <div class="column">
                     <label for="emergency_name">Name:</label>
-                    <input type="text" id="emergency_name" name="emergency_name" required disabled> <!-- Disabled input -->
+                    <input type="text" id="emergency_name" name="emergency_name" required disabled> 
                 </div>
                 <div class="column">
                     <label for="emergency_mobile">Mobile Number:</label>
-                    <input type="tel" id="emergency_mobile" name="emergency_mobile" required disabled> <!-- Disabled input -->
+                    <input type="tel" id="emergency_mobile" name="emergency_mobile" required disabled> 
                 </div>
                 <div class="column">
                     <label for="relation">Relation:</label>
-                    <input type="text" id="relation" name="relation" required disabled> <!-- Disabled input -->
+                    <input type="text" id="relation" name="relation" required disabled> 
                 </div>
             </div>
             <div class="button-container">
@@ -204,13 +204,11 @@
         });
 
         function displayDoctorInfo() {
-            // Assume the doctor's ID is retrieved from the session or URL parameter
             const doctorId = "123"; // Example doctor ID
 
             fetch(`/getDoctorInfo?doctorId=${doctorId}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    // Display doctor's information in the corresponding span elements
                     document.getElementById("first_name").textContent = data.first_name;
                     document.getElementById("last_name").textContent = data.last_name;
                     document.getElementById("ic_passport").textContent = data.ic_passport;
@@ -229,18 +227,15 @@
                 })
                 .catch((error) => {
                     console.error("Error fetching doctor information:", error);
-                    // Optionally, display an error message to the user
                 });
             }
 
-            // Call the function to display doctor's information when the page loads
             document.addEventListener("DOMContentLoaded", function() {
                 displayDoctorInfo();
             });
 
             // Event listener for the edit button
             document.getElementById("editButton").addEventListener("click", function() {
-                // Redirect to the edit page, passing the doctor ID as a URL parameter
                 window.location.href = `editDoctor.html?doctorId=123`; // Example redirect URL
             });
         </script>
