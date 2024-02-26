@@ -94,17 +94,11 @@
 </head>
 <body>
     <div id="headerContainer"></div>
-    <script>
-        fetch("adminheader.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("headerContainer").innerHTML = html;
-          });
-    </script>
 
     <h1>Doctor Registration</h1>
     <div class="big-container">
     <div class="register-container">
+        <form id="registrationForm">
         <div class="circle-image">
             <img src="image.png" alt="insert image">
         </div>
@@ -179,20 +173,76 @@
                 </div>
             </div>
             <div class="button-container">
-                    <button type="button" class="back">Back</button>
                     <button type="button" class="clear">Clear</button>
                     <button type="submit" class="submit">Submit</button>
             </div>
+        </form>
     </div>
     </div>
-
     <div id="footerContainer"></div>
+
     <script>
-      fetch("Footer.html")
+        fetch("adminheader.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+
+        fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get reference to the form and submit button
+            const form = document.getElementById("registrationForm");
+            const submitButton = document.querySelector(".submit");
+
+            // Add event listener for form submission
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Gather data from form fields
+                const formData = new FormData(form);
+
+                // Send POST request to server
+                fetch("/createDoctor", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful response
+                    console.log("Doctor created successfully:", data);
+                    // Optionally, redirect to another page or display a success message
+                    window.location.href = "DoctorRegistration02.html";
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error("Error creating doctor:", error);
+                    // Optionally, display an error message to the user
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const clearButton = document.querySelector(".clear");
+            const form = document.getElementById("registrationForm");
+
+            clearButton.addEventListener("click", function() {
+                const inputFields = form.querySelectorAll("input");
+                inputFields.forEach(function(input) {
+                    input.value = ""; // Clear the input field
+                });
+            });
+        });
     </script>
+
 </body>
 </html>
