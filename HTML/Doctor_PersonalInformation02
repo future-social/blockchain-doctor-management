@@ -243,12 +243,6 @@
                 // Redirect to the edit page, passing the doctor ID as a URL parameter
                 window.location.href = `editDoctor.html?doctorId=123`; // Example redirect URL
             });
-
-            // Event listener for the go back button
-            document.getElementById("goBackButton").addEventListener("click", function() {
-                // Redirect to the previous page
-                window.history.back();
-            });
         </script>
 
 </body>
