@@ -12,6 +12,9 @@
             padding: 0px;
             background-color: #000;
         }
+        a{
+            text-decoration: none;
+        }
         .logo {
             flex: 1;
             text-align: center;
@@ -67,7 +70,35 @@
 	.round-button:hover {
             background-color: #8E004A;
         }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -81,8 +112,10 @@
             <span>Home</span>
         </button>
         <button class="headercolumn">
-            <img src="register.png" alt="Register Logo">
-            <span>Register Doctor</span>
+            <a href="Doctor Registration01.html">
+                <img src="register.png" alt="Register Logo">
+                <span>Register Doctor</span>
+            </a>
         </button>
         <button class="headercolumn">
             <img src="transaction.png" alt="Transaction Logo">
@@ -92,20 +125,30 @@
             <img src="qualification.png" alt="Qualification Logo">
             <span>Doctor Qualification</span>
         </button>
+        
         <button class="headercolumn">
+            <a href="DoctorPersonalInformation01.html">
             <img src="resume.png" alt="Personal Info Logo">
             <span>Doctor Personal Information</span>
+        </a>
         </button>
+    
         <button class="headercolumn">
             <img src="dashboard.png" alt="Dashboard Logo">
             <span>Dashboard</span>
         </button>
-	<button class="round-button">
+	    <button class="round-button">
             <img src="notification.png" alt="Noti Logo">
         </button>
-        <button class="round-button">
-            <img src="logout.png" alt="Logout Logo">
-        </button>
+        <div class="dropdown">
+            <button class="round-button">
+                <img src="logout.png" alt="Logout Logo">
+            </button>
+            <div class="dropdown-content">
+                <a href="change password.html">Change Password</a>
+                <a href="LoginPage.html">Logout</a>
+            </div>
+        </div>
     </header>
 </body>
 </html>
