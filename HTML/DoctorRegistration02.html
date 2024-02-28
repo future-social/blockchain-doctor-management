@@ -45,7 +45,7 @@
 
     <h1>Supportive Documents</h1>
     <p>Please upload the relevant certificates.</p>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
+    <form id="uploadForm" enctype="multipart/form-data">
         <div class="document-container">
             <input type="file" name="file" id="file">
             <br><br><br><br><br>
@@ -64,6 +64,43 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get reference to the form and submit button
+            const form = document.getElementById("uploadForm");
+            const submitButton = document.querySelector(".submit");
+
+            // Add event listener for form submission
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Gather data from form fields
+                const formData = new FormData(form);
+
+                // Send POST request to server
+                fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Handle successful response
+                    console.log("File uploaded successfully:", data);
+                    // Redirect user to DoctorRegistration03.html
+                    window.location.href = "DoctorRegistration03.html";
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error("Error uploading file:", error);
+                    // Optionally, display an error message to the user
+                });
+            });
         });
     </script>
 </body>
