@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <style>
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px;
+            background-color: #000;
+        }
+        a{
+            text-decoration: none;
+        }
+        .logo {
+            flex: 1;
+            text-align: center;
+	    /*border: none;*/
+	    height: 80px;
+        }
+        .logo img {
+            width: 60px; 
+            height: 60px;
+            display: block;
+            margin: 10px auto; 
+        }
+        .headercolumn {
+            flex: 1;
+            text-align: center;
+	    border: none;
+	    height: 80px;
+	    background: none;
+	    cursor: pointer;
+        }
+        .headercolumn img {
+            width: 40px; 
+            height: 40px;
+            display: block;
+            margin: 0 auto 5px; 
+        }
+        .headercolumn span {
+            display: block;
+            font-size: 14px;
+            color: #fff;
+        }
+	.round-button {
+	    border-radius: 50%; /* Makes the button round */
+	    width: 60px; /* Adjust the width of the button */
+	    height: 60px; /* Adjust the height of the button */
+	    padding: 0 ; /* Removes padding */
+	    margin: 0 15px;
+	    background: #CA1F7B center center; /* Background color of the button */
+	    border: none; /* Removes border */
+	    cursor: pointer;
+	    overflow: hidden; /* Ensures the background is clipped to the border-radius */
+	}
+
+	.round-button img {
+	    width: 75%; /* Ensures the image fills the button */
+	    height: auto; /* Allows the image to maintain its aspect ratio */
+	    display: block; /* Ensures proper alignment */
+	    margin: 0 auto;
+	}
+	.headercolumn:hover {
+            background-color: #8E004A;
+        }
+	.round-button:hover {
+            background-color: #8E004A;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+
+	<div class="logo">
+            <img src="/HTML/m.jpg" alt="MedicPro logo">
+        </div>
+        <button class="headercolumn">
+            <img src="/HTML/home.png" alt="Home logo">
+            <span>Home</span>
+        </button>
+        <button class="headercolumn">
+            <a href="Doctor Registration01.html">
+                <img src="/HTML/register.png" alt="Register Logo">
+                <span>Register Doctor</span>
+            </a>
+        </button>
+        <button class="headercolumn">
+            <img src="/HTML/transaction.png" alt="Transaction Logo">
+            <span>Transaction Log</span>
+        </button>
+        <button class="headercolumn">
+            <img src="/HTML/qualification.png" alt="Qualification Logo">
+            <span>Doctor Qualification</span>
+        </button>
+        
+        <button class="headercolumn">
+            <a href="DoctorPersonalInformation01.html">
+            <img src="/HTML/resume.png" alt="Personal Info Logo">
+            <span>Doctor Personal Information</span>
+        </a>
+        </button>
+    
+        <button class="headercolumn">
+            <img src="/HTML/dashboard.png" alt="Dashboard Logo">
+            <span>Dashboard</span>
+        </button>
+	    <button class="round-button">
+            <img src="/HTML/notification.png" alt="Noti Logo">
+        </button>
+        <div class="dropdown">
+            <button class="round-button">
+                <img src="/HTML/logout.png" alt="Logout Logo">
+            </button>
+            <div class="dropdown-content">
+                <a href="change password.html">Change Password</a>
+                <a href="LoginPage.html">Logout</a>
+            </div>
+        </div>
+    </header>
+</body>
+</html>
