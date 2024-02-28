@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer</title>
+    <style>
+        .footer {
+		    display: flex;
+    		justify-content: space-between;
+    		padding: 10px;
+    		background-color: #097484;
+	}
+
+	.left-column,.right-column {
+	        flex-basis: 50%;
+	}
+
+	.left-column img {
+            width: 200px; 
+            height: auto;
+	        padding: 10px 10px;
+        }
+
+	.right-column {
+	    color: white;
+	    font-family: Arial, sans-serif;
+	}
+	.footer .right-column h3 {
+	    font-weight: bold;
+	    font-size: 20px;
+	    margin: 8px 0;
+	}
+	.footer .right-column div {
+	    font-size: 15px;
+	}
+	.copyright {
+            text-align: center;
+            padding: 5px;
+	    color: white;
+	    font-family: Arial, sans-serif;
+	    font-size: 8px;
+	    background-color: #097484;
+        }
+    </style>
+</head>
+<body>
+    <div class="footer">
+        <div class="left-column">
+            <img src="/HTML/medicpro.jpg" alt="Image">
+        </div>
+        <div class="right-column">
+            <h3>Helpdesk</h3>
+            <div>helpdesk@medicpro.com</div>
+            <h3>Contact Us</h3>
+            <div>+6012-012 3456</div>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; <span id="year"></span> - MEDICPRO
+    </div>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
