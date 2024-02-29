@@ -174,14 +174,14 @@
             viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/DoctorPersonalInformation02.html?id=${doctorId}`;
+                    window.location.href = `DoctorPersonalInformation02.html?id=${doctorId}`;
                 });
             });
 
             editButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/DoctorPersonalInformation03.html?id=${doctorId}`;
+                    window.location.href = `DoctorPersonalInformation03.html?id=${doctorId}`;
                 });
             });
 
@@ -198,6 +198,54 @@
         .catch(error => {
             console.error("Error retrieving doctor data:", error);
         });
+
+            // Function to handle search
+    function handleSearch() {
+        const input = document.querySelector(".searchbar input[type='text']");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("doctorTable");
+        const rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            let found = false;
+            for (let j = 0; j < cells.length; j++) {
+                const cell = cells[j];
+                if (cell) {
+                    const textValue = cell.textContent || cell.innerText;
+                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            rows[i].style.display = found ? "" : "none";
+        }
+    }
+
+    // Function to handle sorting based on filter dropdown
+    function handleFilter() {
+        const select = document.querySelector(".search-container select");
+        const value = select.value;
+        const table = document.getElementById("doctorTable");
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        if (value === "gender") {
+            rows.sort((a, b) => {
+                const genderA = a.cells[3].textContent.trim();
+                const genderB = b.cells[3].textContent.trim();
+                return genderA.localeCompare(genderB);
+            });
+        } else if (value === "specialization") {
+            rows.sort((a, b) => {
+                const specializationA = a.cells[4].textContent.trim();
+                const specializationB = b.cells[4].textContent.trim();
+                return specializationA.localeCompare(specializationB);
+            });
+        }
+
+        rows.forEach(row => tbody.appendChild(row));
+    }
     </script>
 </body>
 </html>
