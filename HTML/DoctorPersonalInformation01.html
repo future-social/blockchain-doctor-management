@@ -246,6 +246,14 @@
 
         rows.forEach(row => tbody.appendChild(row));
     }
+
+    // Add event listeners to search input and filter dropdown
+    const searchInput = document.querySelector('.searchbar input[type="text"]');
+    searchInput.addEventListener('input', handleSearch);
+
+    const filterSelect = document.querySelector('.search-container select');
+    filterSelect.addEventListener('change', handleFilter);
+    
     </script>
 </body>
 </html>
