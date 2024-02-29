@@ -145,30 +145,59 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        // Fetch doctor data from backend and populate table
+            // Fetch doctor data from backend and populate table
         fetch("/retrieveDoctorData")
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector("#doctorTable tbody");
-                data.forEach((doctor, index) => {
-                    const row = tableBody.insertRow();
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${doctor.doctorId}</td>
-                        <td>${doctor.name}</td>
-                        <td>${doctor.gender}</td>
-                        <td>${doctor.specialization}</td>
-                        <td class="action-images">
-                            <img src="/HTML/view.png" alt="View">
-                            <img src="/HTML/edit.png" alt="Edit">
-                            <img src="/HTML/delete.png" alt="Delete">
-                        </td>
-                    `;
-                });
-            })
-            .catch(error => {
-                console.error("Error retrieving doctor data:", error);
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector("#doctorTable tbody");
+            data.forEach((doctor, index) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${doctor.doctorId}</td>
+                    <td>${doctor.name}</td>
+                    <td>${doctor.gender}</td>
+                    <td>${doctor.specialization}</td>
+                    <td class="action-images">
+                        <button class="view-button" data-id="${doctor.doctorId}">View</button>
+                        <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
+                        <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
+                    </td>
+                `;
             });
+
+            // Add event listeners to buttons
+            const viewButtons = document.querySelectorAll('.view-button');
+            const editButtons = document.querySelectorAll('.edit-button');
+            const deleteButtons = document.querySelectorAll('.delete-button');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    window.location.href = `/HTML/DoctorPersonalInformation02.html?id=${doctorId}`;
+                });
+            });
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    window.location.href = `/HTML/DoctorPersonalInformation03.html?id=${doctorId}`;
+                });
+            });
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    // Perform delete operation using doctorId
+                    // You can make a fetch request to your backend to delete the doctor's information
+                    // Example: fetch(`/deleteDoctorData?id=${doctorId}`, { method: 'DELETE' })
+                    // Then handle the response accordingly
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Error retrieving doctor data:", error);
+        });
     </script>
 </body>
 </html>
