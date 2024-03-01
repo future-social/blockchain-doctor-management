@@ -181,7 +181,7 @@
                 </div>
             </div>
             <div class="button-container">
-                    <button type="button" class="edit">Edit</button>
+                    <button type="button" class="edit" id="editButton">Edit</button>
             </div>
         </form>
     </div>
@@ -200,6 +200,10 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+        });
+
+        document.getElementById("editButton").addEventListener("click", function() {
+        window.location.href = "doctoredit.html";
         });
 
         function displayDoctorInfo() {
@@ -236,12 +240,6 @@
             // Call the function to display doctor's information when the page loads
             document.addEventListener("DOMContentLoaded", function() {
                 displayDoctorInfo();
-            });
-
-            // Event listener for the edit button
-            document.getElementById("editButton").addEventListener("click", function() {
-                // Redirect to the edit page, passing the doctor ID as a URL parameter
-                window.location.href = `editDoctor.html?doctorId=123`; // Example redirect URL
             });
 
             // Event listener for the go back button
