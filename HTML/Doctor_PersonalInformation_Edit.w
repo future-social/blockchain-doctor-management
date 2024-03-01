@@ -203,13 +203,6 @@
           document.getElementById("footerContainer").innerHTML = html;
         });
 
-        fetch("footer.html")
-           .then(response => response.text())
-           .then(html => {
-               document.getElementById("footerContainer").innerHTML = html;
-           });
-
-
          fetch("/getDoctorInfo")
              .then(response => response.json())
              .then(data => {
@@ -225,7 +218,7 @@
                  document.getElementById("mobile").value = data.mobile;
                  document.getElementById("email").value = data.email;
                  document.getElementById("address").value = data.address;
-                 document.getElementById("specialization").value = data.specialization;、
+                 document.getElementById("specialization").value = data.specialization;
                  document.getElementById("emergency_name").value = data.emergency_name;
                  document.getElementById("emergency_mobile").value = data.emergency_mobile;
                  document.getElementById("relation").value = data.relation;
