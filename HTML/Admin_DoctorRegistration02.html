@@ -54,7 +54,7 @@
     </form>
     <div id="footerContainer"></div>
     <script>
-        fetch("adminheader.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
@@ -92,8 +92,8 @@
                 .then(data => {
                     // Handle successful response
                     console.log("File uploaded successfully:", data);
-                    // Redirect user to DoctorRegistration03.html
-                    window.location.href = "DoctorRegistration03.html";
+                    // Redirect user to Admin_DoctorRegistration03.html
+                    window.location.href = "Admin_DoctorRegistration03.html";
                 })
                 .catch(error => {
                     // Handle error
