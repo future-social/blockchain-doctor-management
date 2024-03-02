@@ -182,7 +182,7 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("adminheader.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
@@ -221,7 +221,7 @@
                     // Handle successful response
                     console.log("Doctor created successfully:", data);
                     // Optionally, redirect to another page or display a success message
-                    window.location.href = "DoctorRegistration02.html";
+                    window.location.href = "Admin_DoctorRegistration02.html";
                 })
                 .catch(error => {
                     // Handle error
