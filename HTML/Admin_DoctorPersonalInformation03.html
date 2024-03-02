@@ -176,13 +176,13 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Admin_Header.html")
+        fetch("/HTML/Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("Footer.html")
+        fetch("/HTML/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -270,7 +270,7 @@
                     // Show success message
                     window.alert("Data updated successfully.");
                     // Navigate back to Admin_DoctorPersonalInformation02.html
-                    window.location.href = "Admin_DoctorPersonalInformation02.html";
+                    window.location.href = "/HTML/Admin_DoctorPersonalInformation02.html";
                 })
                 .catch(error => {
                     // Optionally handle error
