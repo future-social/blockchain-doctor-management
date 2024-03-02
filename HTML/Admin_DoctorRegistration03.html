@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            padding-left: 50px;
+        }
+        .register-container {
+            width: 500px;
+            margin: 0 auto;
+            margin-top: 5px;
+            text-align: center;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .register-container label{
+            text-align: left;
+            width: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 125px);
+            padding: 10px;
+            margin: 10px 0;
+	        border: 2px solid #d3d3d3;
+	        border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .register-container button {
+            width: 40%;
+            padding: 10px;
+            margin: 1px auto;
+            background-color: #CA1F7B;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        .register-container button:hover {
+            background-color: #8E004A;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+
+    <h1>Register Doctor Account</h1>
+    <form id="registrationForm" action="/register" method="POST">
+        <div class="register-container">
+            <label for="username">Username:</label>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="Password" required><br><br>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </div>
+    </form>
+    <br><br>
+    <div id="footerContainer"></div>
+    <script>
+        fetch("adminheader.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+        
+          fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+
+        function submitForm() {
+            // Perform form validation here if needed (no need for now ba)
+
+            // Submit the form
+            const form = document.getElementById('registrationForm');
+            form.submit();
+
+            // Show the pop-up message
+            showPopUp();
+        }
+
+        function showPopUp() {
+            alert("Registration Successful\n\nStaff ID is known as the username.\nPlease be patient for the verification of doctor qualification.");
+            // Redirect to Home.html after clicking OK
+            window.location.href = 'Home.html';
+        }
+    </script>
+</body>
+</html>
