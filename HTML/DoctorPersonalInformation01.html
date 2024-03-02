@@ -186,18 +186,39 @@
             });
 
             deleteButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
-                    // Perform delete operation using doctorId
-                    // You can make a fetch request to your backend to delete the doctor's information
-                    // Example: fetch(`/deleteDoctorData?id=${doctorId}`, { method: 'DELETE' })
-                    // Then handle the response accordingly
+                    button.addEventListener('click', () => {
+                        const doctorId = button.getAttribute('data-id');
+                        // Show confirmation pop-up
+                        const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
+                        if (confirmation) {
+                            // If user confirms, proceed with deletion
+                            deleteDoctor(doctorId);
+                        }
+                    });
                 });
-            });
-        })
+            })
         .catch(error => {
             console.error("Error retrieving doctor data:", error);
         });
+
+        // Function to delete doctor data
+        function deleteDoctor(doctorId) {
+            // Make a fetch request to delete doctor data
+            fetch(`/deleteDoctorData?id=${doctorId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Refresh the page after successful deletion
+                    window.location.reload();
+                } else {
+                    throw new Error('Failed to delete doctor data');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting doctor data:', error);
+            });
+        }
 
             // Function to handle search
     function handleSearch() {
