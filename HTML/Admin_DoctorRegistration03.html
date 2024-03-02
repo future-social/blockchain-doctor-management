@@ -69,7 +69,7 @@
     <br><br>
     <div id="footerContainer"></div>
     <script>
-        fetch("adminheader.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
@@ -94,8 +94,8 @@
 
         function showPopUp() {
             alert("Registration Successful\n\nStaff ID is known as the username.\nPlease be patient for the verification of doctor qualification.");
-            // Redirect to Home.html after clicking OK
-            window.location.href = 'Home.html';
+            // Redirect to Admin_Home.html after clicking OK
+            window.location.href = 'Admin_Home.html';
         }
     </script>
 </body>
