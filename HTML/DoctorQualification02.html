@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1{
+            margin-left: 50px;
+        }
+        .container {
+            width: 500px;
+            margin: 20px 50px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            border: 3px solid #f3f3f3;
+            border-radius: 15px;
+        }
+        .column {
+            flex: 1;
+            padding: 10px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .info-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+        .qualification-container {
+            border: 3px solid #f3f3f3; 
+            padding: 10px;
+            margin-top: 20px;
+        }
+        .qualification-header {
+            text-align: center;
+        }
+        .document-link {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .edit-button {
+            background-color: #CA1F7B ;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .edit-button:hover {
+            background-color: #8E004A;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <h1>Doctor Qualification</h1>
+    <div class="container">
+        <div class="column">
+            <div class="image-container" id="imageContainer">
+                <!-- Image will be inserted here dynamically -->
+            </div>
+        </div>
+        <div class="column">
+            <div class="info-container">
+                <div class="info-row">
+                    <span class="info-label">Name</span>
+                    <span id="name">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Staff ID</span>
+                    <span id="staff-id">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Specialization</span>
+                    <span id="specialization">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Additional container for qualifications -->
+    <div class="qualification-container" id="qualificationContainer">
+        <!-- Qualification details will be inserted here dynamically -->
+    </div>
+    <a href="DoctorQualification03.html">
+        <button type="button" class="edit-button">Edit</button>
+    </a>
+    <br><br>
+    <div id="footerContainer"></div>
+    <script>
+        // Fetch header and footer
+        fetch("adminheader.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("headerContainer").innerHTML = html;
+            });
+
+        fetch("Footer.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("footerContainer").innerHTML = html;
+            });
+
+        fetch("/doctorData")
+            .then(response => response.json())
+            .then(data => {
+                // Populate data into HTML elements
+                document.getElementById("name").textContent = data.name;
+                document.getElementById("staff-id").textContent = data.staffId;
+                document.getElementById("specialization").textContent = data.specialization;
+
+                // Dynamically create image element and set its source
+                const imageContainer = document.getElementById("imageContainer");
+                const image = document.createElement("img");
+                image.src = data.imageSrc;
+                image.alt = "Doctor Image";
+                image.style.maxWidth = "100%";
+                image.style.height = "auto";
+                imageContainer.appendChild(image);
+
+                // Handle qualifications
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                data.qualifications.forEach(qualification => {
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.title}</h2>`;
+                    qualificationDiv.innerHTML += `
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <span>${qualification.recognizedDate}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <span>${qualification.country}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <span>${qualification.institution}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <span>${qualification.body}</span>
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
+                        </div>`;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching doctor data:", error);
+            });
+    </script>
+</body>
+</html>

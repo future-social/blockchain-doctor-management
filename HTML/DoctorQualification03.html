@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1{
+            margin-left: 50px;
+        }
+        .container {
+            width: 500px;
+            margin: 20px 50px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            border: 3px solid #f3f3f3;
+            border-radius: 15px;
+        }
+        .column {
+            flex: 1;
+            padding: 10px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .info-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+        .qualification-container {
+            border: 3px solid #f3f3f3; 
+            padding: 10px;
+            margin-top: 20px;
+        }
+        .qualification-header {
+            text-align: center;
+        }
+        .document-link {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .edit-button {
+            background-color: #CA1F7B ;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .edit-button:hover {
+            background-color: #8E004A;
+        }
+        .edit-input {
+            width: 80%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <h1>Doctor Qualification</h1>
+    <div class="container">
+        <div class="column">
+            <div class="image-container" id="imageContainer">
+                <!-- Image will be inserted here dynamically -->
+            </div>
+        </div>
+        <div class="column">
+            <div class="info-container">
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <input type="text" id="nameInput" class="edit-input">
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Staff ID:</span>
+                    <input type="text" id="staffIdInput" class="edit-input">
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Specialization:</span>
+                    <input type="text" id="specializationInput" class="edit-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Additional container for qualifications -->
+    <div class="qualification-container" id="qualificationContainer">
+        <!-- Qualification details will be inserted here dynamically -->
+    </div>
+    <button class="edit-button">Submit</button>
+    <br><br>
+    <div id="footerContainer"></div>
+    <script>
+        // Fetch header and footer
+        fetch("adminheader.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("headerContainer").innerHTML = html;
+            });
+
+        fetch("Footer.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("footerContainer").innerHTML = html;
+            });
+
+        fetch("/doctorData")
+            .then(response => response.json())
+            .then(data => {
+                // Populate data into HTML elements
+                document.getElementById("nameInput").value = data.name;
+                document.getElementById("staffIdInput").value = data.staffId;
+                document.getElementById("specializationInput").value = data.specialization;
+
+                // Dynamically create image element and set its source
+                const imageContainer = document.getElementById("imageContainer");
+                const image = document.createElement("img");
+                image.src = data.imageSrc;
+                image.alt = "Doctor Image";
+                image.style.maxWidth = "100%";
+                image.style.height = "auto";
+                imageContainer.appendChild(image);
+
+                // Handle qualifications
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                data.qualifications.forEach(qualification => {
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.title}</h2>`;
+                    qualificationDiv.innerHTML += `
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <input type="text" value="${qualification.recognizedDate}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <input type="text" value="${qualification.country}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <input type="text" value="${qualification.institution}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <input type="text" value="${qualification.body}" class="edit-input">
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
+                        </div>`;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching doctor data:", error);
+            });
+
+        // Add event listener for the "Submit" button
+        document.querySelector(".edit-button").addEventListener("click", function() {
+            // Prepare updated data
+            const updatedData = {
+                name: document.getElementById("nameInput").value,
+                staffId: document.getElementById("staffIdInput").value,
+                specialization: document.getElementById("specializationInput").value,
+                qualifications: []
+            };
+
+            // Loop through qualification inputs
+            const qualificationInputs = document.querySelectorAll(".qualification-container input.edit-input");
+            qualificationInputs.forEach(input => {
+                const qualificationData = {
+                    recognizedDate: input.parentNode.querySelector(".info-row:nth-child(1) input").value,
+                    country: input.parentNode.querySelector(".info-row:nth-child(2) input").value,
+                    institution: input.parentNode.querySelector(".info-row:nth-child(3) input").value,
+                    body: input.parentNode.querySelector(".info-row:nth-child(4) input").value
+                };
+                updatedData.qualifications.push(qualificationData);
+            });
+
+            // Send updated data to the server
+            fetch("/updateDoctorData", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to update data");
+                }
+                console.log("Data updated successfully!");
+            })
+            .catch(error => {
+                console.error("Error updating data:", error);
+            });
+        });
+    </script>
+</body>
+</html>
