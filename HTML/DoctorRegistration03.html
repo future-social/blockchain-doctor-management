@@ -57,13 +57,13 @@
     <div id="headerContainer"></div>
 
     <h1>Register Doctor Account</h1>
-    <form action="/register" method="POST">
+    <form id="registrationForm" action="/register" method="POST">
         <div class="register-container">
             <label for="username">Username:</label>
             <input type="text" name="username" placeholder="Username" required><br>
             <label for="password">Password:</label>
             <input type="password" name="password" placeholder="Password" required><br><br>
-            <button type="submit" class="submit">Submit</button>
+            <button type="button" onclick="submitForm()">Submit</button>
         </div>
     </form>
     <br><br>
@@ -80,6 +80,23 @@
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
         });
+
+        function submitForm() {
+            // Perform form validation here if needed (no need for now ba)
+
+            // Submit the form
+            const form = document.getElementById('registrationForm');
+            form.submit();
+
+            // Show the pop-up message
+            showPopUp();
+        }
+
+        function showPopUp() {
+            alert("Registration Successful\n\nStaff ID is known as the username.\nPlease be patient for the verification of doctor qualification.");
+            // Redirect to Home.html after clicking OK
+            window.location.href = 'Home.html';
+        }
     </script>
 </body>
 </html>
