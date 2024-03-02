@@ -114,7 +114,7 @@
     <div id="footerContainer"></div>
     <script>
         // Fetch header and footer
-        fetch("adminheader.html")
+        fetch("Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
@@ -211,6 +211,8 @@
                     throw new Error("Failed to update data");
                 }
                 console.log("Data updated successfully!");
+                // Navigate to Admin_DoctorQualification02.html
+                window.location.href = "Admin_DoctorQualification02.html";
             })
             .catch(error => {
                 console.error("Error updating data:", error);
