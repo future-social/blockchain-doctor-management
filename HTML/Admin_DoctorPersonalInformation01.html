@@ -137,13 +137,13 @@
 
     <script>
         // Fetch header and footer
-        fetch("Admin_Header.html")
+        fetch("/HTML/Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("Footer.html")
+        fetch("/HTML/Footer.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("footerContainer").innerHTML = html;
@@ -178,14 +178,14 @@
             viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const doctorId = button.getAttribute('data-id');
-                    window.location.href = `Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
+                    window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
                 });
             });
 
             editButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const doctorId = button.getAttribute('data-id');
-                    window.location.href = `Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
+                    window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
                 });
             });
 
