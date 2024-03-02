@@ -14,6 +14,8 @@
             max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            position: relative; /* Ensure proper positioning for the sticky headers */
         }
         h1, p {
             margin-left: 50px;
@@ -80,6 +82,9 @@
         }
         th {
             background-color: #f2f2f2;
+            position: sticky; /* Make headers sticky */
+            top: 0; /* Stick to the top */
+            z-index: 2; /* Ensure visibility */
         }
         .action-images {
             display: flex;
@@ -112,30 +117,32 @@
                 </select>
             </div>
         </div>
-        <table id="doctorTable">
-            <thead>
-                <tr>
-                    <th>NO.</th>
-                    <th>Doctor ID</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Title</th>
-                    <th>Institution</th>
-                    <th>Year</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
+        <div style="overflow-x:auto;"> <!-- Added a container for horizontal scrolling -->
+            <table id="doctorTable">
+                <thead>
+                    <tr>
+                        <th>NO.</th>
+                        <th>Doctor ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Title</th>
+                        <th>Institution</th>
+                        <th>Year</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
     </div>
     <br><br>
     <div id="footerContainer"></div>
 
     <script>
         // Fetch header and footer
-        fetch("adminheader.html")
+        fetch("Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
@@ -223,28 +230,37 @@
             console.error("Error retrieving doctor data:", error);
         });
 
-        // Function to handle search
-        function handleSearch() {
-            const input = document.querySelector(".searchbar input[type='text']");
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById("doctorTable");
-            const rows = table.getElementsByTagName("tr");
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName("td");
-                let found = false;
-                for (let j = 0; j < cells.length; j++) {
-                    const cell = cells[j];
-                    if (cell) {
-                        const textValue = cell.textContent || cell.innerText;
-                        if (textValue.toUpperCase().indexOf(filter) > -1) {
-                            found = true;
-                            break;
-                        }
-                    }
+       // Function to handle search
+function handleSearch() {
+    const input = document.querySelector(".searchbar input[type='text']");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("doctorTable");
+    const tbody = table.querySelector("tbody");
+    const rows = tbody.getElementsByTagName("tr");
+
+    // Separate table headers
+    const thead = table.querySelector("thead");
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let found = false;
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+            if (cell) {
+                const textValue = cell.textContent || cell.innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
                 }
-                rows[i].style.display = found ? "" : "none";
             }
         }
+        rows[i].style.display = found ? "" : "none";
+    }
+
+    // Append thead back to the table
+    table.appendChild(thead);
+}
+
 
         // Function to handle sorting based on filter dropdown
         function handleFilter() {
