@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 	"log"
 	"time"
-	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
 // DoctorContract to define the smart contract
@@ -70,11 +70,10 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 	return nil
 }
 
-
-
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string) error {
+	
 	//Check if the doctor already exists
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
@@ -232,7 +231,6 @@ func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterf
 
 	return doctors, nil
 }
-
 
 func main() {
 	doctorContract := new(DoctorContract)
