@@ -73,7 +73,13 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string) error {
-	
+
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return fmt.Errorf("only admin can create doctor")
+	}
+
 	//Check if the doctor already exists
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
@@ -171,6 +177,13 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 
 // DeleteDoctor deletes the doctor with the specified ID from the world state.
 func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterface, doctorID string) error {
+
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return fmt.Errorf("only admin can create doctor")
+	}
+
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
@@ -200,6 +213,13 @@ func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterfa
 
 // GetAllDoctors returns all doctors found in world state
 func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterface) ([]*Doctor, error) {
+
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return nil, fmt.Errorf("only admin can get all doctors")
+	}
+
 	// Get iterator for all keys in the state
 	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
 	if err != nil {
