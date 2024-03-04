@@ -248,9 +248,11 @@
 
                 // Convert FormData to JSON
                 const json = {};
-                formData.forEach((value, key) => {
-                    json[key] = value;
+                formData.forEach(function(value, key){
+                    object[key] = value;
                 });
+                var json = JSON.stringify(object);
+                console.log(json);
 
                 // Send updated data to the server via JSON
                 fetch(`/updateDoctor?id=${doctorId}`, {
