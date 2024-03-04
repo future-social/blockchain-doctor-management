@@ -253,7 +253,7 @@
                 });
 
                 // Send updated data to the server via JSON
-                fetch("/updateDoctor", {
+                fetch(`/updateDoctor?id=${doctorId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
