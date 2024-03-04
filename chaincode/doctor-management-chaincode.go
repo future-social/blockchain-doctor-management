@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 	"log"
 	"time"
+
+	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
 // DoctorContract to define the smart contract
