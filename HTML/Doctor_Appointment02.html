@@ -216,6 +216,8 @@
             })
             .then(response => {
                 if (response.ok) {
+                    // Show pop-up message
+                    alert('Create Successfully.');
                     // Redirect to Doctor_Appointment01.html after successful submission
                     window.location.href = '/HTML/Doctor_Appointment01.html';
                 } else {
