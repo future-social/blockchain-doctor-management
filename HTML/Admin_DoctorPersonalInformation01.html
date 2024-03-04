@@ -150,7 +150,7 @@
             });
 
             // Fetch doctor data from backend and populate table
-        fetch("/retrieveDoctorData")
+        fetch("/retrieveDoctor")
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#doctorTable tbody");
