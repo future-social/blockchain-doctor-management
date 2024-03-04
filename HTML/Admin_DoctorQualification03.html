@@ -45,7 +45,9 @@
         .qualification-container {
             border: 3px solid #f3f3f3; 
             padding: 10px;
-            margin-top: 20px;
+            margin: 20px auto;
+            width: 90%;
+
         }
         .qualification-header {
             text-align: center;
@@ -63,16 +65,15 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin: 4px 2px;
+            margin: 4px 50px;
             cursor: pointer;
             border-radius: 5px;
         }
-
         .edit-button:hover {
             background-color: #8E004A;
         }
         .edit-input {
-            width: 80%;
+            width: 200px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -126,7 +127,7 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        fetch("/retrieveDoctor")
+        fetch(`/retrieveDoctor?id=${doctorId}`)
             .then(response => response.json())
             .then(data => {
                 // Populate data into HTML elements
@@ -199,7 +200,7 @@
             });
 
             // Send updated data to the server
-            fetch("/updateDoctor", {
+            fetch(`/updateDoctor?id=${doctorId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

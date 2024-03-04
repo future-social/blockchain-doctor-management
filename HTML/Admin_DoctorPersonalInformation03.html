@@ -194,7 +194,7 @@
 
     function fetchDoctorInformation() {
         // Fetch doctor information via JSON
-        fetch("/retriveDoctor")
+        fetch(`/retrieveDoctor?id=${doctorId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -253,7 +253,7 @@
                 });
 
                 // Send updated data to the server via JSON
-                fetch("/updateDoctor", {
+                fetch(`/updateDoctor?id=${doctorId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
