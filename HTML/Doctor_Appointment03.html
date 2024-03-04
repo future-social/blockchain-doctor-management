@@ -3,291 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Appointment</title>
+    <title>Create Appointment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
+        h1 {
+            padding-left: 50px;
+        }
+        .big-container {
+            width: 80%;
+            margin: 0 auto 25px;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
             padding: 20px;
-            overflow-x: auto; /* Enable horizontal scrolling */
         }
-        h1, p {
-            margin-left: 50px;
-        }
-        .search-container {
+
+        .appointment-container {
             display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
         }
-        .searchbar {
+
+        .appointment-container label {
+            font-weight: bold;
+        }
+
+        .appointment-container .row {
             display: flex;
-            align-items: center;
-            margin-right: 10px;
+            gap: 10px;
         }
-        .dropdown {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
+
+        .appointment-container .column {
+            flex: 1;
+            padding: 5px;
         }
+
+        .appointment-container input[type="text"],
+        .appointment-container input[type="tel"],
+        .appointment-container input[type="email"] {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .appointment-container input[type="radio"] {
+            margin: 5px;
+        }
+
+        .appointment-container select{
+            width: 99%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .appointment-container button {
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100px;
+            margin: auto 10px;
+        }
+
         .button-container {
             display: flex;
-            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
         }
-        .search-container input[type="text"] {
-            padding: 8px;
-            margin-right: 0;
-            width: 200px;
+
+        .appointment-container button.edit, .appointment-container button.back {
+            background-color: #CA1F7B; 
+            color: white;
         }
-        .search-container select {
-            padding: 8px;
-            width: 200px;
-            margin-left: 0;
-        }
-        .search-container select option {
-            color: #999; /* Placeholder color */
-        }
-        .search-container .search-button {
-            cursor: pointer;
-            width: 35px;
-            height: 35px;
-            background: #CA1F7B center center;
-            background-size: cover;
-        }
-        .search-container .filter-button {
-            width: 35px;
-            height: 35px;
-            background: #CA1F7B center center;
-            background-size: cover;
-            margin-right: -5px;
-            margin-bottom: -13px;
-        }
-        .search-container .search-button:hover {
-            background-color: #8E004A;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-            position: sticky; /* Make headers sticky */
-            top: 0; /* Stick to the top */
-            z-index: 2; /* Ensure visibility */
-        }
-        .action-images {
-            display: flex;
-            justify-content: space-around;
-        }
-        .action-images img {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
+
+        .appointment-container button.edit:hover, .appointment-container button.back:hover {
+            background-color: #8E004A; 
         }
     </style>
 </head>
 <body>
     <div id="headerContainer"></div>
-    <h1>View Appointment</h1>
-    <p>Search Appointment</p>
-    <div class="container">
-        <div class="search-container">
-            <div class="searchbar">
-                <input type="text" placeholder="Search...">
-                <img class="search-button" src="search.png" alt="Search">
+
+    <h1>Create Appointment</h1>
+    <div class="big-container">
+    <div class="appointment-container">
+        <form id="appointmentForm">
+            <div class="row">
+                <div class="column">
+                    <label for="patient_name">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" required disabled>
+                </div>
+                <div class="column">
+                    <label>Gender:</label>
+                    <div>
+                        <input type="radio" id="male" name="gender" value="male" required disabled>
+                        <label for="male">Male</label>
+                        <input type="radio" id="female" name="gender" value="female" required disabled>
+                        <label for="female">Female</label>
+                    </div>
+                </div>
             </div>
-            <div class="dropdown">
-                <img class="filter-button" src="filter.png" alt="Filter">
-                <select>
-                    <option value="" disabled selected>Filter by...</option>
-                    <option value="gender">Gender</option>
-                    <option value="specialization">Specialization</option>
-                    <!-- Add more options as needed -->
-                </select>
+            <div class="row">
+                <div class="column">
+                    <label for="ic_passport">IC No./ Passport Number:</label>
+                    <input type="text" id="ic_passport" name="ic_passport" required disabled>
+                </div>
+                <div class="column">
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" name="mobile" required disabled pattern="[0-9]*">
+                </div>                
             </div>
-        </div>
-        <table id="doctorTable">
-            <thead>
-                <tr>
-                    <th>NO.</th>
-                    <th>Time</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Consulting department</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
+            <div class="row">
+                <div class="column">
+                    <label for="appointment_date">Date:</label>
+                    <select id="appointment_date" name="appointment_date" required disabled>
+                        <!-- JavaScript will populate options here -->
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="appointment_time">Time:</label>
+                    <select id="appointment_time" name="appointment_time" required disabled>
+                        <!-- Options for time -->
+                        <option value="" disabled selected>Select time</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="remarks">Remarks</label>
+                    <input type="text" id="remarks" name="remarks" required disabled>
+                </div>
+                <div class="column">
+                </div>
+            </div>
+            <div class="button-container">
+                    <button type="edit" class="edit" id="editButton">Edit</button>
+            </div>
+        </form>
     </div>
-    <br><br>
+    </div>
     <div id="footerContainer"></div>
 
     <script>
-        // Fetch header and footer
         fetch("Doctor_Header.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("headerContainer").innerHTML = html;
-            });
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
 
         fetch("Footer.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("footerContainer").innerHTML = html;
-            });
-
-            // Fetch doctor data from backend and populate table
-        fetch("/retrieveDoctor")
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.querySelector("#doctorTable tbody");
-            data.forEach((doctor, index) => {
-                const row = tableBody.insertRow();
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${doctor.doctorId}</td>
-                    <td>${doctor.name}</td>
-                    <td>${doctor.gender}</td>
-                    <td>${doctor.specialization}</td>
-                    <td class="action-images">
-                        <button class="view-button" data-id="${doctor.doctorId}">View</button>
-                        <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
-                        <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
-                    </td>
-                `;
-            });
-
-            // Add event listeners to buttons
-            const viewButtons = document.querySelectorAll('.view-button');
-            const editButtons = document.querySelectorAll('.edit-button');
-            const deleteButtons = document.querySelectorAll('.delete-button');
-
-            viewButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
-                });
-            });
-
-            editButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
-                });
-            });
-
-            deleteButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const doctorId = button.getAttribute('data-id');
-                        // Show confirmation pop-up
-                        const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
-                        if (confirmation) {
-                            // If user confirms, proceed with deletion
-                            deleteDoctor(doctorId);
-                        }
-                    });
-                });
-            })
-        .catch(error => {
-            console.error("Error retrieving doctor data:", error);
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+        document.getElementById("editButton").addEventListener("click", function() {
+        window.location.href = "Doctor_Appointment04.html";
         });
 
-        // Function to delete doctor data
-        function deleteDoctor(doctorId) {
-            // Make a fetch request to delete doctor data
-            fetch(`/deleteDoctorData?id=${doctorId}`, {
-                method: 'DELETE'
+        var dateSelect = document.getElementById("appointment_date");
+        var currentDate = new Date();
+        var defaultDateOption = document.createElement("option");
+        defaultDateOption.value = "";
+        defaultDateOption.text = "Select date";
+        dateSelect.add(defaultDateOption);
+
+        for (var i = 0; i < 7; i++) {
+            var option = document.createElement("option");
+            option.value = currentDate.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+            option.text = currentDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dateSelect.add(option);
+            currentDate.setDate(currentDate.getDate() + 1); // Increment date by 1 day
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("appointmentForm");
+        fetch('/getAppointments')
+            .then(response => response.json())
+            .then(appointments => {
+                appointments.forEach(appointment => {
+                    const option = document.createElement("option");
+                    option.value = appointment.date; 
+                    option.text = appointment.date; 
+                    dateSelect.add(option); 
+                });
+            })
+
+            .catch(error => {
+                console.error('Error:', error);
+                // 处理错误情况
+            });
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Collect data from form fields
+            const formData = {
+                patient_name: document.getElementById("patient_name").value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                ic_passport: document.getElementById("ic_passport").value,
+                mobile: document.getElementById("mobile").value,
+                appointment_date: document.getElementById("appointment_date").value,
+                appointment_time: document.getElementById("appointment_time").value,
+                remarks: document.getElementById("remarks").value
+            };
+
+            // Send formData to the server using AJAX or fetch API
+            fetch('/createAppointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
             .then(response => {
                 if (response.ok) {
-                    // Refresh the page after successful deletion
-                    window.location.reload();
+                    // Show pop-up message
+                    alert('Create Successfully.');
+                    // Redirect to Doctor_Appointment01.html after successful submission
+                    window.location.href = '/HTML/Doctor_Appointment01.html';
                 } else {
-                    throw new Error('Failed to delete doctor data');
+                    throw new Error('Failed to submit appointment data.');
                 }
             })
             .catch(error => {
-                console.error('Error deleting doctor data:', error);
+                console.error('Error:', error);
+                // Handle errors here if necessary
             });
-        }
+        });
 
-// Function to handle search
-function handleSearch() {
-    const input = document.querySelector(".searchbar input[type='text']");
-    const filter = input.value.toUpperCase();
-    const table = document.getElementById("doctorTable");
-    const tbody = table.querySelector("tbody");
-    const rows = tbody.getElementsByTagName("tr");
-
-    // Separate table headers
-    const thead = table.querySelector("thead");
-
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        let found = false;
-        for (let j = 0; j < cells.length; j++) {
-            const cell = cells[j];
-            if (cell) {
-                const textValue = cell.textContent || cell.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    found = true;
-                    break;
+        // JavaScript to handle clear button click
+        const clearButton = document.querySelector(".clear");
+        clearButton.addEventListener("click", function() {
+            const inputFields = form.querySelectorAll("input, select");
+            inputFields.forEach(function(input) {
+                if (input.tagName === "SELECT") {
+                    input.value = ""; // Clear the select option
+                } else if (input.type === "radio") {
+                    input.checked = false; // Uncheck the radio button
+                } else {
+                    input.value = ""; // Clear the input field
                 }
-            }
-        }
-        rows[i].style.display = found ? "" : "none";
-    }
-
-    // Append thead back to the table
-    table.appendChild(thead);
-}
-
-
-    // Function to handle sorting based on filter dropdown
-    function handleFilter() {
-        const select = document.querySelector(".search-container select");
-        const value = select.value;
-        const table = document.getElementById("doctorTable");
-        const tbody = table.querySelector("tbody");
-        const rows = Array.from(tbody.querySelectorAll("tr"));
-
-        if (value === "gender") {
-            rows.sort((a, b) => {
-                const genderA = a.cells[3].textContent.trim();
-                const genderB = b.cells[3].textContent.trim();
-                return genderA.localeCompare(genderB);
             });
-        } else if (value === "specialization") {
-            rows.sort((a, b) => {
-                const specializationA = a.cells[4].textContent.trim();
-                const specializationB = b.cells[4].textContent.trim();
-                return specializationA.localeCompare(specializationB);
-            });
-        }
+        });
+    });
 
-        rows.forEach(row => tbody.appendChild(row));
-    }
+</script>
 
-    // Add event listeners to search input and filter dropdown
-    const searchInput = document.querySelector('.searchbar input[type="text"]');
-    searchInput.addEventListener('input', handleSearch);
 
-    const filterSelect = document.querySelector('.search-container select');
-    filterSelect.addEventListener('change', handleFilter);
-    
-    </script>
 </body>
 </html>
