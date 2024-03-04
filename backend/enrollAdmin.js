@@ -6,7 +6,7 @@ const path = require('path');
 async function enrollAdmin() {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname,'..','network', 'connection.json');
+        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
         const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
         const ccp = JSON.parse(ccpJSON);
 
