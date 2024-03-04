@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            position: relative; /* Ensure proper positioning for the sticky headers */
+        }
+        h1, p {
+            margin-left: 50px;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+        .searchbar {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+        .dropdown {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .search-container input[type="text"] {
+            padding: 8px;
+            margin-right: 0;
+            width: 200px;
+        }
+        .search-container select {
+            padding: 8px;
+            width: 200px;
+            margin-left: 0;
+        }
+        .search-container select option {
+            color: #999; /* Placeholder color */
+        }
+        .search-container .search-button {
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            background: #CA1F7B center center;
+            background-size: cover;
+        }
+        .search-container .filter-button {
+            width: 35px;
+            height: 35px;
+            background: #CA1F7B center center;
+            background-size: cover;
+            margin-right: -5px;
+            margin-bottom: -13px;
+        }
+        .search-container .search-button:hover {
+            background-color: #8E004A;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky; /* Make headers sticky */
+            top: 0; /* Stick to the top */
+            z-index: 2; /* Ensure visibility */
+        }
+        .action-images {
+            display: flex;
+            justify-content: space-around;
+        }
+        .action-images img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        button {
+            text-align: center;
+            background-color: #CA1F7B; 
+            color: white;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 200px;
+            margin: 0 auto;
+        }
+        button:hover {
+            background-color: #8E004A; 
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <h1>View Appointment</h1>
+    <p>Search Appointment</p>
+    <div class="container">
+        <div class="search-container">
+            <div class="searchbar">
+                <input type="text" placeholder="Search...">
+                <img class="search-button" src="/HTML/search.png" alt="Search">
+            </div>
+            <div class="dropdown">
+                <img class="filter-button" src="/HTML/filter.png" alt="Filter">
+                <select>
+                    <option value="" disabled selected>Filter by...</option>
+                    <option value="date">Date</option>
+                    <option value="patientname">Patient Name</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
+        <div style="overflow-x:auto;"> <!-- Added a container for horizontal scrolling -->
+            <table id="appointmentTable">
+                <thead>
+                    <tr>
+                        <th>NO.</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Patient Name</th>
+                        <th>Gender</th>
+                        <th>Mobile Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="button-container">
+            <a href="/HTML/Doctor_Appointment02.html">
+                <button type="button" class="create">Create New Appointment</button>
+            </a>
+        </div>
+    </div>
+    <div id="footerContainer"></div>
+
+    <script>
+        // Fetch header and footer
+        fetch("/HTML/Doctor_Header.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("headerContainer").innerHTML = html;
+            });
+
+        fetch("/HTML/Footer.html")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("footerContainer").innerHTML = html;
+            });
+
+            // Fetch appointment data from backend and populate table
+        fetch("/retrieveAppointment")
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector("#appointmentTable tbody");
+            data.forEach((appointment, index) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                    <td>${appointment.name}</td>
+                    <td>${appointment.gender}</td>
+                    <td>${appointment.mobilenumber}</td>
+                    <td class="action-images">
+                        <button class="view-button" data-id="${appointment.mobilenumber}">View</button>
+                        <button class="edit-button" data-id="${appointment.mobilenumber}">Edit</button>
+                        <button class="delete-button" data-id="${appointment.mobilenumber}">Delete</button>
+                    </td>
+                `;
+            });
+
+            // Add event listeners to buttons
+            const viewButtons = document.querySelectorAll('.view-button');
+            const editButtons = document.querySelectorAll('.edit-button');
+            const deleteButtons = document.querySelectorAll('.delete-button');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    window.location.href = `/HTML/Doctor_Appointment03.html?id=${mobilenumber}`;
+                });
+            });
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    window.location.href = `/HTML/Doctor_Appointment04.html?id=${mobilenumber}`;
+                });
+            });
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctorId = button.getAttribute('data-id');
+                    const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
+                    if (confirmation) {
+                        // Send delete request to backend
+                        fetch(`/deleteAppointment?id=${patientMobile}`, {
+                            method: 'DELETE'
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                location.reload(); // Reload the page to reflect changes
+                            } else {
+                                // Handle error response
+                                console.error("Error deleting appointment data:", response.statusText);
+                                // Show an error message to the user
+                                alert("An error occurred while deleting appointment data. Please try again later.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error deleting appointment data:", error);
+                            // Show an error message to the user
+                            alert("An error occurred while deleting appointment data. Please try again later.");
+                        });
+                    }
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Error retrieving appointment data:", error);
+        });
+
+       // Function to handle search
+function handleSearch() {
+    const input = document.querySelector(".searchbar input[type='text']");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("appointmentTable");
+    const tbody = table.querySelector("tbody");
+    const rows = tbody.getElementsByTagName("tr");
+
+    // Separate table headers
+    const thead = table.querySelector("thead");
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let found = false;
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+            if (cell) {
+                const textValue = cell.textContent || cell.innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        rows[i].style.display = found ? "" : "none";
+    }
+
+    // Append thead back to the table
+    table.appendChild(thead);
+}
+
+        // Function to handle sorting based on filter dropdown
+        function handleFilter() {
+            const select = document.querySelector(".search-container select");
+            const value = select.value;
+            const table = document.getElementById("appointmentTable");
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            let columnIndex = -1;
+            switch (value) {
+                case "date":
+                    columnIndex = 4;
+                    break;
+                case "patientname":
+                    columnIndex = 5;
+                    break;
+            }
+
+            if (columnIndex !== -1) {
+                rows.sort((a, b) => {
+                    const textA = a.cells[columnIndex].textContent.trim().toUpperCase();
+                    const textB = b.cells[columnIndex].textContent.trim().toUpperCase();
+                    return textA.localeCompare(textB);
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            }
+        }
+
+        // Add event listeners to search input and filter dropdown
+        const searchInput = document.querySelector('.searchbar input[type="text"]');
+        searchInput.addEventListener('input', handleSearch);
+
+        const filterSelect = document.querySelector('.search-container select');
+        filterSelect.addEventListener('change', handleFilter);
+
+    </script>
+</body>
+</html>
