@@ -69,27 +69,51 @@
     <br><br>
     <div id="footerContainer"></div>
     <script>
-        fetch("/HTML/Admin_Header.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
         
-          fetch("/HTML/Footer.html")
+          fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
         });
 
         function submitForm() {
-            // Perform form validation here if needed (no need for now ba)
-
-            // Submit the form
+            // Get the form data
             const form = document.getElementById('registrationForm');
-            form.submit();
+            const formData = new FormData(form);
 
-            // Show the pop-up message
-            showPopUp();
+            // Convert form data to JSON
+            const jsonData = JSON.stringify(Object.fromEntries(formData));
+
+            // Send POST request to server
+            fetch("/createDoctor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: jsonData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response
+                console.log("Doctor created successfully:", data);
+                // Show the pop-up message
+                showPopUp();
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error creating doctor:", error);
+                // Optionally, display an error message to the user
+            });
         }
 
         function showPopUp() {
