@@ -77,9 +77,12 @@
 
                 // Gather data from form fields
                 const formData = new FormData(form);
+                
+                // Convert form data to JSON
+                var json = JSON.stringify(Object.fromEntries(formData));
 
                 // Send POST request to server
-                fetch("/upload", {
+                fetch("/createDoctor", { //fetch createDoctor?
                     method: "POST",
                     body: formData
                 })
