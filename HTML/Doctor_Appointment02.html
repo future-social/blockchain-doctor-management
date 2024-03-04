@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            padding-left: 50px;
+        }
+        .big-container {
+            width: 80%;
+            margin: 0 auto 25px;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .appointment-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .appointment-container label {
+            font-weight: bold;
+        }
+
+        .appointment-container .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .appointment-container .column {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .appointment-container input[type="text"],
+        .appointment-container input[type="tel"],
+        .appointment-container input[type="email"] {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .appointment-container input[type="radio"] {
+            margin: 5px;
+        }
+
+        .appointment-container select{
+            width: 99%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .appointment-container button {
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100px;
+            margin: auto 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .appointment-container button.submit, .appointment-container button.clear, .appointment-container button.back {
+            background-color: #CA1F7B; 
+            color: white;
+        }
+
+        .appointment-container button.submit:hover, .appointment-container button.clear:hover, .appointment-container button.back:hover {
+            background-color: #8E004A; 
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+
+    <h1>Create Appointment</h1>
+    <div class="big-container">
+    <div class="appointment-container">
+        <form id="appointmentForm">
+            <div class="row">
+                <div class="column">
+                    <label for="patient_name">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" required>
+                </div>
+                <div class="column">
+                    <label>Gender:</label>
+                    <div>
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">Male</label>
+                        <input type="radio" id="female" name="gender" value="female" required>
+                        <label for="female">Female</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="ic_passport">IC No./ Passport Number:</label>
+                    <input type="text" id="ic_passport" name="ic_passport" required>
+                </div>
+                <div class="column">
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" name="mobile" required pattern="[0-9]*">
+                </div>                
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="appointment_date">Date:</label>
+                    <select id="appointment_date" name="appointment_date" required>
+                        <!-- JavaScript will populate options here -->
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="appointment_time">Time:</label>
+                    <select id="appointment_time" name="appointment_time" required>
+                        <!-- Options for time -->
+                        <option value="" disabled selected>Select time</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="remarks">Remarks</label>
+                    <input type="text" id="remarks" name="remarks">
+                </div>
+                <div class="column">
+                </div>
+            </div>
+            <div class="button-container">
+                    <button type="button" class="clear">Clear</button>
+                    <button type="submit" class="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div id="footerContainer"></div>
+
+    <script>
+        fetch("Doctor_Header.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+
+        fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+
+        // JavaScript to populate date options
+        var dateSelect = document.getElementById("appointment_date");
+        var currentDate = new Date();
+        var defaultDateOption = document.createElement("option");
+        defaultDateOption.value = "";
+        defaultDateOption.text = "Select date";
+        dateSelect.add(defaultDateOption);
+
+        for (var i = 0; i < 7; i++) {
+            var option = document.createElement("option");
+            option.value = currentDate.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+            option.text = currentDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dateSelect.add(option);
+            currentDate.setDate(currentDate.getDate() + 1); // Increment date by 1 day
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("appointmentForm");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Collect data from form fields
+            const formData = {
+                patient_name: document.getElementById("patient_name").value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                ic_passport: document.getElementById("ic_passport").value,
+                mobile: document.getElementById("mobile").value,
+                appointment_date: document.getElementById("appointment_date").value,
+                appointment_time: document.getElementById("appointment_time").value,
+                remarks: document.getElementById("remarks").value
+            };
+
+            // Send formData to the server using AJAX or fetch API
+            fetch('/createAppointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to Doctor_Appointment01.html after successful submission
+                    window.location.href = 'Doctor_Appointment01.html';
+                } else {
+                    throw new Error('Failed to submit appointment data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors here if necessary
+            });
+        });
+
+        // JavaScript to handle clear button click
+        const clearButton = document.querySelector(".clear");
+        clearButton.addEventListener("click", function() {
+            const inputFields = form.querySelectorAll("input, select");
+            inputFields.forEach(function(input) {
+                if (input.tagName === "SELECT") {
+                    input.value = ""; // Clear the select option
+                } else if (input.type === "radio") {
+                    input.checked = false; // Uncheck the radio button
+                } else {
+                    input.value = ""; // Clear the input field
+                }
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>
