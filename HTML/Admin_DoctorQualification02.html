@@ -45,7 +45,8 @@
         .qualification-container {
             border: 3px solid #f3f3f3; 
             padding: 10px;
-            margin-top: 20px;
+            margin: 20px auto;
+            width: 90%;
         }
         .qualification-header {
             text-align: center;
@@ -63,7 +64,7 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin: 4px 2px;
+            margin: 4px 50px;
             cursor: pointer;
             border-radius: 5px;
         }
@@ -103,26 +104,26 @@
     <div class="qualification-container" id="qualificationContainer">
         <!-- Qualification details will be inserted here dynamically -->
     </div>
-    <a href="/HTML/Admin_DoctorQualification03.html">
+    <a href="Admin_DoctorQualification03.html">
         <button type="button" class="edit-button">Edit</button>
     </a>
     <br><br>
     <div id="footerContainer"></div>
     <script>
         // Fetch header and footer
-        fetch("/HTML/Admin_Header.html")
+        fetch("Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("/HTML/Footer.html")
+        fetch("Footer.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        fetch("/retrieveDoctor")
+        fetch("/retriveDoctor")
             .then(response => response.json())
             .then(data => {
                 // Populate data into HTML elements
