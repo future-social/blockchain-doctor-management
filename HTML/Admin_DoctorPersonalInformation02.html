@@ -201,7 +201,7 @@
 
             function fetchDoctorInformation() {
                 // Fetch doctor information via JSON
-                fetch("/getDoctorInfo")
+                fetch("/retrieveDoctor")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
