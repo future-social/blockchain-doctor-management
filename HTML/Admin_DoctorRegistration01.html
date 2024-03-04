@@ -189,13 +189,13 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Admin_Header.html")
+        fetch("/HTML/Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("Footer.html")
+        fetch("/HTML/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -228,7 +228,7 @@
                     // Handle successful response
                     console.log("Doctor created successfully:", data);
                     // Optionally, redirect to another page or display a success message
-                    window.location.href = "Admin_DoctorRegistration02.html";
+                    window.location.href = "/HTML/Admin_DoctorRegistration02.html";
                 })
                 .catch(error => {
                     // Handle error
