@@ -88,8 +88,8 @@ async function retrieveDoctor(doctorId) {
     });
 
     // Get the network and contract
-    const network = await gateway.getNetwork("mychannel");
-    const contract = network.getContract("mycontract");
+    const network = await gateway.getNetwork("medicpro");
+    const contract = network.getContract("doctor-management-chaincode");
 
     // Submit the transaction to retrieve doctor data by ID
     const result = await contract.evaluateTransaction(
@@ -141,8 +141,8 @@ async function updateDoctor(doctorId, updatedData) {
     });
 
     // Get the network and contract
-    const network = await gateway.getNetwork("mychannel");
-    const contract = network.getContract("mycontract");
+    const network = await gateway.getNetwork("medicpro");
+    const contract = network.getContract("doctor-management-chaincode");
 
     // Submit the transaction to update doctor data
     await contract.submitTransaction(
@@ -194,8 +194,8 @@ async function deleteDoctor(doctorId) {
     });
 
     // Get the network and contract
-    const network = await gateway.getNetwork("mychannel");
-    const contract = network.getContract("mycontract");
+    const network = await gateway.getNetwork("medicpro");
+    const contract = network.getContract("doctor-management-chaincode");
 
     // Submit the transaction to update doctor data
     await contract.submitTransaction("DeleteDoctor", doctorId);
