@@ -127,7 +127,7 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        fetch("/retrieveDoctor")
+        fetch(`/retrieveDoctor?id=${doctorId}`)
             .then(response => response.json())
             .then(data => {
                 // Populate data into HTML elements
@@ -200,7 +200,7 @@
             });
 
             // Send updated data to the server
-            fetch("/updateDoctor", {
+            fetch(`/updateDoctor?id=${doctorId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -213,7 +213,7 @@
                 }
                 console.log("Data updated successfully!");
                 // Navigate to Admin_DoctorQualification02.html
-                window.location.href = "Admin_DoctorQualification02.html";
+                window.location.href = "/HTML/Admin_DoctorQualification02.html";
             })
             .catch(error => {
                 console.error("Error updating data:", error);
