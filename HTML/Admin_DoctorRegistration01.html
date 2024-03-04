@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Include jQuery UI library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Include jQuery UI CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Registration</title>
@@ -238,10 +245,24 @@
             clearButton.addEventListener("click", function() {
                 const inputFields = form.querySelectorAll("input");
                 inputFields.forEach(function(input) {
+                if (input.type === "radio") {
+                    input.checked = false; // Uncheck the radio button
+                } else {
                     input.value = ""; // Clear the input field
+                }
                 });
             });
         });
+
+        $(function() {
+        $("#dob").datepicker({
+            dateFormat: "yy-mm-dd", // Set the date format
+            changeMonth: true, // Allow changing month
+            changeYear: true, // Allow changing year
+            yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+            maxDate: new Date(), // Set maximum selectable date to current date
+        });
+    });
     </script>
 
 </body>
