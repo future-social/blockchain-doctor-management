@@ -126,7 +126,7 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        fetch("/doctorData")
+        fetch("/retrieveDoctor")
             .then(response => response.json())
             .then(data => {
                 // Populate data into HTML elements
@@ -199,7 +199,7 @@
             });
 
             // Send updated data to the server
-            fetch("/updateDoctorData", {
+            fetch("/updateDoctor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
