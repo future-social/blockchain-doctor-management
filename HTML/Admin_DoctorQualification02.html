@@ -122,7 +122,7 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
 
-        fetch("/doctorData")
+        fetch("/retrieveDoctor")
             .then(response => response.json())
             .then(data => {
                 // Populate data into HTML elements
