@@ -33,7 +33,7 @@ async function registerUser() {
             console.log('An identity for the admin user "admin" does not exist in the wallet');
             console.log('Enroll the admin user before registering other users');
             return;
-        }
+        
 
         // Register the user identity with the CA
         const registerRequest = {
