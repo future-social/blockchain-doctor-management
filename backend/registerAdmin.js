@@ -34,11 +34,11 @@ async function registerAdminUser() {
     const wallet = await Wallets.newFileSystemWallet(walletPath);
 
     // Check if the user identity already exists in the wallet
-    const adminId = process.argv[2];
-    const userExists = await wallet.get(adminId);
+    const DMSadminId = process.argv[2];
+    const userExists = await wallet.get(DMSadminId);
     if (userExists) {
       console.log(
-        `An identity for the user ${adminId} already exists in the wallet`
+        `An identity for the user ${DMSadminId} already exists in the wallet`
       );
       return;
     }
@@ -53,7 +53,43 @@ async function registerAdminUser() {
       return;
     }
 
+    // build a user object for authenticating with the CA
+    const provider = wallet
+      .getProviderRegistry()
+      .getProvider(adminIdentity.type);
+    const adminUser = await provider.getUserContext(adminIdentity, "admin");
+
+    const secret = await ca.register(
+      {
+        enrollmentID: DMSadminId,
+        affiliation: "org1.department1", // Specify the affiliation if necessary
+        role: "client",
+      },
+      adminUser
+    );
+
+    const enrollment = await ca.enroll({
+      enrollmentID: DMSadminId,
+      enrollmentSecret: secret,
+    });
+
+    const x509Identity = {
+      credentials: {
+        certificate: enrollment.certificate,
+        privateKey: enrollment.key.toBytes(),
+      },
+      mspId: "Org1MSP",
+      type: "X.509",
+    };
+
+    await wallet.put(DMSadminId, x509Identity);
+    console.log(
+      `Successfully registered and enrolled user ${DMSadminId} and imported it into the wallet`
+    );
+  } catch (error) {
+    console.error(`Failed to register user : ${error}`);
     // Register the user identity with the CA
+    /*
     const registerRequest = {
       enrollmentID: adminId,
       affiliation: "org1.department1", // Specify the affiliation if necessary
@@ -67,6 +103,9 @@ async function registerAdminUser() {
   } catch (error) {
     console.error(`Failed to register user: ${error}`);
     process.exit(1);
+  }
+
+  */
   }
 }
 
