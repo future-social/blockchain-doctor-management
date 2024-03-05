@@ -36,8 +36,8 @@ async function createDoctor(doctorData) {
     });
 
     // Get the network and contract
-    const network = await gateway.getNetwork("mychannel");
-    const contract = network.getContract("mycontract");
+    const network = await gateway.getNetwork("medicpro");
+    const contract = network.getContract("doctor-management-chaincode");
 
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
