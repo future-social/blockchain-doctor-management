@@ -14,7 +14,7 @@ async function createDoctor(doctorData, DMSAdminId) {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         const identity = await wallet.get(DMSAdminId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+            throw new Error('An identity for the user '+ DMSAdminId +' does not exist in the wallet');
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
@@ -51,7 +51,7 @@ async function retrieveAllDoctor(DMSAdminId) {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         const identity = await wallet.get(DMSAdminId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+            throw new Error('An identity for the user ' + DMSAdminId + ' does not exist in the wallet');
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
@@ -89,7 +89,7 @@ async function retrieveDoctor(doctorId) {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         const identity = await wallet.get(doctorId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+            throw new Error('An identity for the user '+ doctorId +' does not exist in the wallet');
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
@@ -115,7 +115,7 @@ async function retrieveDoctor(doctorId) {
     }
 }
 
-async function updateDoctor(doctorId, updatedData) {
+async function updateDoctor(userId, updatedData) {
     try {
         // Load connection profile
         const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
@@ -125,14 +125,14 @@ async function updateDoctor(doctorId, updatedData) {
         // Connect to the gateway
         const walletPath = path.resolve(__dirname, 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(userId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+            throw new Error('An identity for the user ' + userId + ' does not exist in the wallet');
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
             wallet,
-            identity: 'user1',
+            identity: userId,
             discovery: { enabled: true, asLocalhost: true }
         });
 
@@ -164,7 +164,7 @@ async function deleteDoctor(doctorId, DMSAdminId) {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         const identity = await wallet.get(DMSAdminId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+            throw new Error('An identity for the user ' + DMSAdminId + ' does not exist in the wallet');
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
@@ -189,4 +189,4 @@ async function deleteDoctor(doctorId, DMSAdminId) {
     }
 }
 
-module.exports = { createDoctor, retrieveDoctor, updateDoctor, deleteDoctor };
+module.exports = { createDoctor, retrieveAllDoctor, retrieveDoctor, updateDoctor, deleteDoctor };
