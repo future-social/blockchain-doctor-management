@@ -111,7 +111,7 @@
                 <select>
                     <option value="" disabled selected>Filter by...</option>
                     <option value="gender">Gender</option>
-                    <option value="specialization">Specialization</option>
+                    <option value="specialisation">Specialisation</option>
                     <!-- Add more options as needed -->
                 </select>
             </div>
@@ -123,7 +123,7 @@
                     <th>Doctor ID</th>
                     <th>Name</th>
                     <th>Gender</th>
-                    <th>Specialization</th>
+                    <th>Specialisation</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -144,10 +144,11 @@
             });
 
         fetch("/HTML/Footer.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("footerContainer").innerHTML = html;
-            });
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
+        });
 
             // Fetch doctor data from backend and populate table
         fetch("/retrieveDoctor")
@@ -169,43 +170,44 @@
                             <td>${doctor.doctorId}</td>
                             <td>${doctor.name}</td>
                             <td>${doctor.gender}</td>
-                            <td>${doctor.specialization}</td>
+                            <td>${doctor.specialisation}</td>
                             <td class="action-images">
-                                <button class="view-button" data-id="${doctor.doctorId}">View</button>
-                                <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
-                                <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
+                                <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctorId}">
+                                <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctorId}">
+                                <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctorId}">
                             </td>
                         `;
                     });
 
-                    // Add event listeners to buttons
-                    const viewButtons = document.querySelectorAll('.view-button');
-                    const editButtons = document.querySelectorAll('.edit-button');
-                    const deleteButtons = document.querySelectorAll('.delete-button');
+                    // Add event listeners to image elements
+                const viewImages = document.querySelectorAll('.view-image');
+                const editImages = document.querySelectorAll('.edit-image');
+                const deleteImages = document.querySelectorAll('.delete-image');
 
-                    viewButtons.forEach(button => {
-                        button.addEventListener('click', () => {
-                            const doctorId = button.getAttribute('data-id');
-                            window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
-                        });
+                viewImages.forEach(image => {
+                    image.addEventListener('click', () => {
+                        const doctorId = image.getAttribute('data-id');
+                        window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
                     });
+                });
 
-                    editButtons.forEach(button => {
-                        button.addEventListener('click', () => {
-                            const doctorId = button.getAttribute('data-id');
-                            window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
-                        });
+                editImages.forEach(image => {
+                    image.addEventListener('click', () => {
+                        const doctorId = image.getAttribute('data-id');
+                        window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
                     });
+                });
 
-                    deleteButtons.forEach(button => {
-                        button.addEventListener('click', () => {
-                            const doctorId = button.getAttribute('data-id');
-                            const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
-                            if (confirmation) {
-                                deleteDoctor(doctorId);
-                            }
-                        });
+                deleteImages.forEach(image => {
+                    image.addEventListener('click', () => {
+                        const doctorId = image.getAttribute('data-id');
+                        const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
+                        if (confirmation) {
+                            deleteDoctor(doctorId);
+                        }
                     });
+                });
+
                 }
             })
             .catch(error => {
@@ -277,11 +279,11 @@ function handleSearch() {
                 const genderB = b.cells[3].textContent.trim();
                 return genderA.localeCompare(genderB);
             });
-        } else if (value === "specialization") {
+        } else if (value === "specialisation") {
             rows.sort((a, b) => {
-                const specializationA = a.cells[4].textContent.trim();
-                const specializationB = b.cells[4].textContent.trim();
-                return specializationA.localeCompare(specializationB);
+                const specialisationA = a.cells[4].textContent.trim();
+                const specialisationB = b.cells[4].textContent.trim();
+                return specialisationA.localeCompare(specialisationB);
             });
         }
 
