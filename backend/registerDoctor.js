@@ -64,6 +64,7 @@ async function registerDoctorUser() {
         enrollmentID: DMSDoctorId,
         affiliation: "org1.department1", // Specify the affiliation if necessary
         role: "client",
+        attrs: [{ name: "DMSrole", value: "doctor", ecert: true }],
       },
       adminUser
     );

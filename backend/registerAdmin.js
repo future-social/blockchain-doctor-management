@@ -64,6 +64,7 @@ async function registerAdminUser() {
         enrollmentID: DMSadminId,
         affiliation: "org1.department1", // Specify the affiliation if necessary
         role: "client",
+        attrs: [{ name: "DMSrole", value: "admin", ecert: true }],
       },
       adminUser
     );
