@@ -226,45 +226,62 @@
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Get reference to the form and submit button
-            const form = document.getElementById("registrationForm");
-            const submitButton = document.querySelector(".submit");
+    // Get reference to the form and submit button
+    const form = document.getElementById("registrationForm");
+    const submitButton = document.querySelector(".submit");
 
-            // Add event listener for form submission
-            form.addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent default form submission
+    // Add event listener for form submission
+    form.addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-                // Gather data from form fields
-                const formData = new FormData(form);
+        // Gather data from form fields and construct a JavaScript object
+        const formData = new FormData(form);
+        const doctorData = {
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            ic_passport: formData.get('ic_passport'),
+            gender: formData.get('gender'),
+            staff_id: formData.get('staff_id'),
+            dob: formData.get('dob'),
+            mobile: formData.get('mobile'),
+            email: formData.get('email'),
+            address: formData.get('address'),
+            specialization: formData.get('specialization'),
+            emergency_name: formData.get('emergency_name'),
+            emergency_mobile: formData.get('emergency_mobile'),
+            relation: formData.get('relation')
+        };
 
-                // Convert form data to JSON
-                var json = JSON.stringify(Object.fromEntries(formData));
-                
-                // Send POST request to server
-                fetch("/createDoctor", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Handle successful response
-                    console.log("Doctor created successfully:", data);
-                    // Optionally, redirect to another page or display a success message
-                    window.location.href = "/HTML/Admin_DoctorRegistration02.html";
-                })
-                .catch(error => {
-                    // Handle error
-                    console.error("Error creating doctor:", error);
-                    // Optionally, display an error message to the user
-                });
-            });
+        // Convert JavaScript object to JSON
+        const jsonData = JSON.stringify(doctorData);
+
+        // Send POST request to server
+        fetch("/createDoctor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" // Specify JSON content type
+            },
+            body: jsonData // Send JSON data as the request body
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle successful response
+            console.log("Doctor created successfully:", data);
+            // Optionally, redirect to another page or display a success message
+            window.location.href = "/HTML/Admin_DoctorRegistration02.html";
+        })
+        .catch(error => {
+            // Handle error
+            console.error("Error creating doctor:", error);
+            // Optionally, display an error message to the user
         });
-
+    });
+});
         document.addEventListener("DOMContentLoaded", function() {
             const clearButton = document.querySelector(".clear");
             const form = document.getElementById("registrationForm");
