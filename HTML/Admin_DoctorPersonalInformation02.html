@@ -100,7 +100,7 @@
     <div class="register-container">
         <form id="registrationForm">
         <div class="circle-image">
-            <img src="/HTML/image.png" id="portrait" alt="insert image">
+            <img src="/HTML/portrait.png" alt="doctor portrait">
         </div>
             <div class="row">
                 <div class="column">
@@ -193,6 +193,7 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
         // JavaScript for fetching and displaying doctor information
@@ -220,7 +221,6 @@
 
             function populateForm(data) {
                 // Populate form fields with the retrieved data
-                document.getElementById("portrait").value = data.portrait;
                 document.getElementById("first_name").value = data.first_name;
                 document.getElementById("last_name").value = data.last_name;
                 document.getElementById("ic_passport").value = data.ic_passport;
