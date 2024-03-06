@@ -92,10 +92,7 @@ async function retrieveDoctor(doctorId) {
     const contract = network.getContract("basic");
 
     // Submit the transaction to retrieve doctor data by ID
-    const result = await contract.evaluateTransaction(
-      "RetrieveDoctor",
-      doctorId
-    );
+    const result = await contract.evaluateTransaction("ViewDoctor", doctorId);
     console.log(`Doctor data retrieved: ${result.toString()}`);
 
     // Disconnect from the gateway
