@@ -191,10 +191,10 @@
         document.addEventListener("DOMContentLoaded", function() {
         const form = document.getElementById("appointmentForm");
 
-        fetch('/getDoctorAppointments')
+        fetch('/getDoctorAppointment')
         .then(response => response.json())
-        .then(appointments => {
-            appointments.forEach(appointment => {
+        .then(appointment => {
+            appointment.forEach(appointment => {
                 document.getElementById("patient_name").value = appointment.patient_name;
                 const genderRadio = document.querySelector(`input[name="gender"][value="${appointment.gender}"]`);
                 if (genderRadio) {
