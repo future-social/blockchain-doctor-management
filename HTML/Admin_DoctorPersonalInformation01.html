@@ -167,14 +167,14 @@
                         const row = tableBody.insertRow();
                         row.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${doctor.doctorId}</td>
-                            <td>${doctor.name}</td>
+                            <td>${doctor.doctor_id}</td>
+                            <td>${doctor.first_name} ${doctor.last_name}</td>
                             <td>${doctor.gender}</td>
                             <td>${doctor.specialisation}</td>
                             <td class="action-images">
-                                <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctorId}">
-                                <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctorId}">
-                                <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctorId}">
+                                <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctor_id}">
+                                <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
+                                <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
                             </td>
                         `;
                     });
