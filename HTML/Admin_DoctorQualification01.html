@@ -157,6 +157,12 @@
 
             // Fetch doctor data from backend and populate table
         fetch("/retrieveAllDoctor")
+        .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to retrieve doctor data");
+                }
+                return response.json();
+            })
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#doctorTable tbody");

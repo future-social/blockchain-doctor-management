@@ -148,7 +148,7 @@
         </div>
         <br>
         <div class="button-container">
-            <a href="/HTML/Doctor_Appointment02.html">
+            <a href="Doctor_Appointment02.html">
                 <button type="button" class="create">Create New Appointment</button>
             </a>
         </div>
@@ -164,13 +164,20 @@
             });
 
         fetch("/HTML/Footer.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("footerContainer").innerHTML = html;
-            });
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
+        });
 
             // Fetch appointment data from backend and populate table
-        fetch("/retrieveAppointment")
+        fetch("/retrieveAllAppointment")
+        .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to retrieve appointment data");
+                }
+                return response.json();
+            })
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#appointmentTable tbody");
@@ -184,35 +191,35 @@
                     <td>${appointment.gender}</td>
                     <td>${appointment.mobilenumber}</td>
                     <td class="action-images">
-                        <button class="view-button" data-id="${appointment.mobilenumber}">View</button>
-                        <button class="edit-button" data-id="${appointment.mobilenumber}">Edit</button>
-                        <button class="delete-button" data-id="${appointment.mobilenumber}">Delete</button>
+                        <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctor_id}">
+                        <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
+                        <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
                     </td>
                 `;
             });
 
-            // Add event listeners to buttons
-            const viewButtons = document.querySelectorAll('.view-button');
-            const editButtons = document.querySelectorAll('.edit-button');
-            const deleteButtons = document.querySelectorAll('.delete-button');
+            // Add event listeners to image elements
+            const viewImages = document.querySelectorAll('.view-image');
+            const editImages = document.querySelectorAll('.edit-image');
+            const deleteImages = document.querySelectorAll('.delete-image');
 
-            viewButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            viewImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     window.location.href = `/HTML/Doctor_Appointment03.html?id=${mobilenumber}`;
                 });
             });
 
-            editButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            editImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     window.location.href = `/HTML/Doctor_Appointment04.html?id=${mobilenumber}`;
                 });
             });
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            deleteImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
                     if (confirmation) {
                         // Send delete request to backend
