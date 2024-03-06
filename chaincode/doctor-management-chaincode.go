@@ -182,7 +182,7 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 	// Check if client has 'admin' role
 	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
 	if err != nil {
-		return fmt.Errorf("only admin can create doctor")
+		return fmt.Errorf("only admin can delete doctor")
 	}
 
 	exists, err := dc.DoctorExists(ctx, doctorID)
