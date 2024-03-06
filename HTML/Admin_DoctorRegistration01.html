@@ -27,38 +27,16 @@
             border-radius: 10px;
             padding: 20px;
         }
-        .circle-image-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
         .circle-image {
             width: 120px;
             height: 120px;
             border-radius: 50%;
+            margin: 0 auto 20px;
             background-color: #ccc; /* Placeholder color */
-            position: absolute;
-            top: 0;
-            left: 0;
         }
         .circle-image img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover; /* Ensure the image covers the entire circle */
-        }
-        .circle-image:hover {
-            filter: brightness(80%); /* Darken the image on hover */
-        }
-        .circle-image input[type="file"] {
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            cursor: pointer;
+            width: 120px;
+            height: 120px;
         }
 
         .register-container {
@@ -127,11 +105,8 @@
     <div class="big-container">
     <div class="register-container">
         <form id="registrationForm">
-            <div class="circle-image-container">
-                <label for="portrait" class="circle-image">
-                    <img id="uploadedImage" src="/HTML/image.png" alt="insert image">
-                    <input type="file" id="portrait" name="portrait" required>
-                </label>
+            <div class="circle-image">
+                <img src="/HTML/image.png" alt="insert image">
             </div>
             <div class="row">
                 <div class="column">
@@ -213,16 +188,17 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("/HTML/Admin_Header.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("/HTML/Footer.html")
+        fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -273,7 +249,7 @@
             // Handle successful response
             console.log("Doctor created successfully:", data);
             // Optionally, redirect to another page or display a success message
-            window.location.href = "/HTML/Admin_DoctorRegistration02.html";
+            window.location.href = "Admin_DoctorRegistration02.html";
         })
         .catch(error => {
             // Handle error
@@ -282,6 +258,7 @@
         });
     });
 });
+
         document.addEventListener("DOMContentLoaded", function() {
             const clearButton = document.querySelector(".clear");
             const form = document.getElementById("registrationForm");
@@ -307,31 +284,6 @@
             maxDate: new Date(), // Set maximum selectable date to current date
         });
     });
-
-    $(document).ready(function() {
-            // Listen for changes in the file input
-            $('#portrait').on('change', function(event) {
-                // Get the selected file
-                var selectedFile = event.target.files[0];
-                // Create a FileReader object
-                var reader = new FileReader();
-                // Set up onload function
-                reader.onload = function(event) {
-                    // Update the src attribute of the image with the uploaded file
-                    $('#uploadedImage').attr('src', event.target.result);
-                };
-                // Read the selected file as a Data URL
-                reader.readAsDataURL(selectedFile);
-            });
-
-            // Clear button functionality
-            $('.clear').on('click', function() {
-                // Reset the value of the file input
-                $('#portrait').val('');
-                // Show the default picture
-                $('#uploadedImage').attr('src', '/HTML/image.png');
-            });
-        });
     </script>
 
 </body>
