@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
@@ -49,6 +50,7 @@ type ScheduleContract struct {
 func (ac *AppointmentContract) CreateAppointment(ctx contractapi.TransactionContextInterface, appointment Appointment) error {
 	exists, err := ac.AppointmentExists(ctx, appointment.ID)
 	if err != nil {
+		log.Printf("Error checking if appointment exists: %s", err)
 		return err
 	}
 	if exists {
@@ -58,6 +60,7 @@ func (ac *AppointmentContract) CreateAppointment(ctx contractapi.TransactionCont
 	// Check if the appointment date is within one week from today
 	appointmentDate, err := time.Parse("02Jan2006", appointment.Date)
 	if err != nil {
+		log.Printf("Error parsing appointment date: %s", err)
 		return err
 	}
 	if !isWithinOneWeek(appointmentDate) {
@@ -68,6 +71,7 @@ func (ac *AppointmentContract) CreateAppointment(ctx contractapi.TransactionCont
 	scheduleContract := new(ScheduleContract)
 	availableTimeSlots, err := scheduleContract.GetAvailableTimeSlots(ctx, appointment.Date, appointment.DoctorID)
 	if err != nil {
+		log.Printf("Error getting available time slots: %s", err)
 		return err
 	}
 	slotFound := false
@@ -83,6 +87,7 @@ func (ac *AppointmentContract) CreateAppointment(ctx contractapi.TransactionCont
 
 	appointmentJSON, err := json.Marshal(appointment)
 	if err != nil {
+		log.Printf("Error marshalling appointment JSON: %s", err)
 		return err
 	}
 
@@ -93,7 +98,8 @@ func (ac *AppointmentContract) CreateAppointment(ctx contractapi.TransactionCont
 func (ac *AppointmentContract) GetAppointment(ctx contractapi.TransactionContextInterface, id string) (*Appointment, error) {
 	appointmentJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read from world state: %v", err)
+		log.Printf("Error retrieving appointment from world state: %s", err)
+		return nil, err
 	}
 	if appointmentJSON == nil {
 		return nil, fmt.Errorf("the appointment with ID %s does not exist", id)
@@ -102,6 +108,7 @@ func (ac *AppointmentContract) GetAppointment(ctx contractapi.TransactionContext
 	var appointment Appointment
 	err = json.Unmarshal(appointmentJSON, &appointment)
 	if err != nil {
+		log.Printf("Error unmarshalling appointment JSON: %s", err)
 		return nil, err
 	}
 
@@ -112,6 +119,7 @@ func (ac *AppointmentContract) GetAppointment(ctx contractapi.TransactionContext
 func (ac *AppointmentContract) UpdateAppointment(ctx contractapi.TransactionContextInterface, id, patientName, gender, icno, mobileNumber, date, time, remarks string) error {
 	exists, err := ac.AppointmentExists(ctx, id)
 	if err != nil {
+		log.Printf("Error checking if appointment exists: %s", err)
 		return err
 	}
 	if !exists {
@@ -131,6 +139,7 @@ func (ac *AppointmentContract) UpdateAppointment(ctx contractapi.TransactionCont
 
 	appointmentJSON, err := json.Marshal(appointment)
 	if err != nil {
+		log.Printf("Error marshalling appointment JSON: %s", err)
 		return err
 	}
 
@@ -141,6 +150,7 @@ func (ac *AppointmentContract) UpdateAppointment(ctx contractapi.TransactionCont
 func (ac *AppointmentContract) DeleteAppointment(ctx contractapi.TransactionContextInterface, id string) error {
 	exists, err := ac.AppointmentExists(ctx, id)
 	if err != nil {
+		log.Printf("Error checking if appointment exists: %s", err)
 		return err
 	}
 	if !exists {
@@ -154,7 +164,8 @@ func (ac *AppointmentContract) DeleteAppointment(ctx contractapi.TransactionCont
 func (ac *AppointmentContract) AppointmentExists(ctx contractapi.TransactionContextInterface, id string) (bool, error) {
 	appointmentJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
-		return false, fmt.Errorf("failed to read from world state: %v", err)
+		log.Printf("Error retrieving appointment from world state: %s", err)
+		return false, err
 	}
 	return appointmentJSON != nil, nil
 }
@@ -166,6 +177,7 @@ func (sc *ScheduleContract) GetAvailableTimeSlots(ctx contractapi.TransactionCon
 	// Create a composite key to search for TimeSlot records
 	iterator, err := ctx.GetStub().GetStateByPartialCompositeKey("TimeSlot", []string{doctorID, date})
 	if err != nil {
+		log.Printf("Error retrieving time slots from world state: %s", err)
 		return nil, err
 	}
 	defer iterator.Close()
@@ -174,12 +186,14 @@ func (sc *ScheduleContract) GetAvailableTimeSlots(ctx contractapi.TransactionCon
 	for iterator.HasNext() {
 		compositeKey, _, err := iterator.Next() // Note the use of _, _, err
 		if err != nil {
+			log.Printf("Error iterating over time slot records: %s", err)
 			return nil, err
 		}
 
 		// Get the record from the ledger using the composite key
 		timeSlotBytes, err := ctx.GetStub().GetState(compositeKey)
 		if err != nil {
+			log.Printf("Error retrieving time slot record from world state: %s", err)
 			return nil, err
 		}
 
@@ -187,6 +201,7 @@ func (sc *ScheduleContract) GetAvailableTimeSlots(ctx contractapi.TransactionCon
 		var timeSlot TimeSlot
 		err = json.Unmarshal(timeSlotBytes, &timeSlot)
 		if err != nil {
+			log.Printf("Error unmarshalling time slot record: %s", err)
 			return nil, err
 		}
 
@@ -201,6 +216,7 @@ func (sc *ScheduleContract) GetAvailableTimeSlots(ctx contractapi.TransactionCon
 func (sc *ScheduleContract) UpdateAvailability(ctx contractapi.TransactionContextInterface, doctorID, date, time string, available bool) error {
 	timeSlotKey, err := ctx.GetStub().CreateCompositeKey("TimeSlot", []string{doctorID, date, time})
 	if err != nil {
+		log.Printf("Error creating composite key for time slot: %s", err)
 		return err
 	}
 
@@ -213,6 +229,7 @@ func (sc *ScheduleContract) UpdateAvailability(ctx contractapi.TransactionContex
 
 	timeSlotJSON, err := json.Marshal(timeSlot)
 	if err != nil {
+		log.Printf("Error marshalling time slot JSON: %s", err)
 		return err
 	}
 
@@ -235,21 +252,19 @@ func main() {
 
 	ccAppointment, err := contractapi.NewChaincode(appointmentContract)
 	if err != nil {
-		fmt.Printf("Error creating appointment chaincode: %s", err.Error())
-		return
+		log.Fatalf("Error creating appointment chaincode: %s", err.Error())
 	}
 
 	ccSchedule, err := contractapi.NewChaincode(scheduleContract)
 	if err != nil {
-		fmt.Printf("Error creating schedule chaincode: %s", err.Error())
-		return
+		log.Fatalf("Error creating schedule chaincode: %s", err.Error())
 	}
 
 	if err := ccAppointment.Start(); err != nil {
-		fmt.Printf("Error starting appointment chaincode: %s", err.Error())
+		log.Fatalf("Error starting appointment chaincode: %s", err.Error())
 	}
 
 	if err := ccSchedule.Start(); err != nil {
-		fmt.Printf("Error starting schedule chaincode: %s", err.Error())
+		log.Fatalf("Error starting schedule chaincode: %s", err.Error())
 	}
 }
