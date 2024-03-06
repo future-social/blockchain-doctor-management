@@ -151,7 +151,7 @@
         });
 
             // Fetch doctor data from backend and populate table
-        fetch("/retrieveDoctor")
+        fetch("/retrieveAllDoctor")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to retrieve doctor data");
