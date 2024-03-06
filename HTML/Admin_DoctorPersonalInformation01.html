@@ -151,69 +151,75 @@
 
             // Fetch doctor data from backend and populate table
         fetch("/retrieveDoctor")
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.querySelector("#doctorTable tbody");
-            data.forEach((doctor, index) => {
-                const row = tableBody.insertRow();
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${doctor.doctorId}</td>
-                    <td>${doctor.name}</td>
-                    <td>${doctor.gender}</td>
-                    <td>${doctor.specialization}</td>
-                    <td class="action-images">
-                        <button class="view-button" data-id="${doctor.doctorId}">View</button>
-                        <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
-                        <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
-                    </td>
-                `;
-            });
-
-            // Add event listeners to buttons
-            const viewButtons = document.querySelectorAll('.view-button');
-            const editButtons = document.querySelectorAll('.edit-button');
-            const deleteButtons = document.querySelectorAll('.delete-button');
-
-            viewButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
-                });
-            });
-
-            editButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
-                });
-            });
-
-            deleteButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const doctorId = button.getAttribute('data-id');
-                        // Show confirmation pop-up
-                        const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
-                        if (confirmation) {
-                            // If user confirms, proceed with deletion
-                            deleteDoctor(doctorId);
-                        }
-                    });
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to retrieve doctor data");
+                }
+                return response.json();
             })
-        .catch(error => {
-            console.error("Error retrieving doctor data:", error);
-        });
+            .then(data => {
+                const tableBody = document.querySelector("#doctorTable tbody");
+                if (!data || data.length === 0) {
+                    tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
+                } else {
+                    data.forEach((doctor, index) => {
+                        const row = tableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${doctor.doctorId}</td>
+                            <td>${doctor.name}</td>
+                            <td>${doctor.gender}</td>
+                            <td>${doctor.specialization}</td>
+                            <td class="action-images">
+                                <button class="view-button" data-id="${doctor.doctorId}">View</button>
+                                <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
+                                <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
+                            </td>
+                        `;
+                    });
+
+                    // Add event listeners to buttons
+                    const viewButtons = document.querySelectorAll('.view-button');
+                    const editButtons = document.querySelectorAll('.edit-button');
+                    const deleteButtons = document.querySelectorAll('.delete-button');
+
+                    viewButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const doctorId = button.getAttribute('data-id');
+                            window.location.href = `/HTML/Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
+                        });
+                    });
+
+                    editButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const doctorId = button.getAttribute('data-id');
+                            window.location.href = `/HTML/Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
+                        });
+                    });
+
+                    deleteButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const doctorId = button.getAttribute('data-id');
+                            const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
+                            if (confirmation) {
+                                deleteDoctor(doctorId);
+                            }
+                        });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching doctor data:", error);
+                // Display an error message to the user or handle the error appropriately
+            });
 
         // Function to delete doctor data
         function deleteDoctor(doctorId) {
-            // Make a fetch request to delete doctor data
-            fetch(`/deleteDoctorData?id=${doctorId}`, {
+            fetch(`/deleteDoctor?id=${doctorId}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if (response.ok) {
-                    // Refresh the page after successful deletion
                     window.location.reload();
                 } else {
                     throw new Error('Failed to delete doctor data');
@@ -221,6 +227,7 @@
             })
             .catch(error => {
                 console.error('Error deleting doctor data:', error);
+                // Display an error message to the user or handle the error appropriately
             });
         }
 
