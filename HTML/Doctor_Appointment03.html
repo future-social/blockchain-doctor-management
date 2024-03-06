@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Appointment</title>
+    <title>View Appointment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,12 +77,12 @@
             margin-top: 20px;
         }
 
-        .appointment-container button.edit, .appointment-container button.back {
+        .appointment-container button.edit {
             background-color: #CA1F7B; 
             color: white;
         }
 
-        .appointment-container button.edit:hover, .appointment-container button.back:hover {
+        .appointment-container button.edit:hover {
             background-color: #8E004A; 
         }
     </style>
@@ -90,7 +90,7 @@
 <body>
     <div id="headerContainer"></div>
 
-    <h1>Create Appointment</h1>
+    <h1>Appointment Information</h1>
     <div class="big-container">
     <div class="appointment-container">
         <form id="appointmentForm">
@@ -152,7 +152,9 @@
                 </div>
             </div>
             <div class="button-container">
-                    <button type="edit" class="edit" id="editButton">Edit</button>
+                <a href="/HTML/Doctor_Appointment04.html">
+                    <button type="button" class="edit" id="editButton">Edit</button>
+                </a>
             </div>
         </form>
     </div>
@@ -160,39 +162,22 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Doctor_Header.html")
+        fetch("/HTML/Doctor_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("Footer.html")
+        fetch("/HTML/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
         });
-        document.getElementById("editButton").addEventListener("click", function() {
-        window.location.href = "Doctor_Appointment04.html";
-        });
 
-        var dateSelect = document.getElementById("appointment_date");
-        var currentDate = new Date();
-        var defaultDateOption = document.createElement("option");
-        defaultDateOption.value = "";
-        defaultDateOption.text = "Select date";
-        dateSelect.add(defaultDateOption);
-
-        for (var i = 0; i < 7; i++) {
-            var option = document.createElement("option");
-            option.value = currentDate.toISOString().split('T')[0]; // Get YYYY-MM-DD format
-            option.text = currentDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            dateSelect.add(option);
-            currentDate.setDate(currentDate.getDate() + 1); // Increment date by 1 day
-        }
 
         document.addEventListener("DOMContentLoaded", function() {
         const form = document.getElementById("appointmentForm");
-        fetch('/getAppointments')
+        fetch('/getAppointment')
             .then(response => response.json())
             .then(appointments => {
                 appointments.forEach(appointment => {
@@ -207,58 +192,8 @@
                 console.error('Error:', error);
                 // 处理错误情况
             });
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            // Collect data from form fields
-            const formData = {
-                patient_name: document.getElementById("patient_name").value,
-                gender: document.querySelector('input[name="gender"]:checked').value,
-                ic_passport: document.getElementById("ic_passport").value,
-                mobile: document.getElementById("mobile").value,
-                appointment_date: document.getElementById("appointment_date").value,
-                appointment_time: document.getElementById("appointment_time").value,
-                remarks: document.getElementById("remarks").value
-            };
-
-            // Send formData to the server using AJAX or fetch API
-            fetch('/createAppointment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Show pop-up message
-                    alert('Create Successfully.');
-                    // Redirect to Doctor_Appointment01.html after successful submission
-                    window.location.href = '/HTML/Doctor_Appointment01.html';
-                } else {
-                    throw new Error('Failed to submit appointment data.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle errors here if necessary
-            });
-        });
-
-        // JavaScript to handle clear button click
-        const clearButton = document.querySelector(".clear");
-        clearButton.addEventListener("click", function() {
-            const inputFields = form.querySelectorAll("input, select");
-            inputFields.forEach(function(input) {
-                if (input.tagName === "SELECT") {
-                    input.value = ""; // Clear the select option
-                } else if (input.type === "radio") {
-                    input.checked = false; // Uncheck the radio button
-                } else {
-                    input.value = ""; // Clear the input field
-                }
-            });
-        });
+        
+        
     });
 
 </script>
