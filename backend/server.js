@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const registerDoctor = require('./registerDoctor');
+const doctorController = require('./doctorController');
 
 // Middleware
 app.use(bodyParser.json());
@@ -20,18 +22,46 @@ app.post('/createDoctor', async (req, res) => {
     }
 });
 
-// Route to retrieve doctor data
+// Route to retrieve all doctor data
+app.get('/retrieveAllDoctor', async (req, res) => {
+    try {
+        // const result = await doctorController.retrieveAllDoctor();
+        const result = [{
+            doctor_id: "DOC01",
+            first_name: "first name",
+            last_name: "last name",
+            gender: "male",
+            specialisation: "heart specialist"
+        }, {
+            doctor_id: "DOC02",
+            first_name: "first name",
+            last_name: "last name",
+            gender: "male",
+            specialisation: "lung specialist"
+        },{
+            doctor_id: "DOC03",
+            first_name: "first name",
+            last_name: "last name",
+            gender: "female",
+            specialisation: "skin specialist"
+        }];
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// Route to retrieve doctor data by id
 app.get('/retrieveDoctor/:doctorId', async (req, res) => {
     try {
         const doctorId = req.params.doctorId;
-        console.log(doctorId);
         // const result = await doctorController.retrieveDoctor(doctorId);
         const result = {
             doctor_id: doctorId,
-            first_name: "test",
-            last_name: "test",
+            first_name: "first name",
+            last_name: "last name",
             gender: "male",
-            specialisation: "test"
+            specialisation: "heart specialist"
         };
         res.json(result);
     } catch (error) {
