@@ -179,8 +179,8 @@
         const form = document.getElementById("appointmentForm");
         fetch('/getAppointment')
             .then(response => response.json())
-            .then(appointments => {
-                appointments.forEach(appointment => {
+            .then(appointment => {
+                appointment.forEach(appointment => {
                     const option = document.createElement("option");
                     option.value = appointment.date; 
                     option.text = appointment.date; 
