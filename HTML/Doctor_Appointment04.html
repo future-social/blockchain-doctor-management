@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Appointment</title>
+    <title>Edit Appointment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,7 +90,7 @@
 <body>
     <div id="headerContainer"></div>
 
-    <h1>Create Appointment</h1>
+    <h1>Edit Appointment</h1>
     <div class="big-container">
     <div class="appointment-container">
         <form id="appointmentForm">
@@ -152,7 +152,6 @@
                 </div>
             </div>
             <div class="button-container">
-                    <button type="button" class="clear">Clear</button>
                     <button type="submit" class="submit">Submit</button>
             </div>
         </form>
@@ -161,13 +160,13 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Doctor_Header.html")
+        fetch("/HTML/Doctor_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("Footer.html")
+        fetch("/HTML/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -232,7 +231,7 @@
             };
 
             // Send formData to the server using AJAX or fetch API
-            fetch('/createAppointment', {
+            fetch('/updateAppointment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -242,9 +241,9 @@
             .then(response => {
                 if (response.ok) {
                     // Show pop-up message
-                    alert('Create Successfully.');
+                    alert('Update Successfully.');
                     // Redirect to Doctor_Appointment01.html after successful submission
-                    window.location.href = '/HTML/Doctor_Appointment01.html';
+                    window.location.href = '/HTML/Doctor_Appointment03.html';
                 } else {
                     throw new Error('Failed to submit appointment data.');
                 }
@@ -255,20 +254,6 @@
             });
         });
 
-        // JavaScript to handle clear button click
-        const clearButton = document.querySelector(".clear");
-        clearButton.addEventListener("click", function() {
-            const inputFields = form.querySelectorAll("input, select");
-            inputFields.forEach(function(input) {
-                if (input.tagName === "SELECT") {
-                    input.value = ""; // Clear the select option
-                } else if (input.type === "radio") {
-                    input.checked = false; // Uncheck the radio button
-                } else {
-                    input.value = ""; // Clear the input field
-                }
-            });
-        });
     });
 </script>
 
