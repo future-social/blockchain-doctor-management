@@ -221,6 +221,8 @@
                         })
                         .then(response => {
                             if (response.ok) {
+                                // Display a pop-up message indicating successful deletion
+                                alert("Delete successful");
                                 location.reload(); // Reload the page to reflect changes
                             } else {
                                 // Handle error response
