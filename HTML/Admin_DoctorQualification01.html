@@ -149,13 +149,14 @@
             });
 
         fetch("/HTML/Footer.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("footerContainer").innerHTML = html;
-            });
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
+        });
 
             // Fetch doctor data from backend and populate table
-        fetch("/retrieveDoctor")
+        fetch("/retrieveAllDoctor")
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#doctorTable tbody");
@@ -163,46 +164,46 @@
                 const row = tableBody.insertRow();
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${doctor.doctorId}</td>
-                    <td>${doctor.name}</td>
+                    <td>${doctor.doctor_id}</td>
+                    <td>${doctor.first_name} ${doctor.last_name}</td>
                     <td>${doctor.category}</td>
                     <td>${doctor.title}</td>
                     <td>${doctor.institution}</td>
                     <td>${doctor.year}</td>
                     <td class="action-images">
-                        <button class="view-button" data-id="${doctor.doctorId}">View</button>
-                        <button class="edit-button" data-id="${doctor.doctorId}">Edit</button>
-                        <button class="delete-button" data-id="${doctor.doctorId}">Delete</button>
+                        <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctor_id}">
+                        <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
+                        <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
                     </td>
                 `;
             });
 
-            // Add event listeners to buttons
-            const viewButtons = document.querySelectorAll('.view-button');
-            const editButtons = document.querySelectorAll('.edit-button');
-            const deleteButtons = document.querySelectorAll('.delete-button');
+            // Add event listeners to image elements
+            const viewImages = document.querySelectorAll('.view-image');
+            const editImages = document.querySelectorAll('.edit-image');
+            const deleteImages = document.querySelectorAll('.delete-image');
 
-            viewButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            viewImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     window.location.href = `/HTML/Admin_DoctorQualification02.html?id=${doctorId}`;
                 });
             });
 
-            editButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            editImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     window.location.href = `/HTML/Admin_DoctorQualification03.html?id=${doctorId}`;
                 });
             });
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const doctorId = button.getAttribute('data-id');
+            deleteImages.forEach(image => {
+                image.addEventListener('click', () => {
+                    const doctorId = image.getAttribute('data-id');
                     const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
                     if (confirmation) {
                         // Send delete request to backend
-                        fetch(`/deleteDoctorData?id=${doctorId}`, {
+                        fetch(`/deleteDoctor?id=${doctorId}`, {
                             method: 'DELETE'
                         })
                         .then(response => {
