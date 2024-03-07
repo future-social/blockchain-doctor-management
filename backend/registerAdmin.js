@@ -110,7 +110,7 @@ async function registerAdminUser() {
   }
 }
 
-registerAdminUser();
+
 
 //module.exports = registerAdminUser;
 registerAdminUser();
