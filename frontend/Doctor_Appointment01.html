@@ -116,10 +116,10 @@
         <div class="search-container">
             <div class="searchbar">
                 <input type="text" placeholder="Search...">
-                <img class="search-button" src="/HTML/search.png" alt="Search">
+                <img class="search-button" src="search.png" alt="Search">
             </div>
             <div class="dropdown">
-                <img class="filter-button" src="/HTML/filter.png" alt="Filter">
+                <img class="filter-button" src="filter.png" alt="Filter">
                 <select>
                     <option value="" disabled selected>Filter by...</option>
                     <option value="date">Date</option>
@@ -157,13 +157,13 @@
 
     <script>
         // Fetch header and footer
-        fetch("/HTML/Doctor_Header.html")
+        fetch("Doctor_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("/HTML/Footer.html")
+        fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -191,9 +191,9 @@
                     <td>${appointment.gender}</td>
                     <td>${appointment.mobilenumber}</td>
                     <td class="action-images">
-                        <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctor_id}">
-                        <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
-                        <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
+                        <img class="view-image" src="view.png" alt="View" data-id="${doctor.doctor_id}">
+                        <img class="edit-image" src="edit.png" alt="Edit" data-id="${doctor.doctor_id}">
+                        <img class="delete-image" src="delete.png" alt="Delete" data-id="${doctor.doctor_id}">
                     </td>
                 `;
             });
@@ -206,14 +206,14 @@
             viewImages.forEach(image => {
                 image.addEventListener('click', () => {
                     const doctorId = image.getAttribute('data-id');
-                    window.location.href = `/HTML/Doctor_Appointment03.html?id=${mobilenumber}`;
+                    window.location.href = `Doctor_Appointment03.html?id=${mobilenumber}`;
                 });
             });
 
             editImages.forEach(image => {
                 image.addEventListener('click', () => {
                     const doctorId = image.getAttribute('data-id');
-                    window.location.href = `/HTML/Doctor_Appointment04.html?id=${mobilenumber}`;
+                    window.location.href = `Doctor_Appointment04.html?id=${mobilenumber}`;
                 });
             });
 
