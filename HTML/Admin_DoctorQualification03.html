@@ -94,7 +94,7 @@
     <div class="container">
         <div class="column">
             <div class="circle-image">
-                <img src="/HTML/portrait.png" alt="doctor portrait">
+                <img src="/frontend/portrait.png" alt="doctor portrait">
             </div>
         </div>
         <div class="column">
@@ -123,13 +123,13 @@
     <div id="footerContainer"></div>
     <script>
         // Fetch header and footer
-        fetch("/HTML/Admin_Header.html")
+        fetch("/frontend/Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("/HTML/Footer.html")
+        fetch("/frontend/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -221,7 +221,7 @@
                 }
                 console.log("Data updated successfully!");
                 // Navigate to Admin_DoctorQualification02.html
-                window.location.href = "/HTML/Admin_DoctorQualification02.html";
+                window.location.href = "/frontend/Admin_DoctorQualification02.html";
             })
             .catch(error => {
                 console.error("Error updating data:", error);
