@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const doctorController = require('./doctorController');
 // const registerDoctor = require('./registerDoctor');
-const DMSAdminId = "DMSadmin1"; // TEST
+const DMSAdminId = "DMSadmin10"; // TEST
 
 // Route to create a new doctor
 router.post('/createDoctor', async (req, res) => {
@@ -19,7 +19,8 @@ router.post('/createDoctor', async (req, res) => {
 // Route to retrieve all doctor data
 router.get('/retrieveAllDoctor', async (req, res) => {
     try {
-        // const result = await doctorController.retrieveAllDoctor(DMSAdminId);
+        const result = await doctorController.retrieveAllDoctor(DMSAdminId);
+        /*
         const result = [{
             doctor_id: "DOC01",
             first_name: "first name",
@@ -39,9 +40,10 @@ router.get('/retrieveAllDoctor', async (req, res) => {
             gender: "female",
             specialisation: "skin specialist"
         }];
-        res.json(result);
+        res.json(result);*/
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
+        
     }
 });
 
