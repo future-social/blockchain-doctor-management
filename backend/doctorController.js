@@ -101,7 +101,7 @@ async function retrieveAllDoctor(DMSAdminId) {
 
     // Disconnect from the gateway
     await gateway.disconnect();
-    return result.toString();
+    return result;
   } catch (error) {
     console.error(`Failed to retrieve doctor data: ${error}`);
     throw error;
@@ -151,7 +151,7 @@ async function retrieveDoctor(doctorId) {
 
     // Disconnect from the gateway
     await gateway.disconnect();
-    return result.toString();
+    return result;
   } catch (error) {
     console.error(`Failed to retrieve doctor data: ${error}`);
     throw error;
