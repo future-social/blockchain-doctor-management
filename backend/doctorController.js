@@ -1,9 +1,12 @@
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
+const moment = require('moment');
 
 async function createDoctor(doctorData, DMSAdminId) {
   try {
+    const formattedBirthDate = moment(doctorData['birth_date'], 'YYYY-MM-DD').format(); 
+
     // Load connection profile
     const ccpPath = path.resolve(
       __dirname,
@@ -49,8 +52,9 @@ async function createDoctor(doctorData, DMSAdminId) {
       doctorData['last_name'],
       doctorData['ic_no'],
       doctorData['gender'],
-      doctorData['birth_date'],
-      doctorData['mobile_no'],
+      //doctorData['birth_date'],
+      formattedBirthDate,
+      doctorData['mobile_number'],
       doctorData['email'],
       doctorData['address'],
       doctorData['specialisation']
