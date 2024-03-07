@@ -69,13 +69,13 @@
     <br><br>
     <div id="footerContainer"></div>
     <script>
-        fetch("/HTML/Admin_Header.html")
+        fetch("/frontend/Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
         
-          fetch("/HTML/Footer.html")
+          fetch("/frontend/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -119,7 +119,7 @@
         function showPopUp() {
             alert("Registration Successful\n\nStaff ID is known as the username.\nPlease be patient for the verification of doctor qualification.");
             // Redirect to Admin_Home.html after clicking OK
-            window.location.href = '/HTML/Admin_Home.html';
+            window.location.href = '/frontend/Admin_Home.html';
         }
     </script>
 </body>
