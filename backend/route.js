@@ -49,14 +49,14 @@ router.get('/retrieveAllDoctor', async (req, res) => {
 router.get('/retrieveDoctor/:doctorId', async (req, res) => {
     try {
         const doctorId = req.params.doctorId;
-        const result = await doctorController.retrieveDoctor(doctorId);
-        // const result = {
-        //     doctor_id: doctorId,
-        //     first_name: "first name",
-        //     last_name: "last name",
-        //     gender: "male",
-        //     specialisation: "heart specialist"
-        // };
+        // const result = await doctorController.retrieveDoctor(doctorId);
+        const result = {
+            doctor_id: doctorId,
+            first_name: "first name",
+            last_name: "last name",
+            gender: "male",
+            specialisation: "heart specialist"
+        };
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -68,7 +68,7 @@ router.put('/updateDoctor/:doctorId', async (req, res) => {
     try {
         const doctorId = req.params.doctorId;
         const updatedData = req.body;
-        const result = await doctorController.updateDoctor(DMSAdminId, updatedData);
+        const result = await doctorController.updateDoctor(DMSAdminId, doctorId, updatedData);
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

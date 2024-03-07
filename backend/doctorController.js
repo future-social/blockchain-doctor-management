@@ -158,7 +158,7 @@ async function retrieveDoctor(doctorId) {
   }
 }
 
-async function updateDoctor(userId, updatedData) {
+async function updateDoctor(userId, doctorId, updatedData) {
   try {
     // Load connection profile
     const ccpPath = path.resolve(
