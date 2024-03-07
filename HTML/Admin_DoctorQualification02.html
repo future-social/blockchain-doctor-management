@@ -88,7 +88,7 @@
     <div class="container">
         <div class="column">
             <div class="circle-image">
-                <img src="/HTML/portrait.png" alt="doctor portrait">
+                <img src="/frontend/portrait.png" alt="doctor portrait">
             </div>
         </div>
         <div class="column">
@@ -112,20 +112,20 @@
     <div class="qualification-container" id="qualificationContainer">
         <!-- Qualification details will be inserted here dynamically -->
     </div>
-    <a href="/HTML/Admin_DoctorQualification03.html">
+    <a href="/frontend/Admin_DoctorQualification03.html">
         <button type="button" class="edit-button">Edit</button>
     </a>
     <br><br>
     <div id="footerContainer"></div>
     <script>
         // Fetch header and footer
-        fetch("/HTML/Admin_Header.html")
+        fetch("/frontend/Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("/HTML/Footer.html")
+        fetch("/frontend/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
