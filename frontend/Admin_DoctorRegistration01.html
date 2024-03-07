@@ -174,100 +174,58 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Admin_Header.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("headerContainer").innerHTML = html;
-          });
-
-        fetch("Footer.html")
+    $(document).ready(function() {
+    // Fetch header and footer content
+    fetch("Admin_Header.html")
         .then((response) => response.text())
         .then((html) => {
-          document.getElementById("footerContainer").innerHTML = html;
-          document.getElementById("year").textContent = new Date().getFullYear();
+            $('#headerContainer').html(html);
         });
 
-        document.addEventListener("DOMContentLoaded", function() {
-    // Get reference to the form and submit button
-    const form = document.getElementById("registrationForm");
-    const submitButton = document.querySelector(".submit");
+    fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+            $('#footerContainer').html(html);
+            $('#year').text(new Date().getFullYear());
+        });
 
-    // Add event listener for form submission
-    form.addEventListener("submit", function(event) {
+    // Event listener for form submission
+    $('#registrationForm').submit(function(event) {
         event.preventDefault(); // Prevent default form submission
 
-        // Gather data from form fields and construct a JavaScript object
-        const formData = new FormData(form);
-        const doctorData = {
-            first_name: formData.get('first_name'),
-            last_name: formData.get('last_name'),
-            ic_passport: formData.get('ic_passport'),
-            gender: formData.get('gender'),
-            staff_id: formData.get('staff_id'),
-            dob: formData.get('dob'),
-            mobile: formData.get('mobile'),
-            email: formData.get('email'),
-            address: formData.get('address'),
-            specialisation: formData.get('specialisation')
-        };
-
-        // Convert JavaScript object to JSON
-        const jsonData = JSON.stringify(doctorData);
-
-        // Send POST request to server
-        fetch("/createDoctor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json" // Specify JSON content type
+        // Send form data to the server
+        $.ajax({
+            type: 'POST',
+            url: '/createDoctor',
+            data: $(this).serialize(), // Send serialized form data
+            success: function(response) {
+                console.log('Doctor data sent successfully');
+                // Optionally, handle the server response here
+                window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
             },
-            body: jsonData // Send JSON data as the request body
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+            error: function(xhr, status, error) {
+                console.error('Error sending doctor data:', error);
+                // Optionally, display an error message to the user
+                alert("Error: " + xhr.responseText);
             }
-            return response.json();
-        })
-        .then(data => {
-            // Handle successful response
-            console.log("Doctor created successfully:", data);
-            // Optionally, redirect to another page or display a success message
-            window.location.href = "Admin_DoctorRegistration02.html";
-        })
-        .catch(error => {
-            // Handle error
-            console.error("Error creating doctor:", error);
-            // Optionally, display an error message to the user
         });
+    });
+
+    // Initialize datepicker
+    $("#dob").datepicker({
+        dateFormat: "yy-mm-dd", // Set the date format
+        changeMonth: true, // Allow changing month
+        changeYear: true, // Allow changing year
+        yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+        maxDate: new Date() // Set maximum selectable date to current date
+    });
+
+    // Event listener for clear button
+    $('.clear').click(function() {
+        $('#registrationForm')[0].reset();
     });
 });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const clearButton = document.querySelector(".clear");
-            const form = document.getElementById("registrationForm");
-
-            clearButton.addEventListener("click", function() {
-                const inputFields = form.querySelectorAll("input");
-                inputFields.forEach(function(input) {
-                if (input.type === "radio") {
-                    input.checked = false; // Uncheck the radio button
-                } else {
-                    input.value = ""; // Clear the input field
-                }
-                });
-            });
-        });
-
-        $(function() {
-        $("#dob").datepicker({
-            dateFormat: "yy-mm-dd", // Set the date format
-            changeMonth: true, // Allow changing month
-            changeYear: true, // Allow changing year
-            yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
-            maxDate: new Date(), // Set maximum selectable date to current date
-        });
-    });
     </script>
-
 </body>
 </html>
