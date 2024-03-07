@@ -3,7 +3,7 @@ const FabricCAServices = require("fabric-ca-client");
 const fs = require("fs");
 const path = require("path");
 
-async function registerDoctorUser() {
+async function registerDoctorUser(DMSDoctorId) {
   try {
     // Load connection profile
     const ccpPath = path.resolve(
@@ -34,7 +34,6 @@ async function registerDoctorUser() {
     const wallet = await Wallets.newFileSystemWallet(walletPath);
 
     // Check if the user identity already exists in the wallet
-    const DMSDoctorId = process.argv[2];
     const userExists = await wallet.get(DMSDoctorId);
     if (userExists) {
       console.log(
