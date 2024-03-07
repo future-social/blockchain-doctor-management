@@ -108,7 +108,7 @@
     <div class="information-container">
         <form id="informationForm">
             <div class="circle-image">
-                <img src="/frontend/portrait.png" alt="doctor portrait">
+                <img src="portrait.png" alt="doctor portrait">
             </div>
           <div class="row">
               <div class="column">
@@ -191,13 +191,13 @@
 
     <script>
         // Fetch and insert header
-        fetch("/frontend/Admin_Header.html")
+        fetch("Admin_Header.html")
             .then((response) => response.text())
             .then((html) => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
     
-        fetch("/frontend/Footer.html")
+        fetch("Footer.html")
             .then((response) => response.text())
             .then((html) => {
                 document.getElementById("footerContainer").innerHTML = html;
@@ -269,7 +269,7 @@
                         // Show success message
                         window.alert("Data updated successfully.");
                         // Navigate back to Admin_DoctorPersonalInformation02.html
-                        window.location.href = "/frontend/Admin_DoctorPersonalInformation02.html";
+                        window.location.href = "Admin_DoctorPersonalInformation02.html";
                     })
                     .catch(error => {
                         // Optionally handle error
