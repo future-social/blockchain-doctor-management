@@ -51,7 +51,7 @@ async function createDoctor(doctorData, DMSAdminId) {
     // Disconnect from the gateway
     await gateway.disconnect();
   } catch (error) {
-    console.error("Failed to create doctor data: ${error}");
+    console.error(`Failed to create doctor data: ${error}`);
     throw error;
   }
 }
