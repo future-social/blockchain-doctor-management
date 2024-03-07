@@ -7,7 +7,7 @@ const registerDoctor = require('./registerDoctor');
 router.post('/createDoctor', async (req, res) => {
     try {
         const doctorData = req.body;
-        const result = await doctorController.createDoctor(doctorData);
+        const result = await doctorController.createDoctor(doctorData, doctorData['staff_id']);
         registerDoctor.registerDoctorUser(doctorData['staff_id']); 
         res.json(result);
     } catch (error) {
