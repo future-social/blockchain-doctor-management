@@ -26,9 +26,17 @@
             flex: 1;
             padding: 10px;
         }
-        .image-container img {
-            max-width: 100%;
-            height: auto;
+        .circle-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #ccc; /* Placeholder color */
+        }
+
+        .circle-image img {
+            width: 120px;
+            height: 120px;
         }
         .info-container {
             display: flex;
@@ -79,8 +87,8 @@
     <h1>Doctor Qualification</h1>
     <div class="container">
         <div class="column">
-            <div class="image-container" id="imageContainer">
-                <!-- Image will be inserted here dynamically -->
+            <div class="circle-image">
+                <img src="/HTML/portrait.png" alt="doctor portrait">
             </div>
         </div>
         <div class="column">
@@ -94,8 +102,8 @@
                     <span id="staff-id">Loading...</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Specialization</span>
-                    <span id="specialization">Loading...</span>
+                    <span class="info-label">Specialisation</span>
+                    <span id="specialisation">Loading...</span>
                 </div>
             </div>
         </div>
@@ -118,10 +126,11 @@
             });
 
         fetch("/HTML/Footer.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("footerContainer").innerHTML = html;
-            });
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
+        });
 
         fetch(`/retrieveDoctor?id=${doctorId}`)
             .then(response => response.json())
@@ -129,16 +138,7 @@
                 // Populate data into HTML elements
                 document.getElementById("name").textContent = data.name;
                 document.getElementById("staff-id").textContent = data.staffId;
-                document.getElementById("specialization").textContent = data.specialization;
-
-                // Dynamically create image element and set its source
-                const imageContainer = document.getElementById("imageContainer");
-                const image = document.createElement("img");
-                image.src = data.imageSrc;
-                image.alt = "Doctor Image";
-                image.style.maxWidth = "100%";
-                image.style.height = "auto";
-                imageContainer.appendChild(image);
+                document.getElementById("specialisation").textContent = data.specialisation;
 
                 // Handle qualifications
                 const qualificationContainer = document.getElementById("qualificationContainer");
