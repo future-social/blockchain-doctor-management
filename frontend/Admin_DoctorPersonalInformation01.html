@@ -159,6 +159,9 @@
                 return response.json();
             })
             .then(data => {
+                if (!Array.isArray(data)) {
+                    throw new Error('Data is not an array');
+                }
                 const tableBody = document.querySelector("#doctorTable tbody");
                 if (!data || data.length === 0) {
                     tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";

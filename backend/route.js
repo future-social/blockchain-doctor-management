@@ -17,7 +17,7 @@ router.post('/createDoctor', async (req, res) => {
 });
 
 // Route to retrieve all doctor data
-router.get('/retrieveAllDoctor', async (res) => {
+router.get('/retrieveAllDoctor', async (req, res) => {
     try {
         const result = await doctorController.retrieveAllDoctor(DMSAdminId);
         // const result = [{

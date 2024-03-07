@@ -99,9 +99,11 @@ async function retrieveAllDoctor(DMSAdminId) {
     const result = await contract.evaluateTransaction("GetAllDoctors");
     console.log(`Doctor data retrieved: ${result.toString()}`);
 
+    // Parse the result as JSON
+    const doctorData = JSON.parse(result.toString());
     // Disconnect from the gateway
     await gateway.disconnect();
-    return result;
+    return doctorData;
   } catch (error) {
     console.error(`Failed to retrieve doctor data: ${error}`);
     throw error;

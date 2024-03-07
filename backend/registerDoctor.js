@@ -105,4 +105,5 @@ async function registerDoctorUser() {
   }
 }
 
-registerDoctorUser();
+module.exports = {registerDoctorUser};
+//registerDoctorUser();
