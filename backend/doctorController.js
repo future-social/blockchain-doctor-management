@@ -44,7 +44,17 @@ async function createDoctor(doctorData, DMSAdminId) {
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
       "CreateDoctor",
-      JSON.stringify(doctorData)
+      doctorData['doctor_id'],
+      doctorData['first_name'],
+      doctorData['last_name'],
+      doctorData['ic_no'],
+      doctorData['gender'],
+      doctorData['birth_date'],
+      doctorData['mobile_no'],
+      doctorData['email'],
+      doctorData['address'],
+      doctorData['specialisation']
+    //   JSON.stringify(doctorData)
     );
     console.log("Doctor data created successfully");
 
