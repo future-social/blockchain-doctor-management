@@ -152,7 +152,7 @@
                 </div>
             </div>
             <div class="button-container">
-                <a href="/HTML/Doctor_Appointment04.html">
+                <a href="Doctor_Appointment04.html">
                     <button type="button" class="edit" id="editButton">Edit</button>
                 </a>
             </div>
@@ -162,13 +162,13 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("/HTML/Doctor_Header.html")
+        fetch("Doctor_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("/HTML/Footer.html")
+        fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
