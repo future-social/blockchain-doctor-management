@@ -175,6 +175,20 @@
 
     <script>
     $(document).ready(function() {
+        // Fetch header and footer content
+        fetch("Admin_Header.html")
+        .then((response) => response.text())
+        .then((html) => {
+            $('#headerContainer').html(html);
+        });
+
+        fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+            $('#footerContainer').html(html);
+            $('#year').text(new Date().getFullYear());
+        });
+        
         // Event listener for form submission
         $('#registrationForm').submit(function(event) {
             event.preventDefault(); // Prevent default form submission
