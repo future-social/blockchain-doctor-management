@@ -4,14 +4,14 @@ const routes = require('./route');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
 app.use('/', routes);
 
 // Serve static files from the 'front' directory
-// app.use(express.static(path.join(__dirname, '..', 'front')));
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // Serve index.html
 app.get('/', (req, res) => {
