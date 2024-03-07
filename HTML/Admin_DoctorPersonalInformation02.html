@@ -100,7 +100,7 @@
     <div class="register-container">
         <form id="registrationForm">
         <div class="circle-image">
-            <img src="/HTML/portrait.png" alt="doctor portrait">
+            <img src="/frontend/portrait.png" alt="doctor portrait">
         </div>
             <div class="row">
                 <div class="column">
@@ -159,7 +159,7 @@
             </div>
 
             <div class="button-container">
-                <a href="/HTML/Admin_DoctorPersonalInformation03.html">
+                <a href="/frontend/Admin_DoctorPersonalInformation03.html">
                     <button type="button" class="edit">Edit</button>
                 </a>
             </div>
@@ -169,13 +169,13 @@
     <div id="footerContainer"></div>
 
     <script>
-        fetch("/HTML/Admin_Header.html")
+        fetch("/frontend/Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
           });
 
-        fetch("/HTML/Footer.html")
+        fetch("/frontend/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
