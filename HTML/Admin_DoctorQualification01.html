@@ -105,10 +105,10 @@
         <div class="search-container">
             <div class="searchbar">
                 <input type="text" placeholder="Search...">
-                <img class="search-button" src="/HTML/search.png" alt="Search">
+                <img class="search-button" src="/frontend/search.png" alt="Search">
             </div>
             <div class="dropdown">
-                <img class="filter-button" src="/HTML/filter.png" alt="Filter">
+                <img class="filter-button" src="/frontend/filter.png" alt="Filter">
                 <select>
                     <option value="" disabled selected>Filter by...</option>
                     <option value="title">Title</option>
@@ -142,13 +142,13 @@
 
     <script>
         // Fetch header and footer
-        fetch("/HTML/Admin_Header.html")
+        fetch("/frontend/Admin_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
             });
 
-        fetch("/HTML/Footer.html")
+        fetch("/frontend/Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
@@ -177,9 +177,9 @@
                     <td>${doctor.institution}</td>
                     <td>${doctor.year}</td>
                     <td class="action-images">
-                        <img class="view-image" src="/HTML/view.png" alt="View" data-id="${doctor.doctor_id}">
-                        <img class="edit-image" src="/HTML/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
-                        <img class="delete-image" src="/HTML/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
+                        <img class="view-image" src="/frontend/view.png" alt="View" data-id="${doctor.doctor_id}">
+                        <img class="edit-image" src="/frontend/edit.png" alt="Edit" data-id="${doctor.doctor_id}">
+                        <img class="delete-image" src="/frontend/delete.png" alt="Delete" data-id="${doctor.doctor_id}">
                     </td>
                 `;
             });
@@ -192,14 +192,14 @@
             viewImages.forEach(image => {
                 image.addEventListener('click', () => {
                     const doctorId = image.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorQualification02.html?id=${doctorId}`;
+                    window.location.href = `/frontend/Admin_DoctorQualification02.html?id=${doctorId}`;
                 });
             });
 
             editImages.forEach(image => {
                 image.addEventListener('click', () => {
                     const doctorId = image.getAttribute('data-id');
-                    window.location.href = `/HTML/Admin_DoctorQualification03.html?id=${doctorId}`;
+                    window.location.href = `/frontend/Admin_DoctorQualification03.html?id=${doctorId}`;
                 });
             });
 
