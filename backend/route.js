@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-// const doctorController = require('./doctorController');
-// const registerDoctor = require('./registerDoctor');
+const doctorController = require('./doctorController');
+const registerDoctor = require('./registerDoctor');
 const DMSAdminId = "DMSadmin10"; // TEST
 
 // Route to create a new doctor
 router.post('/createDoctor', async (req, res) => {
     try {
         const doctorData = req.body;
+        console.log("Received doctor data:", doctorData); 
         const result = await doctorController.createDoctor(doctorData, DMSAdminId);
         registerDoctor.registerDoctorUser(doctorData['doctor_id']); 
         res.json(result);
