@@ -203,14 +203,14 @@
         });
 
         document.getElementById("editButton").addEventListener("click", function() {
-        window.location.href = "doctoredit.html";
+        window.location.href = "Doctor_Personalinformation_Edit.html";
         });
 
         function displayDoctorInfo() {
             // Assume the doctor's ID is retrieved from the session or URL parameter
             const doctorId = "123"; // Example doctor ID
 
-            fetch(`/getDoctorInfo?doctorId=${doctorId}`)
+            fetch(`//retrieveDoctor?doctorId=${doctorId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     // Display doctor's information in the corresponding span elements
