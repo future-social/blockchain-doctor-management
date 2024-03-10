@@ -94,17 +94,27 @@
             // Combine all data
             const formData = {
                 ...page01Data,
-                ...page02Data,
                 ...page03Data
             };
+
+            // Append file data from page 02 (if available)
+            const fileInput = document.getElementById('certificate');
+            if (fileInput.files.length > 0) {
+                formData.certificate = fileInput.files[0];
+            }
+
+            // Send FormData object (supports file uploads) instead of JSON
+            const formDataToSend = new FormData();
+            for (const key in formData) {
+                if (formData.hasOwnProperty(key)) {
+                    formDataToSend.append(key, formData[key]);
+                }
+            }
 
             // Send POST request to server
             fetch("/createDoctor", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
+                body: formDataToSend
             })
             .then(response => {
                 if (!response.ok) {
