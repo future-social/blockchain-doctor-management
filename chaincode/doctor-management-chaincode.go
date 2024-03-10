@@ -237,7 +237,8 @@ func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContext
 
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
-	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string) error {
+	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
@@ -247,16 +248,22 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	updateDoctor := Doctor{
-		DoctorID:       doctorID,
-		FirstName:      firstName,
-		LastName:       lastName,
-		ICNo:           icNo,
-		Gender:         gender,
-		BirthDate:      birthDate,
-		MobileNumber:   mobileNumber,
-		Email:          email,
-		Address:        address,
-		Specialisation: specialisation,
+		DoctorID:                   doctorID,
+		FirstName:                  firstName,
+		LastName:                   lastName,
+		ICNo:                       icNo,
+		Gender:                     gender,
+		BirthDate:                  birthDate,
+		MobileNumber:               mobileNumber,
+		Email:                      email,
+		Address:                    address,
+		Specialisation:             specialisation,
+		Degree:                     degree,
+		RecognizedDate:             recognizedDate,
+		Country:                    country,
+		Institution:                institution,
+		BodyGrantingQualifications: bodyGrantingQualification,
+		Certificate:                certificate,
 	}
 
 	updatedDoctorJSON, err := json.Marshal(updateDoctor)
