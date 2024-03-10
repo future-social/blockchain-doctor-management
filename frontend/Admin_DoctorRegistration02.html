@@ -47,7 +47,7 @@
     <p>Please upload the relevant certificates.</p>
     <form id="uploadForm" enctype="multipart/form-data">
         <div class="document-container">
-            <input type="file" name="file" id="file" multiple>
+            <input type="file" name="certificate" id="certificate" multiple>
             <br><br><br><br><br>
             <button type="button" class="next">Next</button>
         </div>
@@ -74,8 +74,8 @@
 
             // Add event listener for "Next" button click
             nextButton.addEventListener("click", function() {
-                // Check if at least one file is selected
-                if (document.getElementById("file").files.length > 0) {
+                // Check if at least one certificate file is selected
+                if (document.getElementById("certificate").files.length > 0) {
                     // Save data from this page in sessionStorage
                     const formData = new FormData(form);
                     const formDataObject = {};
