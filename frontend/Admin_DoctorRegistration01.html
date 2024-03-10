@@ -38,27 +38,22 @@
             width: 120px;
             height: 120px;
         }
-
         .register-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
         .register-container label {
             font-weight: bold;
         }
-
         .register-container .row {
             display: flex;
             gap: 10px;
         }
-
         .register-container .column {
             flex: 1;
             padding: 5px;
         }
-
         .register-container input[type="text"],
         .register-container input[type="tel"],
         .register-container input[type="email"] {
@@ -67,18 +62,15 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         .register-container input[type="text"][name="body_granting_qualifications"] {
             width: 97.5%; 
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         .register-container input[type="radio"] {
             margin: 5px;
         }
-
         .register-container button {
             padding: 10px 10px;
             border: none;
@@ -88,26 +80,22 @@
             width: 100px;
             margin: auto 10px;
         }
-
         .button-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
-        .register-container button.submit, .register-container button.clear, .register-container button.next {
+        .register-container button.submit, .register-container button.clear, .register-container button.back {
             background-color: #CA1F7B; 
             color: white;
         }
-
-        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.next:hover {
+        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.back:hover {
             background-color: #8E004A; 
         }
     </style>
 </head>
 <body>
     <div id="headerContainer"></div>
-
     <h1>Doctor Registration</h1>
     <div class="big-container">
     <div class="register-container">
@@ -170,32 +158,33 @@
                     <input type="text" id="specialisation" name="specialisation" required>
                 </div>
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="degree">Degree:</label>
-                    <input type="text" id="degree" name="degree" required>
-                </div>
-                <div class="column">
-                    <label for="recognize_date">Recognized Date:</label>
-                    <input type="text" id="recognize_date" name="recognize_date" required>
-                </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="degree">Degree:</label>
+                <input type="text" id="degree" name="degree" required>
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="country">Country:</label>
-                    <input type="text" id="country" name="country" required>
-                </div>
-                <div class="column">
-                    <label for="institution">Institution:</label>
-                    <input type="text" id="institution" name="institution" required>
-                </div>
+            <div class="column">
+                <label for="recognize_date">Recognized Date:</label>
+                <input type="text" id="recognize_date" name="recognize_date" required>
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="body_granting_qualifications">Body Granting Qualifications:</label>
-                    <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required>
-                </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
             </div>
+            <div class="column">
+                <label for="institution">Institution:</label>
+                <input type="text" id="institution" name="institution" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="body_granting_qualifications">Body Granting Qualifications:</label>
+                <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required>
+            </div>
+        </div>
             <div class="button-container">
                     <button type="button" class="clear">Clear</button>
                     <button type="submit" class="submit">Submit</button>
@@ -204,81 +193,70 @@
     </div>
     </div>
     <div id="footerContainer"></div>
-
     <script>
-        // Combine document ready blocks
-        $(document).ready(function() {
-            // Fetch header and footer content
-            fetch("Admin_Header.html")
-                .then((response) => response.text())
-                .then((html) => {
-                    $('#headerContainer').html(html);
-                });
-
-            fetch("Footer.html")
-                .then((response) => response.text())
-                .then((html) => {
-                    $('#footerContainer').html(html);
-                    $('#year').text(new Date().getFullYear());
-                });
-
-           // Event listener for form submission
-$('#registrationForm').submit(function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    // Check if all input fields are filled
-    if (validateForm()) {
-        // Serialize form data into JSON format
-        const formData = $(this).serializeArray();
-        const formDataObject = {};
-        formData.forEach(function(item) {
-            formDataObject[item.name] = item.value;
+    $(document).ready(function() {
+        // Fetch header and footer content
+        fetch("Admin_Header.html")
+        .then((response) => response.text())
+        .then((html) => {
+            $('#headerContainer').html(html);
+        });
+        fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+            $('#footerContainer').html(html);
+            $('#year').text(new Date().getFullYear());
+        });
+        
+        // Event listener for form submission
+        $('#registrationForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            // Convert serialized form data to JSON object
+            var formData = {};
+            $(this).serializeArray().forEach(function(item) {
+                formData[item.name] = item.value;
+            });
+            // Send form data to the server
+            $.ajax({
+                type: 'POST',
+                url: '/createDoctor',
+                data: JSON.stringify(formData), // Send JSON data
+                contentType: 'application/json', // Set content type
+                success: function(response) {
+                    console.log('Doctor data sent successfully');
+                    // Optionally, handle the server response here
+                    //window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending doctor data:', error);
+                    // Optionally, display an error message to the user
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+            // Print posted data in JSON format
+            console.log('Posted Data:', JSON.stringify(formData));
         });
 
-        // Submit data to the database
-        $.ajax({
-            url: '/createDoctor',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(formDataObject),
-            success: function(response) {
-                // Handle successful submission
-                console.log(response);
-                alert('Doctor registration successful!');
-            },
-            error: function(xhr, status, error) {
-                // Handle failed submission
-                console.error(error);
-                alert('Error occurred. Please try again.');
-            }
+        // Initialize datepicker
+        $("#birth_date").datepicker({
+            dateFormat: "yy-mm-dd", // Set the date format
+            changeMonth: true, // Allow changing month
+            changeYear: true, // Allow changing year
+            yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+            maxDate: new Date() // Set maximum selectable date to current date
         });
-    } else {
-        alert("Please fill in all fields before submitting.");
-    }
-});
-
-            // Initialize datepicker
-            $("#birth_date").datepicker({
-                dateFormat: "yy-mm-dd", // Set the date format
-                changeMonth: true, // Allow changing month
-                changeYear: true, // Allow changing year
-                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
-                maxDate: new Date() // Set maximum selectable date to current date
-            });
-
-            $("#recognize_date").datepicker({
-                dateFormat: "yy-mm-dd", // Set the date format
-                changeMonth: true, // Allow changing month
-                changeYear: true, // Allow changing year
-                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
-                maxDate: new Date() // Set maximum selectable date to current date
-            });
-
-            // Event listener for clear button
-            $('.clear').click(function() {
-                $('#registrationForm')[0].reset();
-            });
+        $("#recognize_date").datepicker({
+            dateFormat: "yy-mm-dd", // Set the date format
+            changeMonth: true, // Allow changing month
+            changeYear: true, // Allow changing year
+            yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+            maxDate: new Date() // Set maximum selectable date to current date
         });
-    </script>
+        // Event listener for clear button
+        $('.clear').click(function() {
+            $('#registrationForm')[0].reset();
+        });
+    });
+</script>
 </body>
 </html>
