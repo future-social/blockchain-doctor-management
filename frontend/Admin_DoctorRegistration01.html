@@ -163,7 +163,32 @@
                     <input type="text" id="specialisation" name="specialisation" required>
                 </div>
             </div>
-            
+            <div class="row">
+                <div class="column">
+                    <label for=degree">Degree:</label>
+                    <input type="text" id="degree" name="degree" required>
+                </div>
+                <div class="column">
+                    <label for="recognised_date">Recognised Date:</label>
+                    <input type="text" id="recognised_date" name="recognised_date" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required>
+                </div>
+                <div class="column">
+                    <label for="institution">Institution:</label>
+                    <input type="text" id="institution" name="institution" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="bodygrantingqualification">Body Granting Qualification:</label>
+                    <input type="text" id="bodygrantingqualification" name="bodygrantingqualification" required>
+                </div>
+            </div>
             <div class="button-container">
                     <button type="button" class="clear">Clear</button>
                     <button type="submit" class="submit">Submit</button>
@@ -229,7 +254,15 @@
             });
 
             // Initialize datepicker
-            $("#dob").datepicker({
+            $("#birth_date").datepicker({
+                dateFormat: "yy-mm-dd", // Set the date format
+                changeMonth: true, // Allow changing month
+                changeYear: true, // Allow changing year
+                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+                maxDate: new Date() // Set maximum selectable date to current date
+            });
+
+            $("#recognised_date").datepicker({
                 dateFormat: "yy-mm-dd", // Set the date format
                 changeMonth: true, // Allow changing month
                 changeYear: true, // Allow changing year
