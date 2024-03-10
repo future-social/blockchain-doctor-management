@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Include jQuery UI library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Include jQuery UI CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Personal Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            padding-left: 50px;
+        }
+        .big-container {
+            width: 80%;
+            margin: 0 auto 25px;
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .circle-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #ccc; /* Placeholder color */
+        }
+
+        .circle-image img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .information-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .information-container label {
+            font-weight: bold;
+        }
+
+        .information-container .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .information-container .column {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .information-container input[type="text"],
+        .information-container input[type="tel"],
+        .information-container input[type="email"] {
+            width: 95%;
+            padding: 8px;
+            border: none; /* Remove border */
+            border-radius: 5px;
+            background-color: #f0f0f0; /* Gray background color */
+        }
+
+        .information-container input[type="text"]:disabled,
+        .information-container input[type="tel"]:disabled,
+        .information-container input[type="email"]:disabled {
+            background-color: #f0f0f0; /* Gray background color */
+            cursor: not-allowed; /* Change cursor to not-allowed */
+        }
+
+        .information-container input[type="radio"] {
+            margin: 5px;
+        }
+
+        .information-container button {
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100px;
+            margin: auto 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .information-container button.save {
+            background-color: #CA1F7B;
+            color: white;
+        }
+
+        .information-container button.save:hover {
+            background-color: #8E004A;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer"></div>
+
+    <h1>Doctor Personal Information</h1>
+    <div class="big-container">
+    <div class="information-container">
+        <form id="informationForm">
+            <div class="circle-image">
+                <img src="portrait.png" alt="doctor portrait">
+            </div>
+          <div class="row">
+              <div class="column">
+                  <label for="first_name">First Name:</label>
+                  <input type="text" id="first_name" name="first_name" required>
+              </div>
+              <div class="column">
+                  <label for="last_name">Last Name:</label>
+                  <input type="text" id="last_name" name="last_name" required>
+              </div>
+          </div>
+          <div class="row">
+              <div class="column">
+                  <label for="ic_no">IC No./ Passport Number:</label>
+                  <input type="text" id="ic_no" name="ic_no" required>
+              </div>
+              <div class="column">
+                  <label>Gender:</label>
+                  <div>
+                      <input type="radio" id="male" name="gender" value="male" required>
+                      <label for="male">Male</label>
+                      <input type="radio" id="female" name="gender" value="female" required>
+                      <label for="female">Female</label>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="column">
+                  <label for="doctor_id">Doctor ID:</label>
+                  <input type="text" id="doctor_id" name="doctor_id" required>
+              </div>
+              <div class="column">
+                <label for="birth_date">DOB:</label>
+                <input type="text" id="birth_date" name="birth_date" required>
+              </div>
+          </div>
+          <div class="row">
+              <div class="column">
+                  <label for="mobile_number">Mobile Number:</label>
+                  <input type="tel" id="mobile_number" name="mobile_number" required>
+              </div>
+              <div class="column">
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" required>
+              </div>
+          </div>
+          <div class="row">
+              <div class="column">
+                  <label for="address">Address:</label>
+                  <input type="text" id="address" name="address" required>
+              </div>
+              <div class="column">
+                  <label for="specialisation">Specialisation:</label>
+                  <input type="text" id="specialisation" name="specialisation" required>
+              </div>
+          </div>
+          <div class="qualification-container" id="qualificationContainer">
+            <!-- Qualification details will be inserted here dynamically -->
+        </div>
+          <div class="button-container">
+                  <button type="submit" class="save">Save</button>
+          </div>
+        </form>
+    </div>
+    </div>
+
+    <div id="footerContainer"></div>
+
+    <script>
+        // Fetch and insert header
+        fetch("Doctor_Header.html")
+            .then((response) => response.text())
+            .then((html) => {
+                document.getElementById("headerContainer").innerHTML = html;
+            });
+    
+        fetch("Footer.html")
+            .then((response) => response.text())
+            .then((html) => {
+                document.getElementById("footerContainer").innerHTML = html;
+            });
+    
+        // Fetch doctor data and populate form
+        fetch(`/retrieveDoctor?id=${doctorId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate form fields
+                Object.keys(data).forEach(key => {
+                    if (key !== 'qualifications') {
+                        document.getElementById(key).value = data[key];
+                    }
+                });
+                // Populate qualification details dynamically
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                data.qualifications.forEach(qualification => {
+                    // Create qualification elements
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>`;
+                    qualificationDiv.innerHTML += `
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <input type="text" value="${qualification.recognizedDate}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <input type="text" value="${qualification.country}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <input type="text" value="${qualification.institution}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <input type="text" value="${qualification.bodygrantingqualifications}" class="edit-input">
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive document.</a>
+                        </div>
+                    `;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            })
+            .catch(error => console.error("Error fetching doctor data:", error));
+
+        // Handle form submission
+        document.getElementById("informationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            // Validate form fields
+            const form = this;
+            if (!form.checkValidity()) {
+                window.alert("Please fill in all required fields.");
+                return;
+            }
+            // Confirmation dialog
+            const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
+            if (confirmation) {
+                // Gather updated data
+                const formData = new FormData(form);
+                const jsonData = {};
+                formData.forEach((value, key) => jsonData[key] = value);
+                const json = JSON.stringify(jsonData);
+                // Send updated data to the server via JSON
+                fetch(`/updateDoctor?id=${doctorId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: json
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    window.alert("Data updated successfully.");
+                    window.location.href = "Doctor_PersonalInformation02.html";
+                })
+                .catch(error => console.error("Error updating data:", error));
+            }
+        });
+
+        // Initialize datepicker
+        $(function() {
+            $("#birth_date, #recognised_date").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                maxDate: new Date(),
+            });
+        });
+    </script>
+</body>
+</html>
