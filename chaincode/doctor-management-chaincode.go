@@ -27,7 +27,7 @@ type Doctor struct {
 	Address                    string    `json:"address"`
 	Specialisation             string    `json:"specialisation"`
 	Degree                     string    `json:"degree"`
-	RecognizedDate             string    `json:"recognize_date"`
+	RecognizedDate             time.Time `json:"recognize_date"`
 	Country                    string    `json:"country"`
 	Institution                string    `json:"institution"`
 	BodyGrantingQualifications string    `json:"body_granting_qualifications"`
@@ -80,7 +80,7 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
 
 	// Check if client has 'admin' role
 	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
@@ -238,7 +238,7 @@ func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContext
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
