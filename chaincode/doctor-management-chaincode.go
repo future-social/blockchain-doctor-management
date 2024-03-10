@@ -14,7 +14,7 @@ type DoctorContract struct {
 	contractapi.Contract
 }
 
-// Doctor struct to store doctor information
+// Doctor struct to store doctor psersonal information
 type Doctor struct {
 	DoctorID       string    `json:"doctor_id"`
 	FirstName      string    `json:"first_name"`
@@ -26,6 +26,16 @@ type Doctor struct {
 	Email          string    `json:"email"`
 	Address        string    `json:"address"`
 	Specialisation string    `json:"specialisation"`
+}
+
+type Qualification struct {
+	DoctorID                   string `json:"doctor_id"`
+	Title                      string `json:"title"`
+	RecognizedDate             string `json:"recognize_date"`
+	Country                    string `json:"country"`
+	Institution                string `json:"institution"`
+	BodyGrantingQualifications string `json:"body_granting_qualifications"`
+	Certificate                []byte `json:"certificate"`
 }
 
 // InitDoctor adds a base set of doctors to the ledger
@@ -71,6 +81,50 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 	return nil
 }
 
+// CreateQualification creates a new qualification with the provided information and stores it in the world state
+func (dc *DoctorContract) CreateQualification(ctx contractapi.TransactionContextInterface, doctorID string, title string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return fmt.Errorf("only admin can create qualification")
+	}
+
+	//Check if the doctor already exists
+	exists, err := dc.DoctorExists(ctx, doctorID)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return fmt.Errorf("the doctor with ID %s already exists", doctorID)
+	}
+
+	newQualification := Qualification{
+		DoctorID:                   doctorID,
+		Title:                      title,
+		RecognizedDate:             recognizedDate,
+		Country:                    country,
+		Institution:                institution,
+		BodyGrantingQualifications: bodyGrantingQualification,
+		Certificate:                certificate,
+	}
+
+	// Convert qualification information to JSON format
+	qualificationJSON, err := json.Marshal(newQualification)
+	if err != nil {
+		return fmt.Errorf("failed to marshal qualification JSON: %v", err)
+	}
+
+	// Storing qualification information into the blockchain
+	err = ctx.GetStub().PutState(doctorID, qualificationJSON)
+	if err != nil {
+		return fmt.Errorf("failed to create doctor: %v", err)
+	}
+
+	return nil
+}
+
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string) error {
@@ -109,6 +163,7 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 
 		return fmt.Errorf("failed to marshal doctor JSON: %v", err)
 	}
+
 	// Storing doctor information into the blockchain
 	err = ctx.GetStub().PutState(doctorID, doctorJSON)
 	if err != nil {
@@ -116,6 +171,26 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	return nil
+}
+
+// ViewQualification to view doctor's qualification
+
+func (dc *DoctorContract) ViewQualification(ctx contractapi.TransactionContextInterface, doctorID string) (*Qualification, error) {
+	qualificationJSON, err := ctx.GetStub().GetState(doctorID)
+	if err != nil {
+		return nil, fmt.Errorf("falied to read from world state: %v", err)
+	}
+
+	if qualificationJSON == nil {
+		return nil, fmt.Errorf("qualification does not exist")
+	}
+
+	var qualification Qualification
+	err = json.Unmarshal(qualificationJSON, &qualification)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal qualification JSON: %v", err)
+	}
+	return &qualification, nil
 }
 
 // ViewDoctor to view doctor's information
@@ -137,6 +212,42 @@ func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface
 	}
 
 	return &doctor, nil
+}
+
+// UpdateQualification updates an existing doctor's qualification in the world state with provided parameters.
+func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContextInterface, doctorID string, title string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+
+	//Check if the doctor already exists
+	exists, err := dc.DoctorExists(ctx, doctorID)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return fmt.Errorf("the doctor with ID %s does not exists", doctorID)
+	}
+
+	updateQualification := Qualification{
+		DoctorID:                   doctorID,
+		Title:                      title,
+		RecognizedDate:             recognizedDate,
+		Country:                    country,
+		Institution:                institution,
+		BodyGrantingQualifications: bodyGrantingQualification,
+		Certificate:                certificate,
+	}
+
+	updateQualificationJSON, err := json.Marshal(updateQualification)
+	if err != nil {
+		return fmt.Errorf("failed to marshal updated doctor JSON: %v", err)
+	}
+
+	err = ctx.GetStub().PutState(doctorID, updateQualificationJSON)
+	if err != nil {
+		return fmt.Errorf("failed to update qualification: %v", err)
+	}
+
+	return nil
 }
 
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
@@ -176,6 +287,33 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	return nil
 }
 
+// DeleteQualification deletes the qualification with the specified ID from the world state.
+func (dc *DoctorContract) DeleteQualification(ctx contractapi.TransactionContextInterface, doctorID string) error {
+
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return fmt.Errorf("only admin can delete doctor")
+	}
+
+	//Check if the doctor already exists
+	exists, err := dc.DoctorExists(ctx, doctorID)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
+	}
+
+	// Delete qualification for the world state
+	err = ctx.GetStub().DelState(doctorID)
+	if err != nil {
+		return fmt.Errorf("failed to delete doctor: %v", err)
+	}
+
+	return nil
+}
+
 // DeleteDoctor deletes the doctor with the specified ID from the world state.
 func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterface, doctorID string) error {
 
@@ -210,6 +348,46 @@ func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterfa
 	}
 
 	return doctorJSON != nil, nil
+}
+
+// GetAllQualifications returns all qualifications found in world state
+func (dc *DoctorContract) GetAllQualifications(ctx contractapi.TransactionContextInterface) ([]*Qualification, error) {
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return nil, fmt.Errorf("only admin can get all qualifications")
+	}
+
+	// Get iterator for all keys in the state
+	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all qualifications: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	//Create a slice to hold all qualifications
+	var qualifications []*Qualification
+
+	//Iterate through the result set
+	for resultsIterator.HasNext() {
+		//Retrieve the next key/value pair
+		response, err := resultsIterator.Next()
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate through qualifications: %v", err)
+		}
+
+		//Unmarshal the qualification JSON into a Qualification object
+		var qualification Qualification
+		err = json.Unmarshal(response.Value, &qualification)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal qualification JSON: %v", err)
+		}
+
+		// Append the qualification to the slice
+		qualifications = append(qualifications, &qualification)
+	}
+
+	return qualifications, nil
 }
 
 // GetAllDoctors returns all doctors found in world state
