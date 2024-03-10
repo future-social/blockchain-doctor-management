@@ -176,8 +176,8 @@
                     <input type="text" id="degree" name="degree" required>
                 </div>
                 <div class="column">
-                    <label for="recognised_date">Recognised Date:</label>
-                    <input type="text" id="recognised_date" name="recognised_date" required>
+                    <label for="recognize_date">Recognized Date:</label>
+                    <input type="text" id="recognize_date" name="recognize_date" required>
                 </div>
             </div>
             <div class="row">
@@ -192,8 +192,8 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="bodygrantingqualification">Body Granting Qualification:</label>
-                    <input type="text" id="bodygrantingqualification" name="bodygrantingqualification" required>
+                    <label for="body_granting_qualifications">Body Granting Qualifications:</label>
+                    <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required>
                 </div>
             </div>
             <div class="button-container">
@@ -236,7 +236,7 @@
                     // Store form data in session storage
                     sessionStorage.setItem('page01Data', JSON.stringify(formDataObject));
 
-                    // Redirect to page 02, skip 02 for now, go to 03
+                    // Redirect to page 02
                     window.location.href = "Admin_DoctorRegistration03.html";
                 } else {
                     alert("Please fill in all fields before proceeding.");
@@ -254,7 +254,7 @@
                 });
                 return isValid;
             }
-            
+
             // Initialize datepicker
             $("#birth_date").datepicker({
                 dateFormat: "yy-mm-dd", // Set the date format
@@ -264,7 +264,7 @@
                 maxDate: new Date() // Set maximum selectable date to current date
             });
 
-            $("#recognised_date").datepicker({
+            $("#recognize_date").datepicker({
                 dateFormat: "yy-mm-dd", // Set the date format
                 changeMonth: true, // Allow changing month
                 changeYear: true, // Allow changing year
