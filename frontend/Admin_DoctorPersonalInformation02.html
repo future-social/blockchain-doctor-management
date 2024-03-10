@@ -33,40 +33,48 @@
             height: 120px;
         }
 
-        .register-container {
+        .information-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .register-container label {
+        .information-container label {
             font-weight: bold;
         }
 
-        .register-container .row {
+        .information-container .row {
             display: flex;
             gap: 10px;
         }
 
-        .register-container .column {
+        .information-container .column {
             flex: 1;
             padding: 5px;
         }
 
-        .register-container input[type="text"],
-        .register-container input[type="tel"],
-        .register-container input[type="email"] {
+        .information-container input[type="text"],
+        .information-container input[type="tel"],
+        .information-container input[type="email"] {
             width: 95%;
             padding: 8px;
-            border: 1px solid #ccc;
+            border: none; /* Remove border */
             border-radius: 5px;
+            background-color: #f0f0f0; /* Gray background color */
         }
 
-        .register-container input[type="radio"] {
+        .information-container input[type="text"]:disabled,
+        .information-container input[type="tel"]:disabled,
+        .information-container input[type="email"]:disabled {
+            background-color: #f0f0f0; /* Gray background color */
+            cursor: not-allowed; /* Change cursor to not-allowed */
+        }
+
+        .information-container input[type="radio"] {
             margin: 5px;
         }
 
-        .register-container button {
+        .information-container button {
             padding: 10px 10px;
             border: none;
             border-radius: 5px;
@@ -82,13 +90,13 @@
             margin-top: 20px;
         }
 
-        .register-container button.edit, .register-container button.submit {
-            background-color: #CA1F7B; 
+        .information-container button.edit {
+            background-color: #CA1F7B;
             color: white;
         }
 
-        .register-container button.edit:hover , .register-container button.submit:hover {
-            background-color: #8E004A; 
+        .information-container button.edit:hover {
+            background-color: #8E004A;
         }
     </style>
 </head>
@@ -97,32 +105,32 @@
 
     <h1>Doctor Personal Information</h1>
     <div class="big-container">
-    <div class="register-container">
-        <form id="registrationForm">
+    <div class="information-container">
+        <form id="informationForm">
         <div class="circle-image">
-            <img src="portrait.png" alt="doctor portrait">
+            <img src="image.png" alt="insert image">
         </div>
             <div class="row">
                 <div class="column">
                     <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required disabled>
+                    <input type="text" id="first_name" name="first_name" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required disabled>
+                    <input type="text" id="last_name" name="last_name" required disabled> <!-- Disabled input -->
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required disabled>
+                    <input type="text" id="ic_passport" name="ic_passport" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label>Gender:</label>
                     <div>
-                        <input type="radio" id="male" name="gender" value="male" required disabled>
+                        <input type="radio" id="male" name="gender" value="male" required disabled> <!-- Disabled input -->
                         <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required disabled>
+                        <input type="radio" id="female" name="gender" value="female" required disabled> <!-- Disabled input -->
                         <label for="female">Female</label>
                     </div>
                 </div>
@@ -130,46 +138,45 @@
             <div class="row">
                 <div class="column">
                     <label for="staff_id">Staff ID:</label>
-                    <input type="text" id="staff_id" name="staff_id" required disabled>
+                    <input type="text" id="staff_id" name="staff_id" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label for="dob">DOB:</label>
-                    <input type="text" id="dob" name="dob" required disabled>
+                    <input type="text" id="dob" name="dob" required disabled> <!-- Disabled input -->
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required disabled>
+                    <input type="tel" id="mobile" name="mobile" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required disabled>
+                    <input type="email" id="email" name="email" required disabled> <!-- Disabled input -->
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" required disabled>
+                    <input type="text" id="address" name="address" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label for="specialisation">Specialisation:</label>
-                    <input type="text" id="specialisation" name="specialisation" required disabled>
+                    <input type="text" id="specialisation" name="specialisation" required disabled> <!-- Disabled input -->
                 </div>
             </div>
-
+            
             <div class="button-container">
-                <a href="Admin_DoctorPersonalInformation03.html">
-                    <button type="button" class="edit">Edit</button>
-                </a>
+                    <button type="button" class="edit" id="editButton">Edit</button>
             </div>
         </form>
     </div>
     </div>
+
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Admin_Header.html")
+        fetch("Doctor_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
@@ -179,47 +186,53 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
-          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        // JavaScript for fetching and displaying doctor information
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchDoctorInformation();
+        document.getElementById("editButton").addEventListener("click", function() {
+        window.location.href = "Doctor_PersonalInformation03.html";
+        });
 
-            function fetchDoctorInformation() {
-                // Fetch doctor information via JSON
-                fetch(`/retrieveDoctor?id=${doctorId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
+        function displayDoctorInfo() {
+            // Assume the doctor's ID is retrieved from the session or URL parameter
+            const doctorId = "123"; // Example doctor ID
+
+            fetch(`/getDoctorInfo?doctorId=${doctorId}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    // Display doctor's information in the corresponding span elements
+                    document.getElementById("first_name").textContent = data.first_name;
+                    document.getElementById("last_name").textContent = data.last_name;
+                    document.getElementById("ic_passport").textContent = data.ic_passport;
+                    document.getElementById("male").textContent = data.male;
+                    document.getElementById("female").textContent = data.female;
+                    document.getElementById("staff_id").textContent = data.staff_id;
+                    document.getElementById("dob").textContent = data.dob;
+                    document.getElementById("mobile").textContent = data.mobile;
+                    document.getElementById("email").textContent = data.email;
+                    document.getElementById("address").textContent = data.address;
+                    document.getElementById("specialisation").textContent = data.specialisation;
+                    document.getElementById("emergency_name").textContent = data.emergency_name;
+                    document.getElementById("emergency_mobile").textContent = data.emergency_mobile;
+                    document.getElementById("relation").textContent = data.relation;
+
+                    // Display other information fields similarly
                 })
-                .then(data => {
-                    // Populate form fields with the retrieved data
-                    populateForm(data);
-                })
-                .catch(error => {
+                .catch((error) => {
                     console.error("Error fetching doctor information:", error);
                     // Optionally, display an error message to the user
                 });
             }
 
-            function populateForm(data) {
-                // Populate form fields with the retrieved data
-                document.getElementById("first_name").value = data.first_name;
-                document.getElementById("last_name").value = data.last_name;
-                document.getElementById("ic_passport").value = data.ic_passport;
-                document.getElementById("staff_id").value = data.staff_id;
-                document.getElementById("dob").value = data.dob;
-                document.getElementById("mobile").value = data.mobile;
-                document.getElementById("email").value = data.email;
-                document.getElementById("address").value = data.address;
-                document.getElementById("specialisation").value = data.specialisation;
-            }
+            // Call the function to display doctor's information when the page loads
+            document.addEventListener("DOMContentLoaded", function() {
+                displayDoctorInfo();
+            });
 
-        });
-    </script>
-
+            // Event listener for the go back button
+            document.getElementById("goBackButton").addEventListener("click", function() {
+                // Redirect to the previous page
+                window.history.back();
+            });
+        </script>
 </body>
 </html>
