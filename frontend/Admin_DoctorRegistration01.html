@@ -222,22 +222,39 @@
                     $('#year').text(new Date().getFullYear());
                 });
 
-            // Event listener for "Next" button
-        $('.next').click(function() {
-            // Serialize form data into JSON format
-            const formData = $('#registrationForm').serializeArray();
-            const formDataObject = {};
-            formData.forEach(function(item) {
-                formDataObject[item.name] = item.value;
+           // Event listener for "Next" button
+           $('.next').click(function() {
+                // Check if all input fields are filled
+                if (validateForm()) {
+                    // Serialize form data into JSON format
+                    const formData = $('#registrationForm').serializeArray();
+                    const formDataObject = {};
+                    formData.forEach(function(item) {
+                        formDataObject[item.name] = item.value;
+                    });
+
+                    // Store form data in session storage
+                    sessionStorage.setItem('page01Data', JSON.stringify(formDataObject));
+
+                    // Redirect to page 02
+                    window.location.href = "Admin_DoctorRegistration02.html";
+                } else {
+                    alert("Please fill in all fields before proceeding.");
+                }
             });
 
-            // Store form data in session storage
-            sessionStorage.setItem('page01Data', JSON.stringify(formDataObject));
-
-            // Redirect to page 02
-            window.location.href = "Admin_Registration02.html";
-        });
-
+            // Function to validate form fields
+            function validateForm() {
+                let isValid = true;
+                $('#registrationForm input[required]').each(function() {
+                    if ($(this).val() === '') {
+                        isValid = false;
+                        return false; // Exit loop if any field is empty
+                    }
+                });
+                return isValid;
+            }
+            
             // Initialize datepicker
             $("#birth_date").datepicker({
                 dateFormat: "yy-mm-dd", // Set the date format
