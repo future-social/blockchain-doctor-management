@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Include jQuery UI library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Include jQuery UI CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Personal Information</title>
@@ -122,8 +129,8 @@
           </div>
           <div class="row">
               <div class="column">
-                  <label for="ic_passport">IC No./ Passport Number:</label>
-                  <input type="text" id="ic_passport" name="ic_passport" required>
+                  <label for="ic_no">IC No./ Passport Number:</label>
+                  <input type="text" id="ic_no" name="ic_no" required>
               </div>
               <div class="column">
                   <label>Gender:</label>
@@ -137,18 +144,18 @@
           </div>
           <div class="row">
               <div class="column">
-                  <label for="staff_id">Staff ID:</label>
-                  <input type="text" id="staff_id" name="staff_id" required>
+                  <label for="doctor_id">Staff ID:</label>
+                  <input type="text" id="doctor_id" name="doctor_id" required>
               </div>
               <div class="column">
-                  <label for="dob">DOB:</label>
-                  <input type="text" id="dob" name="dob" required>
+                <label for="birth_date">DOB:</label>
+                <input type="text" id="birth_date" name="birth_date" required>
               </div>
           </div>
           <div class="row">
               <div class="column">
-                  <label for="mobile">Mobile Number:</label>
-                  <input type="tel" id="mobile" name="mobile" required>
+                  <label for="mobile_number">Mobile Number:</label>
+                  <input type="tel" id="mobile_number" name="mobile_number" required>
               </div>
               <div class="column">
                   <label for="email">Email:</label>
@@ -165,21 +172,7 @@
                   <input type="text" id="specialisation" name="specialisation" required>
               </div>
           </div>
-          <h2>Emergency Contact</h2>
-          <div class="row">
-              <div class="column">
-                  <label for="emergency_name">Name:</label>
-                  <input type="text" id="emergency_name" name="emergency_name" required>
-              </div>
-              <div class="column">
-                  <label for="emergency_mobile">Mobile Number:</label>
-                  <input type="tel" id="emergency_mobile" name="emergency_mobile" required>
-              </div>
-              <div class="column">
-                  <label for="relation">Relation:</label>
-                  <input type="text" id="relation" name="relation" required>
-              </div>
-          </div>
+          
           <div class="button-container">
                   <button type="submit" class="save">Save</button>
           </div>
@@ -208,20 +201,16 @@
             .then(data => {
     
                 document.getElementById("first_name").value = data.first_name;
-                document.getElementById("first_name").value = data.first_name;
                 document.getElementById("last_name").value = data.last_name;
-                document.getElementById("ic_passport").value = data.ic_passport;
+                document.getElementById("ic_no").value = data.ic_no;
                 document.getElementById("male").value = data.male;
                 document.getElementById("female").value = data.female;
-                document.getElementById("staff_id").value = data.staff_id;
-                document.getElementById("dob").value = data.dob;
-                document.getElementById("mobile").value = data.mobile;
+                document.getElementById("doctor_id").value = data.doctor_id;
+                document.getElementById("birth_date").value = data.birth_date;
+                document.getElementById("mobile_number").value = data.mobile_number;
                 document.getElementById("email").value = data.email;
                 document.getElementById("address").value = data.address;
                 document.getElementById("specialisation").value = data.specialisation;
-                document.getElementById("emergency_name").value = data.emergency_name;
-                document.getElementById("emergency_mobile").value = data.emergency_mobile;
-                document.getElementById("relation").value = data.relation;
             });
     
         // Add event listener for the "Save" button
@@ -230,12 +219,12 @@
             event.preventDefault(); // Prevent form submission
 
             // Validate form fields
-        const form = document.getElementById("informationForm");
-        if (!form.checkValidity()) {
-            // If any required fields are not filled, display a reminder
-            window.alert("Please fill in all required fields.");
-            return;
-        }
+            const form = document.getElementById("informationForm");
+            if (!form.checkValidity()) {
+                // If any required fields are not filled, display a reminder
+                window.alert("Please fill in all required fields.");
+                return;
+            }
     
             // Confirmation dialog before proceeding with saving the data
             const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
@@ -278,6 +267,17 @@
                     });
             }
         });
+
+        // Datepicker
+        $(function() {
+            $("#dob").datepicker({
+                dateFormat: "yy-mm-dd", // Set the date format
+                changeMonth: true, // Allow changing month
+                changeYear: true, // Allow changing year
+                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+                maxDate: new Date(), // Set maximum selectable date to current date
+            });
+        });
     </script>
 </body>
-</html>    
+</html>
