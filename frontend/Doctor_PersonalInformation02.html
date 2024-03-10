@@ -33,48 +33,40 @@
             height: 120px;
         }
 
-        .information-container {
+        .register-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .information-container label {
+        .register-container label {
             font-weight: bold;
         }
 
-        .information-container .row {
+        .register-container .row {
             display: flex;
             gap: 10px;
         }
 
-        .information-container .column {
+        .register-container .column {
             flex: 1;
             padding: 5px;
         }
 
-        .information-container input[type="text"],
-        .information-container input[type="tel"],
-        .information-container input[type="email"] {
+        .register-container input[type="text"],
+        .register-container input[type="tel"],
+        .register-container input[type="email"] {
             width: 95%;
             padding: 8px;
-            border: none; /* Remove border */
+            border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f0f0f0; /* Gray background color */
         }
 
-        .information-container input[type="text"]:disabled,
-        .information-container input[type="tel"]:disabled,
-        .information-container input[type="email"]:disabled {
-            background-color: #f0f0f0; /* Gray background color */
-            cursor: not-allowed; /* Change cursor to not-allowed */
-        }
-
-        .information-container input[type="radio"] {
+        .register-container input[type="radio"] {
             margin: 5px;
         }
 
-        .information-container button {
+        .register-container button {
             padding: 10px 10px;
             border: none;
             border-radius: 5px;
@@ -83,20 +75,40 @@
             width: 100px;
             margin: auto 10px;
         }
-
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+        .qualification-container {
+            border: 3px solid #f3f3f3; 
+            padding: 10px;
+            margin: 20px auto;
+            width: 90%;
+        }
+        .qualification-header {
+            text-align: center;
+        }
+        .document-link {
+            text-align: left;
+            margin-top: 20px;
+        }
         .button-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
 
-        .information-container button.edit {
-            background-color: #CA1F7B;
+        .register-container button.edit, .register-container button.submit {
+            background-color: #CA1F7B; 
             color: white;
         }
 
-        .information-container button.edit:hover {
-            background-color: #8E004A;
+        .register-container button.edit:hover , .register-container button.submit:hover {
+            background-color: #8E004A; 
         }
     </style>
 </head>
@@ -105,32 +117,32 @@
 
     <h1>Doctor Personal Information</h1>
     <div class="big-container">
-    <div class="information-container">
-        <form id="informationForm">
+    <div class="register-container">
+        <form id="registrationForm">
         <div class="circle-image">
             <img src="portrait.png" alt="doctor portrait">
         </div>
             <div class="row">
                 <div class="column">
                     <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required disabled> <!-- Disabled input -->
+                    <input type="text" id="first_name" name="first_name" required disabled>
                 </div>
                 <div class="column">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required disabled> <!-- Disabled input -->
+                    <input type="text" id="last_name" name="last_name" required disabled>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="ic_no">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_no" name="ic_no" required disabled> <!-- Disabled input -->
+                    <input type="text" id="ic_no" name="ic_no" required disabled>
                 </div>
                 <div class="column">
                     <label>Gender:</label>
                     <div>
-                        <input type="radio" id="male" name="gender" value="male" required disabled> <!-- Disabled input -->
+                        <input type="radio" id="male" name="gender" value="male" required disabled>
                         <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required disabled> <!-- Disabled input -->
+                        <input type="radio" id="female" name="gender" value="female" required disabled>
                         <label for="female">Female</label>
                     </div>
                 </div>
@@ -138,40 +150,44 @@
             <div class="row">
                 <div class="column">
                     <label for="doctor_id">Doctor ID:</label>
-                    <input type="text" id="doctor_id" name="doctor_id" required disabled> <!-- Disabled input -->
+                    <input type="text" id="doctor_id" name="doctor_id" required disabled>
                 </div>
                 <div class="column">
                     <label for="birth_date">DOB:</label>
-                    <input type="text" id="birth_date" name="birth_date" required disabled> <!-- Disabled input -->
+                    <input type="text" id="birth_date" name="birth_date" required disabled>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="mobile_number">Mobile Number:</label>
-                    <input type="tel" id="mobile_number" name="mobile_number" required disabled> <!-- Disabled input -->
+                    <input type="tel" id="mobile_number" name="mobile_number" required disabled>
                 </div>
                 <div class="column">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required disabled> <!-- Disabled input -->
+                    <input type="email" id="email" name="email" required disabled>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" required disabled> <!-- Disabled input -->
+                    <input type="text" id="address" name="address" required disabled>
                 </div>
                 <div class="column">
                     <label for="specialisation">Specialisation:</label>
-                    <input type="text" id="specialisation" name="specialisation" required disabled> <!-- Disabled input -->
+                    <input type="text" id="specialisation" name="specialisation" required disabled>
                 </div>
             </div>
+            <div class="qualification-container" id="qualificationContainer">
+                <!-- Qualification details will be inserted here dynamically -->
+            </div>
             <div class="button-container">
-                    <button type="button" class="edit" id="editButton">Edit</button>
+                <a href="Doctor_PersonalInformation03.html">
+                    <button type="button" class="edit">Edit</button>
+                </a>
             </div>
         </form>
     </div>
     </div>
-
     <div id="footerContainer"></div>
 
     <script>
@@ -185,45 +201,68 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        document.getElementById("editButton").addEventListener("click", function() {
-        window.location.href = "Doctor_Personalinformation_Edit.html";
-        });
+        // Fetch doctor information and populate form fields
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchDoctorInformation();
 
-        function displayDoctorInfo() {
-            // Assume the doctor's ID is retrieved from the session or URL parameter
-            const doctorId = "123"; // Example doctor ID
+            function fetchDoctorInformation() {
+                fetch(`/retrieveDoctor?id=${doctorId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        populateForm(data);
+                        populateQualifications(data.qualifications);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching doctor information:", error);
+                    });
+            }
 
-            fetch(`/retrieveDoctor?doctorId=${doctorId}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    // Display doctor's information in the corresponding span elements
-                    document.getElementById("first_name").textContent = data.first_name;
-                    document.getElementById("last_name").textContent = data.last_name;
-                    document.getElementById("ic_no").textContent = data.ic_no;
-                    document.getElementById("male").textContent = data.male;
-                    document.getElementById("female").textContent = data.female;
-                    document.getElementById("doctor_id").textContent = data.doctor_id;
-                    document.getElementById("birth_date").textContent = data.birth_date;
-                    document.getElementById("mobile_number").textContent = data.mobile_number;
-                    document.getElementById("email").textContent = data.email;
-                    document.getElementById("address").textContent = data.address;
-                    document.getElementById("specialisation").textContent = data.specialisation;
-
-                    // Display other information fields similarly
-                })
-                .catch((error) => {
-                    console.error("Error fetching doctor information:", error);
-                    // Optionally, display an error message to the user
+            function populateForm(data) {
+                // Populate form fields with the retrieved data
+                const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation"];
+                formFields.forEach(field => {
+                    document.getElementById(field).value = data[field];
                 });
             }
 
-            // Call the function to display doctor's information when the page loads
-            document.addEventListener("DOMContentLoaded", function() {
-                displayDoctorInfo();
-            });
+            function populateQualifications(qualifications) {
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                qualifications.forEach(qualification => {
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <span>${qualification.recognizedDate}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <span>${qualification.country}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <span>${qualification.institution}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <span>${qualification.bodygrantingqualifications}</span>
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
+                        </div>`;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            }
+        });
+    </script>
 
-        </script>
 </body>
 </html>
