@@ -68,7 +68,7 @@
             border-radius: 5px;
         }
 
-        .register-container input[type="text"][name="bodygrantingqualification"] {
+        .register-container input[type="text"][name="body_granting_qualifications"] {
             width: 97.5%; 
             padding: 8px;
             border: 1px solid #ccc;
@@ -223,46 +223,39 @@
                 });
 
            // Event listener for form submission
-           $('#registrationForm').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
+$('#registrationForm').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
 
-                // Check if all input fields are filled
-                if (validateForm()) {
-                    // Serialize form data into JSON format
-                    const formData = $(this).serializeArray();
-                    const formDataObject = {};
-                    formData.forEach(function(item) {
-                        formDataObject[item.name] = item.value;
-                    });
+    // Check if all input fields are filled
+    if (validateForm()) {
+        // Serialize form data into JSON format
+        const formData = $(this).serializeArray();
+        const formDataObject = {};
+        formData.forEach(function(item) {
+            formDataObject[item.name] = item.value;
+        });
 
-                    // Submit data to the database
-                    $.post('/createDoctor', formDataObject)
-                        .done(function(response) {
-                            // Handle successful submission
-                            console.log(response);
-                            alert('Doctor registration successful!');
-                        })
-                        .fail(function(error) {
-                            // Handle failed submission
-                            console.error(error);
-                            alert('Error occurred. Please try again.');
-                        });
-                } else {
-                    alert("Please fill in all fields before submitting.");
-                }
-            });
-
-            // Function to validate form fields
-            function validateForm() {
-                let isValid = true;
-                $('#registrationForm input[required]').each(function() {
-                    if ($(this).val() === '') {
-                        isValid = false;
-                        return false; // Exit loop if any field is empty
-                    }
-                });
-                return isValid;
+        // Submit data to the database
+        $.ajax({
+            url: '/createDoctor',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formDataObject),
+            success: function(response) {
+                // Handle successful submission
+                console.log(response);
+                alert('Doctor registration successful!');
+            },
+            error: function(xhr, status, error) {
+                // Handle failed submission
+                console.error(error);
+                alert('Error occurred. Please try again.');
             }
+        });
+    } else {
+        alert("Please fill in all fields before submitting.");
+    }
+});
 
             // Initialize datepicker
             $("#birth_date").datepicker({
