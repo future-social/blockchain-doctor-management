@@ -2,25 +2,37 @@ const { Wallets, Gateway } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 
-async function connectToGateway(user) {
+async function connectToGateway(DMSAdminId) {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+        const ccpPath = path.resolve(
+            __dirname,
+            "..",
+            "..",
+            "blockchain-doctor-management",
+            "test-network",
+            "organizations",
+            "peerOrganizations",
+            "org1.example.com",
+            "connection-org1.json"
+        );
+        const ccpJSON = fs.readFileSync(ccpPath, "utf8");
         const ccp = JSON.parse(ccpJSON);
 
-        // Create a new wallet for the user identity
-        const walletPath = path.resolve(__dirname, 'wallet'); 
+        // Connect to the gateway
+        const walletPath = path.resolve(__dirname, "wallet");
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get(user); 
+        const identity = await wallet.get(DMSAdminId);
         if (!identity) {
-            throw new Error('An identity for the user "',user,'" does not exist in the wallet');
+            throw new Error(
+            "An identity for the user " + DMSAdminId + " does not exist in the wallet"
+            );
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
             wallet,
-            identity: user, 
-            discovery: { enabled: true, asLocalhost: true }
+            identity: DMSAdminId,
+            discovery: { enabled: true, asLocalhost: true },
         });
         return gateway;
     } catch (error) {
