@@ -31,7 +31,7 @@ type Doctor struct {
 	Country                    string    `json:"country"`
 	Institution                string    `json:"institution"`
 	BodyGrantingQualifications string    `json:"body_granting_qualifications"`
-	Certificate                []byte    `json:"certificate"`
+	//Certificate                []byte    `json:"certificate"`
 }
 
 // InitDoctor adds a base set of doctors to the ledger
@@ -80,7 +80,7 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string) error {
 
 	// Check if client has 'admin' role
 	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
@@ -113,7 +113,7 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		Country:                    country,
 		Institution:                institution,
 		BodyGrantingQualifications: bodyGrantingQualification,
-		Certificate:                certificate,
+		
 	}
 
 	// Convert doctor information to JSON format
@@ -238,7 +238,7 @@ func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContext
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
+	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string) error {
 	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
@@ -263,7 +263,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		Country:                    country,
 		Institution:                institution,
 		BodyGrantingQualifications: bodyGrantingQualification,
-		Certificate:                certificate,
+
 	}
 
 	updatedDoctorJSON, err := json.Marshal(updateDoctor)
