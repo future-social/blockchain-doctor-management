@@ -5,8 +5,6 @@ const moment = require('moment');
 
 async function createDoctor(doctorData, DMSAdminId) {
   try {
-    const formattedBirthDate = moment(doctorData['birth_date'], 'YYYY-MM-DD').format(); 
-
     // Load connection profile
     const ccpPath = path.resolve(
       __dirname,
@@ -44,6 +42,10 @@ async function createDoctor(doctorData, DMSAdminId) {
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
+    // Format Date Parameters
+    const formattedBirthDate = moment(doctorData['birth_date'], 'YYYY-MM-DD').format(); 
+    const formattedRecognizeDate = moment(doctorData['recognize_date'], 'YYYY-MM-DD').format(); 
+
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
       "CreateDoctor",
@@ -52,13 +54,17 @@ async function createDoctor(doctorData, DMSAdminId) {
       doctorData['last_name'],
       doctorData['ic_no'],
       doctorData['gender'],
-      //doctorData['birth_date'],
       formattedBirthDate,
       doctorData['mobile_number'],
       doctorData['email'],
       doctorData['address'],
-      doctorData['specialisation']
-    //   JSON.stringify(doctorData)
+      doctorData['specialisation'],
+      doctorData['degree'],
+      formattedRecognizeDate,
+      doctorData['country'],
+      doctorData['institution'],
+      doctorData['body_granting_qualifications'],
+      doctorData['certificate']
     );
     console.log("Doctor data created successfully");
 
@@ -214,8 +220,22 @@ async function updateDoctor(userId, doctorId, updatedData) {
     // Submit the transaction to update doctor data
     await contract.submitTransaction(
       "UpdateDoctor",
-      doctorId,
-      JSON.stringify(updatedData)
+      doctorData['doctor_id'],
+      doctorData['first_name'],
+      doctorData['last_name'],
+      doctorData['ic_no'],
+      doctorData['gender'],
+      formattedBirthDate,
+      doctorData['mobile_number'],
+      doctorData['email'],
+      doctorData['address'],
+      doctorData['specialisation'],
+      doctorData['degree'],
+      formattedRecognizeDate,
+      doctorData['country'],
+      doctorData['institution'],
+      doctorData['body_granting_qualifications'],
+      doctorData['certificate']
     );
     console.log("Doctor data updated successfully");
 
