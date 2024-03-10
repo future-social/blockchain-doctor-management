@@ -78,7 +78,11 @@
                 if (document.getElementById("certificate").files.length > 0) {
                     // Save data from this page in sessionStorage
                     const formData = new FormData(form);
-                    sessionStorage.setItem('page02Data', formData);
+                    const formDataObject = {};
+                    formData.forEach(function(value, key){
+                        formDataObject[key] = value;
+                    });
+                    sessionStorage.setItem('page02Data', JSON.stringify(formDataObject));
                     
                     // Redirect user to Admin_DoctorRegistration03.html
                     window.location.href = "Admin_DoctorRegistration03.html";
