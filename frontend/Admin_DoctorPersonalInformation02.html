@@ -75,7 +75,27 @@
             width: 100px;
             margin: auto 10px;
         }
-
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+        .qualification-container {
+            border: 3px solid #f3f3f3; 
+            padding: 10px;
+            margin: 20px auto;
+            width: 90%;
+        }
+        .qualification-header {
+            text-align: center;
+        }
+        .document-link {
+            text-align: left;
+            margin-top: 20px;
+        }
         .button-container {
             display: flex;
             justify-content: center;
@@ -157,7 +177,9 @@
                     <input type="text" id="specialisation" name="specialisation" required disabled>
                 </div>
             </div>
-
+            <div class="qualification-container" id="qualificationContainer">
+                <!-- Qualification details will be inserted here dynamically -->
+            </div>
             <div class="button-container">
                 <a href="Admin_DoctorPersonalInformation03.html">
                     <button type="button" class="edit">Edit</button>
@@ -182,42 +204,63 @@
           document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        // JavaScript for fetching and displaying doctor information
+        // Fetch doctor information and populate form fields
         document.addEventListener("DOMContentLoaded", function() {
             fetchDoctorInformation();
 
             function fetchDoctorInformation() {
-                // Fetch doctor information via JSON
                 fetch(`/retrieveDoctor?id=${doctorId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Populate form fields with the retrieved data
-                    populateForm(data);
-                })
-                .catch(error => {
-                    console.error("Error fetching doctor information:", error);
-                    // Optionally, display an error message to the user
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        populateForm(data);
+                        populateQualifications(data.qualifications);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching doctor information:", error);
+                    });
             }
 
             function populateForm(data) {
                 // Populate form fields with the retrieved data
-                document.getElementById("first_name").value = data.first_name;
-                document.getElementById("last_name").value = data.last_name;
-                document.getElementById("ic_no").value = data.ic_no;
-                document.getElementById("doctor_id").value = data.doctor_id;
-                document.getElementById("birth_date").value = data.birth_date;
-                document.getElementById("mobile_number").value = data.mobile_number;
-                document.getElementById("email").value = data.email;
-                document.getElementById("address").value = data.address;
-                document.getElementById("specialisation").value = data.specialisation;
+                const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation"];
+                formFields.forEach(field => {
+                    document.getElementById(field).value = data[field];
+                });
             }
 
+            function populateQualifications(qualifications) {
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                qualifications.forEach(qualification => {
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <span>${qualification.recognizedDate}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <span>${qualification.country}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <span>${qualification.institution}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <span>${qualification.bodygrantingqualifications}</span>
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
+                        </div>`;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            }
         });
     </script>
 
