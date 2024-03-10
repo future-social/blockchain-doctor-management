@@ -1,44 +1,9 @@
-const { Wallets, Gateway } = require("fabric-network");
-const fs = require("fs");
-const path = require("path");
 const moment = require('moment');
+const fabricHelper = require('./fabricHelper');
 
 async function createDoctor(doctorData, DMSAdminId) {
   try {
-    // Load connection profile
-    const ccpPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "blockchain-doctor-management",
-      "test-network",
-      "organizations",
-      "peerOrganizations",
-      "org1.example.com",
-      "connection-org1.json"
-    );
-    const ccpJSON = fs.readFileSync(ccpPath, "utf8");
-    const ccp = JSON.parse(ccpJSON);
-
-    // Connect to the gateway
-    const walletPath = path.resolve(__dirname, "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    const identity = await wallet.get(DMSAdminId);
-    if (!identity) {
-      throw new Error(
-        "An identity for the user " +
-          DMSAdminId +
-          " does not exist in the wallet"
-      );
-    }
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: DMSAdminId,
-      discovery: { enabled: true, asLocalhost: true },
-    });
-
-    // Get the network and contract
+    const gateway = fabricHelper.connectToGateway(DMSAdminId);
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
@@ -64,7 +29,7 @@ async function createDoctor(doctorData, DMSAdminId) {
       doctorData['country'],
       doctorData['institution'],
       doctorData['body_granting_qualifications'],
-      doctorData['certificate']
+      // doctorData['certificate']
     );
     console.log("Doctor data created successfully");
 
@@ -78,40 +43,7 @@ async function createDoctor(doctorData, DMSAdminId) {
 
 async function retrieveAllDoctor(DMSAdminId) {
   try {
-    // Load connection profile
-    const ccpPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "blockchain-doctor-management",
-      "test-network",
-      "organizations",
-      "peerOrganizations",
-      "org1.example.com",
-      "connection-org1.json"
-    );
-    const ccpJSON = fs.readFileSync(ccpPath, "utf8");
-    const ccp = JSON.parse(ccpJSON);
-
-    // Connect to the gateway
-    const walletPath = path.resolve(__dirname, "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    const identity = await wallet.get(DMSAdminId);
-    if (!identity) {
-      throw new Error(
-        "An identity for the user " +
-          DMSAdminId +
-          " does not exist in the wallet"
-      );
-    }
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: DMSAdminId,
-      discovery: { enabled: true, asLocalhost: true },
-    });
-
-    // Get the network and contract
+    const gateway = fabricHelper.connectToGateway(DMSAdminId);
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
@@ -132,38 +64,7 @@ async function retrieveAllDoctor(DMSAdminId) {
 
 async function retrieveDoctor(doctorId) {
   try {
-    // Load connection profile
-    const ccpPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "blockchain-doctor-management",
-      "test-network",
-      "organizations",
-      "peerOrganizations",
-      "org1.example.com",
-      "connection-org1.json"
-    );
-    const ccpJSON = fs.readFileSync(ccpPath, "utf8");
-    const ccp = JSON.parse(ccpJSON);
-
-    // Connect to the gateway
-    const walletPath = path.resolve(__dirname, "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    const identity = await wallet.get(doctorId);
-    if (!identity) {
-      throw new Error(
-        "An identity for the user " + doctorId + " does not exist in the wallet"
-      );
-    }
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: doctorId,
-      discovery: { enabled: true, asLocalhost: true },
-    });
-
-    // Get the network and contract
+    const gateway = fabricHelper.connectToGateway(DMSAdminId);
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
@@ -182,38 +83,7 @@ async function retrieveDoctor(doctorId) {
 
 async function updateDoctor(userId, doctorId, updatedData) {
   try {
-    // Load connection profile
-    const ccpPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "blockchain-doctor-management",
-      "test-network",
-      "organizations",
-      "peerOrganizations",
-      "org1.example.com",
-      "connection-org1.json"
-    );
-    const ccpJSON = fs.readFileSync(ccpPath, "utf8");
-    const ccp = JSON.parse(ccpJSON);
-
-    // Connect to the gateway
-    const walletPath = path.resolve(__dirname, "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    const identity = await wallet.get(userId);
-    if (!identity) {
-      throw new Error(
-        "An identity for the user " + userId + " does not exist in the wallet"
-      );
-    }
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: userId,
-      discovery: { enabled: true, asLocalhost: true },
-    });
-
-    // Get the network and contract
+    const gateway = fabricHelper.connectToGateway(DMSAdminId);
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
@@ -235,7 +105,7 @@ async function updateDoctor(userId, doctorId, updatedData) {
       doctorData['country'],
       doctorData['institution'],
       doctorData['body_granting_qualifications'],
-      doctorData['certificate']
+      // doctorData['certificate']
     );
     console.log("Doctor data updated successfully");
 
@@ -249,40 +119,7 @@ async function updateDoctor(userId, doctorId, updatedData) {
 
 async function deleteDoctor(doctorId, DMSAdminId) {
   try {
-    // Load connection profile
-    const ccpPath = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "blockchain-doctor-management",
-      "test-network",
-      "organizations",
-      "peerOrganizations",
-      "org1.example.com",
-      "connection-org1.json"
-    );
-    const ccpJSON = fs.readFileSync(ccpPath, "utf8");
-    const ccp = JSON.parse(ccpJSON);
-
-    // Connect to the gateway
-    const walletPath = path.resolve(__dirname, "wallet");
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
-    const identity = await wallet.get(DMSAdminId);
-    if (!identity) {
-      throw new Error(
-        "An identity for the user " +
-          DMSAdminId +
-          " does not exist in the wallet"
-      );
-    }
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: DMSAdminId,
-      discovery: { enabled: true, asLocalhost: true },
-    });
-
-    // Get the network and contract
+    const gateway = fabricHelper.connectToGateway(DMSAdminId);
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
 
