@@ -144,20 +144,12 @@
                 document.getElementById("staffIdInput").value = data.doctor_id;
                 document.getElementById("specialisationInput").value = data.specialisation;
 
-                // Dynamically create image element and set its source
-                const image = document.createElement("img");
-                image.src = data.imageSrc;
-                image.alt = "Doctor Image";
-                image.style.maxWidth = "100%";
-                image.style.height = "auto";
-                imageContainer.appendChild(image);
-
                 // Handle qualifications
                 const qualificationContainer = document.getElementById("qualificationContainer");
                 data.qualifications.forEach(qualification => {
                     const qualificationDiv = document.createElement("div");
                     qualificationDiv.classList.add("qualification-header");
-                    qualificationDiv.innerHTML = `<h2>${qualification.title}</h2>`;
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>`;
                     qualificationDiv.innerHTML += `
                         <div class="info-row">
                             <span class="info-label">Recognized date:</span>
@@ -173,7 +165,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Body Granting Qualifications:</span>
-                            <input type="text" value="${qualification.body}" class="edit-input">
+                            <input type="text" value="${qualification.bodygrantingqualifications}" class="edit-input">
                         </div>
                         <div class="document-link">
                             <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
@@ -202,7 +194,7 @@
                     recognizedDate: input.parentNode.querySelector(".info-row:nth-child(1) input").value,
                     country: input.parentNode.querySelector(".info-row:nth-child(2) input").value,
                     institution: input.parentNode.querySelector(".info-row:nth-child(3) input").value,
-                    body: input.parentNode.querySelector(".info-row:nth-child(4) input").value
+                    bodygrantingqualifications: input.parentNode.querySelector(".info-row:nth-child(4) input").value
                 };
                 updatedData.qualifications.push(qualificationData);
             });
