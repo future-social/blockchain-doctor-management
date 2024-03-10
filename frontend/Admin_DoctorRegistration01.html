@@ -95,12 +95,12 @@
             margin-top: 20px;
         }
 
-        .register-container button.submit, .register-container button.clear, .register-container button.back {
+        .register-container button.submit, .register-container button.clear, .register-container button.next {
             background-color: #CA1F7B; 
             color: white;
         }
 
-        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.back:hover {
+        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.next:hover {
             background-color: #8E004A; 
         }
     </style>
@@ -142,7 +142,7 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="doctor_id">Staff ID:</label>
+                    <label for="doctor_id">Doctor ID:</label>
                     <input type="text" id="doctor_id" name="doctor_id" required>
                 </div>
                 <div class="column">
@@ -198,7 +198,7 @@
             </div>
             <div class="button-container">
                     <button type="button" class="clear">Clear</button>
-                    <button type="submit" class="submit">Submit</button>
+                    <button type="button" class="next">Next</button>
             </div>
         </form>
     </div>
@@ -222,43 +222,21 @@
                     $('#year').text(new Date().getFullYear());
                 });
 
-            // Event listener for form submission
-            $('#registrationForm').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                
-                // Serialize form data into JSON format
-                const formData = $(this).serializeArray();
-                console.log("form Data:", formData); // Print data to console
-
-                // Log the data type of each field
-                formData.forEach(function(item) {
-                    console.log("Data type of", item.name, ":", typeof item.value);
-                });
-
-                const formDataObject = {};
-                formData.forEach(function(item) {
-                    formDataObject[item.name] = item.value;
-                });
-
-                // Send form data to the server
-                $.ajax({
-                    type: 'POST',
-                    url: '/createDoctor',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formDataObject),
-                    success: function(response) {
-                        console.log('Doctor data sent successfully');
-                        // Optionally, handle the server response here
-                        window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error sending doctor data:', error);
-                        // Optionally, display an error message to the user
-                        console.log("form Datatype:", typeof formDataObject); // Print data to console
-                    }
-                });
+            // Event listener for "Next" button
+        $('.next').click(function() {
+            // Serialize form data into JSON format
+            const formData = $('#registrationForm').serializeArray();
+            const formDataObject = {};
+            formData.forEach(function(item) {
+                formDataObject[item.name] = item.value;
             });
+
+            // Store form data in session storage
+            sessionStorage.setItem('page01Data', JSON.stringify(formDataObject));
+
+            // Redirect to page 02
+            window.location.href = "Admin_Registration02.html";
+        });
 
             // Initialize datepicker
             $("#birth_date").datepicker({
