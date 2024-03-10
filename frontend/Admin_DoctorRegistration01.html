@@ -135,7 +135,7 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="doctor_id">Doctor ID:</label>
+                    <label for="doctor_id">Staff ID:</label>
                     <input type="text" id="doctor_id" name="doctor_id" required>
                 </div>
                 <div class="column">
@@ -174,68 +174,74 @@
     <div id="footerContainer"></div>
 
     <script>
-    $(document).ready(function() {
-        // Fetch header and footer content
-        fetch("Admin_Header.html")
-        .then((response) => response.text())
-        .then((html) => {
-            $('#headerContainer').html(html);
-        });
+        // Combine document ready blocks
+        $(document).ready(function() {
+            // Fetch header and footer content
+            fetch("Admin_Header.html")
+                .then((response) => response.text())
+                .then((html) => {
+                    $('#headerContainer').html(html);
+                });
 
-        fetch("Footer.html")
-        .then((response) => response.text())
-        .then((html) => {
-            $('#footerContainer').html(html);
-            $('#year').text(new Date().getFullYear());
-        });
-        
-        // Event listener for form submission
-        $('#registrationForm').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
+            fetch("Footer.html")
+                .then((response) => response.text())
+                .then((html) => {
+                    $('#footerContainer').html(html);
+                    $('#year').text(new Date().getFullYear());
+                });
 
-            // Convert serialized form data to JSON object
-            var formData = {};
-            $(this).serializeArray().forEach(function(item) {
-                formData[item.name] = item.value;
+            // Event listener for form submission
+            $('#registrationForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                
+                // Serialize form data into JSON format
+                const formData = $(this).serializeArray();
+                console.log("form Data:", formData); // Print data to console
+
+                // Log the data type of each field
+                formData.forEach(function(item) {
+                    console.log("Data type of", item.name, ":", typeof item.value);
+                });
+
+                const formDataObject = {};
+                formData.forEach(function(item) {
+                    formDataObject[item.name] = item.value;
+                });
+
+                // Send form data to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/createDoctor',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formDataObject),
+                    success: function(response) {
+                        console.log('Doctor data sent successfully');
+                        // Optionally, handle the server response here
+                        window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error sending doctor data:', error);
+                        // Optionally, display an error message to the user
+                        console.log("form Datatype:", typeof formDataObject); // Print data to console
+                    }
+                });
             });
 
-            // Send form data to the server
-            $.ajax({
-                type: 'POST',
-                url: '/createDoctor',
-                data: JSON.stringify(formData), // Send JSON data
-                contentType: 'application/json', // Set content type
-                success: function(response) {
-                    console.log('Doctor data sent successfully');
-                    // Optionally, handle the server response here
-                    window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error sending doctor data:', error);
-                    // Optionally, display an error message to the user
-                    alert("Error: " + xhr.responseText);
-                }
+            // Initialize datepicker
+            $("#dob").datepicker({
+                dateFormat: "yy-mm-dd", // Set the date format
+                changeMonth: true, // Allow changing month
+                changeYear: true, // Allow changing year
+                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
+                maxDate: new Date() // Set maximum selectable date to current date
             });
 
-            // Print posted data in JSON format
-            console.log('Posted Data:', JSON.stringify(formData));
+            // Event listener for clear button
+            $('.clear').click(function() {
+                $('#registrationForm')[0].reset();
+            });
         });
-
-        // Initialize datepicker
-        $("#birth_date").datepicker({
-            dateFormat: "yy-mm-dd", // Set the date format
-            changeMonth: true, // Allow changing month
-            changeYear: true, // Allow changing year
-            yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
-            maxDate: new Date() // Set maximum selectable date to current date
-        });
-
-        // Event listener for clear button
-        $('.clear').click(function() {
-            $('#registrationForm')[0].reset();
-        });
-    });
-</script>
-
+    </script>
 </body>
 </html>
