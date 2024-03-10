@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+</head>
+<body>
+    <div id="headerContainer"></div>
+    <br><br>
+    <div id="footerContainer"></div>
+    <script>
+        fetch("Admin_Header.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+          });
+        
+          fetch("Footer.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
