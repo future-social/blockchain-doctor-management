@@ -145,7 +145,7 @@
                 data.qualifications.forEach(qualification => {
                     const qualificationDiv = document.createElement("div");
                     qualificationDiv.classList.add("qualification-header");
-                    qualificationDiv.innerHTML = `<h2>${qualification.title}</h2>`;
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>`;
                     qualificationDiv.innerHTML += `
                         <div class="info-row">
                             <span class="info-label">Recognized date:</span>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Body Granting Qualifications:</span>
-                            <span>${qualification.body}</span>
+                            <span>${qualification.bodygrantingqualifications}</span>
                         </div>
                         <div class="document-link">
                             <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
