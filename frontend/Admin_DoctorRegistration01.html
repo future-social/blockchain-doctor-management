@@ -198,7 +198,7 @@
             </div>
             <div class="button-container">
                     <button type="button" class="clear">Clear</button>
-                    <button type="button" class="next">Next</button>
+                    <button type="button" class="submit">Submit</button>
             </div>
         </form>
     </div>
@@ -222,24 +222,33 @@
                     $('#year').text(new Date().getFullYear());
                 });
 
-           // Event listener for "Next" button
-           $('.next').click(function() {
+           // Event listener for form submission
+           $('#registrationForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
                 // Check if all input fields are filled
                 if (validateForm()) {
                     // Serialize form data into JSON format
-                    const formData = $('#registrationForm').serializeArray();
+                    const formData = $(this).serializeArray();
                     const formDataObject = {};
                     formData.forEach(function(item) {
                         formDataObject[item.name] = item.value;
                     });
 
-                    // Store form data in session storage
-                    sessionStorage.setItem('page01Data', JSON.stringify(formDataObject));
-
-                    // Redirect to page 02
-                    window.location.href = "Admin_DoctorRegistration03.html";
+                    // Submit data to the database
+                    $.post('/createDoctor', formDataObject)
+                        .done(function(response) {
+                            // Handle successful submission
+                            console.log(response);
+                            alert('Doctor registration successful!');
+                        })
+                        .fail(function(error) {
+                            // Handle failed submission
+                            console.error(error);
+                            alert('Error occurred. Please try again.');
+                        });
                 } else {
-                    alert("Please fill in all fields before proceeding.");
+                    alert("Please fill in all fields before submitting.");
                 }
             });
 
