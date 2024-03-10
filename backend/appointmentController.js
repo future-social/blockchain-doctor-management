@@ -1,36 +1,62 @@
-const { Wallets, Gateway } = require('fabric-network');
-const fs = require('fs');
-const path = require('path');
+const { Wallets, Gateway } = require("fabric-network");
+const fs = require("fs");
+const path = require("path");
+const moment = require('moment');
+// const fabricHelper = require('./fabricHelper');
 
-async function createAppointment(appointmentData) {
+async function createAppointment(appointmentData, doctorId) {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname, 'connection.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+        const ccpPath = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "blockchain-doctor-management",
+          "test-network",
+          "organizations",
+          "peerOrganizations",
+          "org1.example.com",
+          "connection-org1.json"
+        );
+        const ccpJSON = fs.readFileSync(ccpPath, "utf8");
         const ccp = JSON.parse(ccpJSON);
-
+    
         // Connect to the gateway
-        const walletPath = path.resolve(__dirname, 'wallet');
+        const walletPath = path.resolve(__dirname, "wallet");
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(doctorId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+          throw new Error(
+            "An identity for the user " +
+            doctorId +
+              " does not exist in the wallet"
+          );
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
-            wallet,
-            identity: 'user1',
-            discovery: { enabled: true, asLocalhost: true }
+          wallet,
+          identity: doctorId,
+          discovery: { enabled: true, asLocalhost: true },
         });
-
+    
         // Get the network and contract
-        const network = await gateway.getNetwork('mychannel');
-        const contract = network.getContract('mycontract');
-
-        // Submit the transaction to create a new appointment
-        await contract.submitTransaction('CreateAppointment', JSON.stringify(appointmentData));
-        console.log('Appointment created successfully');
-
+        const network = await gateway.getNetwork("medicpro");
+        const contract = network.getContract("basic");
+    
+        // Format Date Parameters
+        const formattedAppDate = moment(appointmentData['time'], 'YYYY-MM-DD').format(); // TODO
+    
+        // Submit the transaction to create a new doctor
+        await contract.submitTransaction(
+          "CreateAppointment",
+          doctorId,
+          formattedAppDate,
+          appointmentData['name'],
+          appointmentData['gender'],
+          appointmentData['consulting_department'],
+        );
+        console.log("Appointment created successfully");
+    
         // Disconnect from the gateway
         await gateway.disconnect();
     } catch (error) {
@@ -39,114 +65,163 @@ async function createAppointment(appointmentData) {
     }
 }
 
-async function retrieveAppointment(appointmentId) {
+async function retrieveAppointment(appointmentId, doctorId) {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname, 'connection.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+        const ccpPath = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "blockchain-doctor-management",
+          "test-network",
+          "organizations",
+          "peerOrganizations",
+          "org1.example.com",
+          "connection-org1.json"
+        );
+        const ccpJSON = fs.readFileSync(ccpPath, "utf8");
         const ccp = JSON.parse(ccpJSON);
-
+    
         // Connect to the gateway
-        const walletPath = path.resolve(__dirname, 'wallet');
+        const walletPath = path.resolve(__dirname, "wallet");
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(doctorId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+          throw new Error(
+            "An identity for the user " + doctorId + " does not exist in the wallet"
+          );
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
-            wallet,
-            identity: 'user1',
-            discovery: { enabled: true, asLocalhost: true }
+          wallet,
+          identity: doctorId,
+          discovery: { enabled: true, asLocalhost: true },
         });
-
+    
         // Get the network and contract
-        const network = await gateway.getNetwork('mychannel');
-        const contract = network.getContract('mycontract');
-
-        // Submit the transaction to retrieve appointment data by ID
-        const result = await contract.evaluateTransaction('RetrieveAppointment', appointmentId);
-        console.log(`Appointment data retrieved: ${result.toString()}`);
-
+        const network = await gateway.getNetwork("medicpro");
+        const contract = network.getContract("basic");
+    
+        // Submit the transaction
+        const result = await contract.evaluateTransaction("ViewAppointment", appointmentId);
+        console.log(`Appointment retrieved: ${result.toString()}`);
+    
         // Disconnect from the gateway
         await gateway.disconnect();
-        return result.toString();
+        return result;
     } catch (error) {
-        console.error(`Failed to retrieve appointment data: ${error}`);
+        console.error(`Failed to retrieve appointment: ${error}`);
         throw error;
     }
 }
 
-async function updateAppointment(appointmentId, updatedData) {
+async function updateAppointment(appointmentId, updatedData, doctorId) {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname, 'connection.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+        const ccpPath = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "blockchain-doctor-management",
+          "test-network",
+          "organizations",
+          "peerOrganizations",
+          "org1.example.com",
+          "connection-org1.json"
+        );
+        const ccpJSON = fs.readFileSync(ccpPath, "utf8");
         const ccp = JSON.parse(ccpJSON);
-
+    
         // Connect to the gateway
-        const walletPath = path.resolve(__dirname, 'wallet');
+        const walletPath = path.resolve(__dirname, "wallet");
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(doctorId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+          throw new Error(
+            "An identity for the user " + doctorId + " does not exist in the wallet"
+          );
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
-            wallet,
-            identity: 'user1',
-            discovery: { enabled: true, asLocalhost: true }
+          wallet,
+          identity: doctorId,
+          discovery: { enabled: true, asLocalhost: true },
         });
-
+    
         // Get the network and contract
-        const network = await gateway.getNetwork('mychannel');
-        const contract = network.getContract('mycontract');
+        const network = await gateway.getNetwork("medicpro");
+        const contract = network.getContract("basic");
+    
+        // Format Date Parameters
+        const formattedAppDate = moment(updatedData['time'], 'YYYY-MM-DD').format(); // TODO
 
-        // Submit the transaction to update appointment data
-        await contract.submitTransaction('UpdateAppointment', appointmentId, JSON.stringify(updatedData));
-        console.log('Appointment data updated successfully');
-
+        // Submit the transaction
+        await contract.submitTransaction(
+          "UpdateAppointment",
+          appointmentId,
+          doctorId,
+          formattedAppDate,
+          updatedData['name'],
+          updatedData['gender'],
+          updatedData['consulting_department'],
+        );
+        console.log("Appointment updated successfully");
+    
         // Disconnect from the gateway
         await gateway.disconnect();
     } catch (error) {
-        console.error(`Failed to update appointment data: ${error}`);
+        console.error(`Failed to update appointment: ${error}`);
         throw error;
     }
 }
 
-async function deleteAppointment(appointmentId) {
+async function deleteAppointment(appointmentId, doctorId) {
     try {
         // Load connection profile
-        const ccpPath = path.resolve(__dirname, 'connection.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
+        const ccpPath = path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "blockchain-doctor-management",
+          "test-network",
+          "organizations",
+          "peerOrganizations",
+          "org1.example.com",
+          "connection-org1.json"
+        );
+        const ccpJSON = fs.readFileSync(ccpPath, "utf8");
         const ccp = JSON.parse(ccpJSON);
-
+    
         // Connect to the gateway
-        const walletPath = path.resolve(__dirname, 'wallet');
+        const walletPath = path.resolve(__dirname, "wallet");
         const wallet = await Wallets.newFileSystemWallet(walletPath);
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(doctorId);
         if (!identity) {
-            throw new Error('An identity for the user "user1" does not exist in the wallet');
+          throw new Error(
+            "An identity for the user " +
+              doctorId +
+              " does not exist in the wallet"
+          );
         }
         const gateway = new Gateway();
         await gateway.connect(ccp, {
-            wallet,
-            identity: 'user1',
-            discovery: { enabled: true, asLocalhost: true }
+          wallet,
+          identity: doctorId,
+          discovery: { enabled: true, asLocalhost: true },
         });
-
+    
         // Get the network and contract
-        const network = await gateway.getNetwork('mychannel');
-        const contract = network.getContract('mycontract');
-
-        // Submit the transaction to delete appointment data by ID
-        await contract.submitTransaction('DeleteAppointment', appointmentId);
-        console.log('Appointment data deleted successfully');
-
+        const network = await gateway.getNetwork("medicpro");
+        const contract = network.getContract("basic");
+    
+        // Submit the transaction to update doctor data
+        await contract.submitTransaction("DeleteAppointment", appointmentId);
+        console.log("Appointment deleted successfully");
+    
         // Disconnect from the gateway
         await gateway.disconnect();
     } catch (error) {
-        console.error(`Failed to delete appointment data: ${error}`);
+        console.error(`Failed to delete appointment: ${error}`);
         throw error;
     }
 }

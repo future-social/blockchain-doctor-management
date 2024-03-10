@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const doctorController = require('./doctorController');
-const registerDoctor = require('./registerDoctor');
+// const doctorController = require('./doctorController');
+// const registerDoctor = require('./registerDoctor');
 const DMSAdminId = "DMSadmin10"; // TEST
 
 // Route to create a new doctor
 router.post('/createDoctor', async (req, res) => {
     try {
         const doctorData = req.body;
-        console.log("Received doctor data:", doctorData); 
         const result = await doctorController.createDoctor(doctorData, DMSAdminId);
         registerDoctor.registerDoctorUser(doctorData['doctor_id']); 
         res.json(result);
@@ -91,9 +90,7 @@ router.delete('/deleteDoctor/:doctorId', async (req, res) => {
 // router.post('/createAppointment', async (req, res) => {
 //     try {
 //         const appointmentData = req.body;
-//         const result = await appointmentController.createAppointment(appointmentData);
-//         // const activity = 'New appointment created: ${result}';
-//         // await loggingController.logActivity(user,activity);
+//         const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
 //         res.json(result);
 //     } catch (error) {
 //         res.status(500).json({ success: false, message: error.message });
@@ -104,7 +101,7 @@ router.delete('/deleteDoctor/:doctorId', async (req, res) => {
 // router.get('/retrieveAppointment/:appointmentId', async (req, res) => {
 //     try {
 //         const appointmentId = req.params.appointmentId;
-//         const result = await appointmentController.retrieveAppointment(appointmentId);
+//         const result = await appointmentController.retrieveAppointment(appointmentId, DMSAdminId);
 //         res.json(result);
 //     } catch (error) {
 //         res.status(500).json({ success: false, message: error.message });
@@ -116,9 +113,7 @@ router.delete('/deleteDoctor/:doctorId', async (req, res) => {
 //     try {
 //         const appointmentId = req.params.appointmentId;
 //         const updatedData = req.body;
-//         const result = await appointmentController.updateAppointment(appointmentId, updatedData);
-//         // const activity = 'Appointment updated for ID: ${appointmentId}';
-//         // await loggingController.logActivity(user,activity);
+//         const result = await appointmentController.updateAppointment(appointmentId, updatedData, DMSAdminId);
 //         res.json(result);
 //     } catch (error) {
 //         res.status(500).json({ success: false, message: error.message });
@@ -129,9 +124,7 @@ router.delete('/deleteDoctor/:doctorId', async (req, res) => {
 // router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
 //     try {
 //         const appointmentId = req.params.appointmentId;
-//         await appointmentController.deleteAppointment(appointmentId);
-//         // const activity = 'Appointment deleted for ID: ${appointmentId}';
-//         // await loggingController.logActivity(user,activity);
+//         await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
 //         res.json({ success: true, message: 'Appointment data deleted successfully' });
 //     } catch (error) {
 //         res.status(500).json({ success: false, message: error.message });
