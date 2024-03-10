@@ -16,26 +16,22 @@ type DoctorContract struct {
 
 // Doctor struct to store doctor psersonal information
 type Doctor struct {
-	DoctorID       string    `json:"doctor_id"`
-	FirstName      string    `json:"first_name"`
-	LastName       string    `json:"last_name"`
-	ICNo           string    `json:"ic_no"`
-	Gender         string    `json:"gender"`
-	BirthDate      time.Time `json:"birth_date"`
-	MobileNumber   string    `json:"mobile_number"`
-	Email          string    `json:"email"`
-	Address        string    `json:"address"`
-	Specialisation string    `json:"specialisation"`
-}
-
-type Qualification struct {
-	DoctorID                   string `json:"doctor_id"`
-	Title                      string `json:"title"`
-	RecognizedDate             string `json:"recognize_date"`
-	Country                    string `json:"country"`
-	Institution                string `json:"institution"`
-	BodyGrantingQualifications string `json:"body_granting_qualifications"`
-	Certificate                []byte `json:"certificate"`
+	DoctorID                   string    `json:"doctor_id"`
+	FirstName                  string    `json:"first_name"`
+	LastName                   string    `json:"last_name"`
+	ICNo                       string    `json:"ic_no"`
+	Gender                     string    `json:"gender"`
+	BirthDate                  time.Time `json:"birth_date"`
+	MobileNumber               string    `json:"mobile_number"`
+	Email                      string    `json:"email"`
+	Address                    string    `json:"address"`
+	Specialisation             string    `json:"specialisation"`
+	Degree                     string    `json:"degree"`
+	RecognizedDate             string    `json:"recognize_date"`
+	Country                    string    `json:"country"`
+	Institution                string    `json:"institution"`
+	BodyGrantingQualifications string    `json:"body_granting_qualifications"`
+	Certificate                []byte    `json:"certificate"`
 }
 
 // InitDoctor adds a base set of doctors to the ledger
@@ -81,53 +77,10 @@ func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface
 	return nil
 }
 
-// CreateQualification creates a new qualification with the provided information and stores it in the world state
-func (dc *DoctorContract) CreateQualification(ctx contractapi.TransactionContextInterface, doctorID string, title string,
-	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
-
-	// Check if client has 'admin' role
-	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
-	if err != nil {
-		return fmt.Errorf("only admin can create qualification")
-	}
-
-	//Check if the doctor already exists
-	exists, err := dc.DoctorExists(ctx, doctorID)
-	if err != nil {
-		return err
-	}
-	if exists {
-		return fmt.Errorf("the doctor with ID %s already exists", doctorID)
-	}
-
-	newQualification := Qualification{
-		DoctorID:                   doctorID,
-		Title:                      title,
-		RecognizedDate:             recognizedDate,
-		Country:                    country,
-		Institution:                institution,
-		BodyGrantingQualifications: bodyGrantingQualification,
-		Certificate:                certificate,
-	}
-
-	// Convert qualification information to JSON format
-	qualificationJSON, err := json.Marshal(newQualification)
-	if err != nil {
-		return fmt.Errorf("failed to marshal qualification JSON: %v", err)
-	}
-
-	// Storing qualification information into the blockchain
-	err = ctx.GetStub().PutState(doctorID, qualificationJSON)
-	if err != nil {
-		return fmt.Errorf("failed to create doctor: %v", err)
-	}
-
-	return nil
-}
-
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
-	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string) error {
+	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
 
 	// Check if client has 'admin' role
 	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
@@ -145,16 +98,22 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	newDoctor := Doctor{
-		DoctorID:       doctorID,
-		FirstName:      firstName,
-		LastName:       lastName,
-		ICNo:           icNo,
-		Gender:         gender,
-		BirthDate:      birthDate,
-		MobileNumber:   mobileNumber,
-		Email:          email,
-		Address:        address,
-		Specialisation: specialisation,
+		DoctorID:                   doctorID,
+		FirstName:                  firstName,
+		LastName:                   lastName,
+		ICNo:                       icNo,
+		Gender:                     gender,
+		BirthDate:                  birthDate,
+		MobileNumber:               mobileNumber,
+		Email:                      email,
+		Address:                    address,
+		Specialisation:             specialisation,
+		Degree:                     degree,
+		RecognizedDate:             recognizedDate,
+		Country:                    country,
+		Institution:                institution,
+		BodyGrantingQualifications: bodyGrantingQualification,
+		Certificate:                certificate,
 	}
 
 	// Convert doctor information to JSON format
@@ -174,24 +133,47 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 }
 
 // ViewQualification to view doctor's qualification
-
-func (dc *DoctorContract) ViewQualification(ctx contractapi.TransactionContextInterface, doctorID string) (*Qualification, error) {
+/*
+func (dc *DoctorContract) ViewQualification(ctx contractapi.TransactionContextInterface, doctorID string) ([]byte, error) {
 	qualificationJSON, err := ctx.GetStub().GetState(doctorID)
 	if err != nil {
 		return nil, fmt.Errorf("falied to read from world state: %v", err)
 	}
 
 	if qualificationJSON == nil {
-		return nil, fmt.Errorf("qualification does not exist")
+		return nil, fmt.Errorf("qualification with ID %s does not exist", doctorID)
 	}
 
-	var qualification Qualification
+	var qualification Doctor
 	err = json.Unmarshal(qualificationJSON, &qualification)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal qualification JSON: %v", err)
 	}
-	return &qualification, nil
+
+	// Create a struct with only the qualifications
+	qualificationData := struct {
+		Degree         string `json:"degree"`
+		RecognizedDate string `json:"recognize_date"`
+		Country        string `json:"country"`
+		Institution    string `json:"institution"`
+		Certificate    []byte `json:"certificate"`
+	}{
+		Degree:         qualification.Degree,
+		RecognizedDate: qualification.RecognizedDate,
+		Country:        qualification.Country,
+		Institution:    qualification.Institution,
+		Certificate:    qualification.Certificate,
+	}
+
+	qualificationJSON, err = json.Marshal(qualificationData)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal qualification info: %v", err)
+	}
+
+	return qualificationJSON, nil
 }
+
+*/
 
 // ViewDoctor to view doctor's information
 func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface, doctorID string) (*Doctor, error) {
@@ -214,6 +196,7 @@ func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface
 	return &doctor, nil
 }
 
+/*
 // UpdateQualification updates an existing doctor's qualification in the world state with provided parameters.
 func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContextInterface, doctorID string, title string,
 	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
@@ -249,6 +232,8 @@ func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContext
 
 	return nil
 }
+
+*/
 
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
@@ -287,6 +272,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	return nil
 }
 
+/*
 // DeleteQualification deletes the qualification with the specified ID from the world state.
 func (dc *DoctorContract) DeleteQualification(ctx contractapi.TransactionContextInterface, doctorID string) error {
 
@@ -313,6 +299,8 @@ func (dc *DoctorContract) DeleteQualification(ctx contractapi.TransactionContext
 
 	return nil
 }
+
+*/
 
 // DeleteDoctor deletes the doctor with the specified ID from the world state.
 func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterface, doctorID string) error {
@@ -350,6 +338,7 @@ func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterfa
 	return doctorJSON != nil, nil
 }
 
+/*
 // GetAllQualifications returns all qualifications found in world state
 func (dc *DoctorContract) GetAllQualifications(ctx contractapi.TransactionContextInterface) ([]*Qualification, error) {
 	// Check if client has 'admin' role
@@ -389,6 +378,8 @@ func (dc *DoctorContract) GetAllQualifications(ctx contractapi.TransactionContex
 
 	return qualifications, nil
 }
+
+*/
 
 // GetAllDoctors returns all doctors found in world state
 func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterface) ([]*Doctor, error) {
