@@ -108,7 +108,7 @@
     <div class="information-container">
         <form id="informationForm">
         <div class="circle-image">
-            <img src="image.png" alt="insert image">
+            <img src="portrait.png" alt="doctor portrait">
         </div>
             <div class="row">
                 <div class="column">
@@ -122,8 +122,8 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required disabled> <!-- Disabled input -->
+                    <label for="ic_no">IC No./ Passport Number:</label>
+                    <input type="text" id="ic_no" name="ic_no" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label>Gender:</label>
@@ -137,18 +137,18 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="staff_id">Staff ID:</label>
-                    <input type="text" id="staff_id" name="staff_id" required disabled> <!-- Disabled input -->
+                    <label for="doctor_id">Doctor ID:</label>
+                    <input type="text" id="doctor_id" name="doctor_id" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
-                    <label for="dob">DOB:</label>
-                    <input type="text" id="dob" name="dob" required disabled> <!-- Disabled input -->
+                    <label for="birth_date">DOB:</label>
+                    <input type="text" id="birth_date" name="birth_date" required disabled> <!-- Disabled input -->
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required disabled> <!-- Disabled input -->
+                    <label for="mobile_number">Mobile Number:</label>
+                    <input type="tel" id="mobile_number" name="mobile_number" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
                     <label for="email">Email:</label>
@@ -161,23 +161,8 @@
                     <input type="text" id="address" name="address" required disabled> <!-- Disabled input -->
                 </div>
                 <div class="column">
-                    <label for="specialization">Specialization:</label>
-                    <input type="text" id="specialization" name="specialization" required disabled> <!-- Disabled input -->
-                </div>
-            </div>
-            <h2>Emergency Contact</h2>
-            <div class="row">
-                <div class="column">
-                    <label for="emergency_name">Name:</label>
-                    <input type="text" id="emergency_name" name="emergency_name" required disabled> <!-- Disabled input -->
-                </div>
-                <div class="column">
-                    <label for="emergency_mobile">Mobile Number:</label>
-                    <input type="tel" id="emergency_mobile" name="emergency_mobile" required disabled> <!-- Disabled input -->
-                </div>
-                <div class="column">
-                    <label for="relation">Relation:</label>
-                    <input type="text" id="relation" name="relation" required disabled> <!-- Disabled input -->
+                    <label for="specialisation">Specialisation:</label>
+                    <input type="text" id="specialisation" name="specialisation" required disabled> <!-- Disabled input -->
                 </div>
             </div>
             <div class="button-container">
@@ -210,24 +195,21 @@
             // Assume the doctor's ID is retrieved from the session or URL parameter
             const doctorId = "123"; // Example doctor ID
 
-            fetch(`//retrieveDoctor?doctorId=${doctorId}`)
+            fetch(`/retrieveDoctor?doctorId=${doctorId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     // Display doctor's information in the corresponding span elements
                     document.getElementById("first_name").textContent = data.first_name;
                     document.getElementById("last_name").textContent = data.last_name;
-                    document.getElementById("ic_passport").textContent = data.ic_passport;
+                    document.getElementById("ic_no").textContent = data.ic_no;
                     document.getElementById("male").textContent = data.male;
                     document.getElementById("female").textContent = data.female;
-                    document.getElementById("staff_id").textContent = data.staff_id;
-                    document.getElementById("dob").textContent = data.dob;
-                    document.getElementById("mobile").textContent = data.mobile;
+                    document.getElementById("doctor_id").textContent = data.doctor_id;
+                    document.getElementById("birth_date").textContent = data.birth_date;
+                    document.getElementById("mobile_number").textContent = data.mobile_number;
                     document.getElementById("email").textContent = data.email;
                     document.getElementById("address").textContent = data.address;
-                    document.getElementById("specialization").textContent = data.specialization;
-                    document.getElementById("emergency_name").textContent = data.emergency_name;
-                    document.getElementById("emergency_mobile").textContent = data.emergency_mobile;
-                    document.getElementById("relation").textContent = data.relation;
+                    document.getElementById("specialisation").textContent = data.specialisation;
 
                     // Display other information fields similarly
                 })
@@ -242,11 +224,6 @@
                 displayDoctorInfo();
             });
 
-            // Event listener for the go back button
-            document.getElementById("goBackButton").addEventListener("click", function() {
-                // Redirect to the previous page
-                window.history.back();
-            });
         </script>
 </body>
 </html>
