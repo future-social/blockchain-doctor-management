@@ -114,8 +114,8 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required disabled>
+                    <label for="ic_no">IC No./ Passport Number:</label>
+                    <input type="text" id="ic_no" name="ic_no" required disabled>
                 </div>
                 <div class="column">
                     <label>Gender:</label>
@@ -129,18 +129,18 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="doctor_id">Staff ID:</label>
+                    <label for="doctor_id">Doctor ID:</label>
                     <input type="text" id="doctor_id" name="doctor_id" required disabled>
                 </div>
                 <div class="column">
-                    <label for="dob">DOB:</label>
-                    <input type="text" id="dob" name="dob" required disabled>
+                    <label for="birth_date">DOB:</label>
+                    <input type="text" id="birth_date" name="birth_date" required disabled>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required disabled>
+                    <label for="mobile_number">Mobile Number:</label>
+                    <input type="tel" id="mobile_number" name="mobile_number" required disabled>
                 </div>
                 <div class="column">
                     <label for="email">Email:</label>
@@ -209,10 +209,10 @@
                 // Populate form fields with the retrieved data
                 document.getElementById("first_name").value = data.first_name;
                 document.getElementById("last_name").value = data.last_name;
-                document.getElementById("ic_passport").value = data.ic_passport;
+                document.getElementById("ic_no").value = data.ic_no;
                 document.getElementById("doctor_id").value = data.doctor_id;
-                document.getElementById("dob").value = data.dob;
-                document.getElementById("mobile").value = data.mobile;
+                document.getElementById("birth_date").value = data.birth_date;
+                document.getElementById("mobile_number").value = data.mobile_number;
                 document.getElementById("email").value = data.email;
                 document.getElementById("address").value = data.address;
                 document.getElementById("specialisation").value = data.specialisation;
