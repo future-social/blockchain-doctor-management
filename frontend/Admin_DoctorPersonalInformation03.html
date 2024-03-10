@@ -172,7 +172,9 @@
                   <input type="text" id="specialisation" name="specialisation" required>
               </div>
           </div>
-          
+          <div class="qualification-container" id="qualificationContainer">
+            <!-- Qualification details will be inserted here dynamically -->
+        </div>
           <div class="button-container">
                   <button type="submit" class="save">Save</button>
           </div>
@@ -196,86 +198,92 @@
                 document.getElementById("footerContainer").innerHTML = html;
             });
     
-        fetch("/retrieveDoctor")
+        // Fetch doctor data and populate form
+        fetch(`/retrieveDoctor?id=${doctorId}`)
             .then(response => response.json())
             .then(data => {
-    
-                document.getElementById("first_name").value = data.first_name;
-                document.getElementById("last_name").value = data.last_name;
-                document.getElementById("ic_no").value = data.ic_no;
-                document.getElementById("male").value = data.male;
-                document.getElementById("female").value = data.female;
-                document.getElementById("doctor_id").value = data.doctor_id;
-                document.getElementById("birth_date").value = data.birth_date;
-                document.getElementById("mobile_number").value = data.mobile_number;
-                document.getElementById("email").value = data.email;
-                document.getElementById("address").value = data.address;
-                document.getElementById("specialisation").value = data.specialisation;
-            });
-    
-        // Add event listener for the "Save" button
-        const saveButton = document.querySelector(".save");
-        saveButton.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent form submission
+                // Populate form fields
+                Object.keys(data).forEach(key => {
+                    if (key !== 'qualifications') {
+                        document.getElementById(key).value = data[key];
+                    }
+                });
+                // Populate qualification details dynamically
+                const qualificationContainer = document.getElementById("qualificationContainer");
+                data.qualifications.forEach(qualification => {
+                    // Create qualification elements
+                    const qualificationDiv = document.createElement("div");
+                    qualificationDiv.classList.add("qualification-header");
+                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>`;
+                    qualificationDiv.innerHTML += `
+                        <div class="info-row">
+                            <span class="info-label">Recognized date:</span>
+                            <input type="text" value="${qualification.recognizedDate}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Country:</span>
+                            <input type="text" value="${qualification.country}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Institution:</span>
+                            <input type="text" value="${qualification.institution}" class="edit-input">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Body Granting Qualifications:</span>
+                            <input type="text" value="${qualification.bodygrantingqualifications}" class="edit-input">
+                        </div>
+                        <div class="document-link">
+                            <a href="${qualification.documentLink}" target="_blank">View supportive document.</a>
+                        </div>
+                    `;
+                    qualificationContainer.appendChild(qualificationDiv);
+                });
+            })
+            .catch(error => console.error("Error fetching doctor data:", error));
 
+        // Handle form submission
+        document.getElementById("informationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
             // Validate form fields
-            const form = document.getElementById("informationForm");
+            const form = this;
             if (!form.checkValidity()) {
-                // If any required fields are not filled, display a reminder
                 window.alert("Please fill in all required fields.");
                 return;
             }
-    
-            // Confirmation dialog before proceeding with saving the data
+            // Confirmation dialog
             const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
             if (confirmation) {
                 // Gather updated data
-                const formData = new FormData(document.getElementById("informationForm"));
-    
-                // Convert FormData to JSON
+                const formData = new FormData(form);
                 const jsonData = {};
-                formData.forEach(function (value, key) {
-                    jsonData[key] = value;
-                });
+                formData.forEach((value, key) => jsonData[key] = value);
                 const json = JSON.stringify(jsonData);
-                console.log(json);
-    
                 // Send updated data to the server via JSON
                 fetch(`/updateDoctor?id=${doctorId}`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: json
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Show success message
-                        window.alert("Data updated successfully.");
-                        // Navigate back to Admin_DoctorPersonalInformation02.html
-                        window.location.href = "Admin_DoctorPersonalInformation02.html";
-                    })
-                    .catch(error => {
-                        // Optionally handle error
-                        console.error("Error updating data:", error);
-                        // Optionally, display an error message to the user
-                    });
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    window.alert("Data updated successfully.");
+                    window.location.href = "Admin_DoctorPersonalInformation02.html";
+                })
+                .catch(error => console.error("Error updating data:", error));
             }
         });
 
-        // Datepicker
+        // Initialize datepicker
         $(function() {
-            $("#dob").datepicker({
-                dateFormat: "yy-mm-dd", // Set the date format
-                changeMonth: true, // Allow changing month
-                changeYear: true, // Allow changing year
-                yearRange: "-100:+0", // Restrict year selection from 100 years ago to current year
-                maxDate: new Date(), // Set maximum selectable date to current date
+            $("#birth_date, #recognised_date").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                maxDate: new Date(),
             });
         });
     </script>
