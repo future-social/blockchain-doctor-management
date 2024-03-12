@@ -115,6 +115,7 @@ async function retrieveAllDoctor(DMSAdminId) {
     // Get the network and contract
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
+
     // Submit the transaction to retrieve doctor data by ID
     const result = await contract.evaluateTransaction("GetAllDoctors");
     console.log(`Doctor data retrieved: ${result.toString()}`);
@@ -164,7 +165,7 @@ async function retrieveDoctor(doctorId) {
     const contract = network.getContract("basic");
     // Submit the transaction to retrieve doctor data by ID
     const result = await contract.evaluateTransaction("ViewDoctor", doctorId);
-    console.log(`Doctor data retrieved: ${result.toString()}`);
+    //console.log(`Doctor data retrieved: ${result.toString()}`);
     // Disconnect from the gateway
     await gateway.disconnect();
     return result;
@@ -210,11 +211,11 @@ async function updateDoctor(userId, doctorId, updatedData) {
 
     // Format Date Parameters
     const formattedBirthDate = moment(
-      doctorData["birth_date"],
+      updatedData["birth_date"],
       "YYYY-MM-DD"
     ).format();
     const formattedRecognizeDate = moment(
-      doctorData["recognize_date"],
+      updatedData["recognize_date"],
       "YYYY-MM-DD"
     ).format();
 
@@ -222,7 +223,7 @@ async function updateDoctor(userId, doctorId, updatedData) {
     await contract.submitTransaction(
       "UpdateDoctor",
       doctorId,
-      updatedData["doctor_id"],
+      // updatedData["doctor_id"],
       updatedData["first_name"],
       updatedData["last_name"],
       updatedData["ic_no"],
