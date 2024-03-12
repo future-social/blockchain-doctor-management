@@ -186,7 +186,7 @@
 
     <script>
         // Fetch and insert header
-        fetch("Doctor_Header.html")
+        fetch("Admin_Header.html")
             .then((response) => response.text())
             .then((html) => {
                 document.getElementById("headerContainer").innerHTML = html;
@@ -199,7 +199,10 @@
             });
     
         // Fetch doctor data and populate form
-        fetch(`/retrieveDoctor/${doctorId}`)
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorId = urlParams.get('id'); // Retrieve doctorId from URL parameter
+
+        fetch(`/retrieveDoctor/${doctorId}`) // Fetch doctor data using the retrieved ID
             .then(response => response.json())
             .then(data => {
                 // Populate form fields
@@ -218,7 +221,7 @@
                     qualificationDiv.innerHTML += `
                         <div class="info-row">
                             <span class="info-label">Recognized date:</span>
-                            <input type="text" value="${qualification.recognizedDate}" class="edit-input">
+                            <input type="text" value="${qualification.recognize_date}" class="edit-input">
                         </div>
                         <div class="info-row">
                             <span class="info-label">Country:</span>
@@ -231,9 +234,6 @@
                         <div class="info-row">
                             <span class="info-label">Body Granting Qualifications:</span>
                             <input type="text" value="${qualification.body_granting_qualifications}" class="edit-input">
-                        </div>
-                        <div class="document-link">
-                            <a href="${qualification.documentLink}" target="_blank">View supportive document.</a>
                         </div>
                     `;
                     qualificationContainer.appendChild(qualificationDiv);
@@ -270,7 +270,7 @@
                 })
                 .then(data => {
                     window.alert("Data updated successfully.");
-                    window.location.href = "Doctor_PersonalInformation02.html";
+                    window.location.href = "Admin_DoctorPersonalInformation02.html";
                 })
                 .catch(error => console.error("Error updating data:", error));
             }
