@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const doctorController = require('./doctorController');
 const registerDoctor = require('./registerDoctor');
-const DMSAdminId = "DMSadmin10"; // TEST
+const DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 
 // Route to create a new doctor
 router.post('/createDoctor', async (req, res) => {
@@ -66,9 +66,9 @@ router.get('/retrieveDoctor/:doctorId', async (req, res) => {
 // Route to update doctor data
 router.put('/updateDoctor/:doctorId', async (req, res) => {
     try {
-        const doctorId = req.params.doctorId;
+        // const doctorId = req.params.doctorId;
         const updatedData = req.body;
-        const result = await doctorController.updateDoctor(DMSAdminId, doctorId, updatedData);
+        const result = await doctorController.updateDoctor(DMSAdminId, updatedData);
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -78,7 +78,7 @@ router.put('/updateDoctor/:doctorId', async (req, res) => {
 // Route to delete doctor data
 router.delete('/deleteDoctor/:doctorId', async (req, res) => {
     try {
-        const doctorId = req.params.appointmentId;
+        const doctorId = req.params.doctorId;
         await doctorController.deleteDoctor(doctorId, DMSAdminId);
         res.json({ success: true, message: 'Doctor data deleted successfully' });
     } catch (error) {
