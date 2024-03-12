@@ -204,65 +204,76 @@
           document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        // Fetch doctor information and populate form fields
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchDoctorInformation();
+       // Fetch doctor information and populate form fields
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchDoctorInformation();
 
-            function fetchDoctorInformation() {
-                fetch(`/retrieveDoctor?id=${doctorId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        populateForm(data);
-                        populateQualifications(data.qualifications);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching doctor information:", error);
-                    });
-            }
+        function fetchDoctorInformation() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const doctorId = urlParams.get('id');
 
-            function populateForm(data) {
-                // Populate form fields with the retrieved data
-                const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation"];
-                formFields.forEach(field => {
-                    document.getElementById(field).value = data[field];
+            fetch(`/retrieveDoctor?id=${doctorId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    populateForm(data);
+                    populateQualifications(data.qualifications);
+                })
+                .catch(error => {
+                    console.error("Error fetching doctor information:", error);
                 });
-            }
+        }
 
-            function populateQualifications(qualifications) {
-                const qualificationContainer = document.getElementById("qualificationContainer");
-                qualifications.forEach(qualification => {
-                    const qualificationDiv = document.createElement("div");
-                    qualificationDiv.classList.add("qualification-header");
-                    qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>
-                        <div class="info-row">
-                            <span class="info-label">Recognized date:</span>
-                            <span>${qualification.recognizedDate}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Country:</span>
-                            <span>${qualification.country}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Institution:</span>
-                            <span>${qualification.institution}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Body Granting Qualifications:</span>
-                            <span>${qualification.body_granting_qualifications}</span>
-                        </div>
-                        <div class="document-link">
-                            <a href="${qualification.documentLink}" target="_blank">View supportive documents</a>
-                        </div>`;
-                    qualificationContainer.appendChild(qualificationDiv);
-                });
-            }
-        });
-    </script>
+        function populateForm(data) {
+            // Populate form fields with the retrieved data
+            const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation"];
+            formFields.forEach(field => {
+                document.getElementById(field).value = data[field];
+            });
+
+            // Enable form fields for editing
+            formFields.forEach(field => {
+                document.getElementById(field).disabled = false;
+            });
+
+            // Enable gender radio buttons
+            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
+            genderRadioButtons.forEach(radio => {
+                radio.disabled = false;
+            });
+        }
+
+        function populateQualifications(qualifications) {
+            const qualificationContainer = document.getElementById("qualificationContainer");
+            qualifications.forEach(qualification => {
+                const qualificationDiv = document.createElement("div");
+                qualificationDiv.classList.add("qualification-header");
+                qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>
+                    <div class="info-row">
+                        <span class="info-label">Recognized date:</span>
+                        <span>${qualification.recognize_date}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Country:</span>
+                        <span>${qualification.country}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Institution:</span>
+                        <span>${qualification.institution}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Body Granting Qualifications:</span>
+                        <span>${qualification.body_granting_qualifications}</span>
+                    </div>`;
+                qualificationContainer.appendChild(qualificationDiv);
+            });
+        }
+    });
+</script>
 
 </body>
 </html>
