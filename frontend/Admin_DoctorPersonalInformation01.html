@@ -186,21 +186,21 @@
 
                 viewImages.forEach(image => {
                     image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-doctorId');
+                        const doctorId = image.getAttribute('data-id');
                         window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
                     });
                 });
 
                 editImages.forEach(image => {
                     image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-doctorId');
+                        const doctorId = image.getAttribute('data-id');
                         window.location.href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
                     });
                 });
 
                 deleteImages.forEach(image => {
                     image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-doctorId');
+                        const doctorId = image.getAttribute('data-id');
                         const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
                         if (confirmation) {
                             deleteDoctor(doctorId);
