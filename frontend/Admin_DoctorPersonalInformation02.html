@@ -208,11 +208,9 @@
                     <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required disabled>
                 </div>
             </div>
-            <div class="qualification-container" id="qualificationContainer">
-                <!-- Qualification details will be inserted here dynamically -->
-            </div>
+            
             <div class="button-container">
-                <a href="Admin_DoctorPersonalInformation03.html">
+                <a id="editLink" href="#"> <!-- Set href to "#" initially -->
                     <button type="button" class="edit">Edit</button>
                 </a>
             </div>
@@ -243,6 +241,9 @@
             const urlParams = new URLSearchParams(window.location.search);
             const doctorId = urlParams.get('doctorId');
 
+            // Update edit link href
+            document.getElementById("editLink").href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
+
             fetch(`/retrieveDoctor/${doctorId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -252,7 +253,8 @@
                 })
                 .then(data => {
                     populateForm(data);
-                    populateQualifications(data.qualifications);
+                    //populateQualifications(data.qualifications);
+                    
                 })
                 .catch(error => {
                     console.error("Error fetching doctor information:", error);
@@ -278,7 +280,7 @@
             });
         }
 
-        function populateQualifications(qualifications) {
+        /*function populateQualifications(qualifications) {
             const qualificationContainer = document.getElementById("qualificationContainer");
             qualifications.forEach(qualification => {
                 const qualificationDiv = document.createElement("div");
@@ -302,7 +304,7 @@
                     </div>`;
                 qualificationContainer.appendChild(qualificationDiv);
             });
-        }
+        }*/
     });
 </script>
 
