@@ -403,7 +403,7 @@
                 const json = JSON.stringify(jsonData);
                 // Send updated data to the server via JSON
                 fetch(`/updateDoctor/${doctorId}`, {
-                    method: "POST",
+                    method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: json
                 })
