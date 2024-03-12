@@ -144,7 +144,7 @@
           </div>
           <div class="row">
               <div class="column">
-                  <label for="doctor_id">Staff ID:</label>
+                  <label for="doctor_id">Doctor ID:</label>
                   <input type="text" id="doctor_id" name="doctor_id" required>
               </div>
               <div class="column">
@@ -199,7 +199,10 @@
             });
     
         // Fetch doctor data and populate form
-        fetch(`/retrieveDoctor?id=${doctorId}`)
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorId = urlParams.get('id'); // Retrieve doctorId from URL parameter
+
+        fetch(`/retrieveDoctor?id=${doctorId}`) // Fetch doctor data using the retrieved ID
             .then(response => response.json())
             .then(data => {
                 // Populate form fields
@@ -218,7 +221,7 @@
                     qualificationDiv.innerHTML += `
                         <div class="info-row">
                             <span class="info-label">Recognized date:</span>
-                            <input type="text" value="${qualification.recognizedDate}" class="edit-input">
+                            <input type="text" value="${qualification.recognize_date}" class="edit-input">
                         </div>
                         <div class="info-row">
                             <span class="info-label">Country:</span>
@@ -231,9 +234,6 @@
                         <div class="info-row">
                             <span class="info-label">Body Granting Qualifications:</span>
                             <input type="text" value="${qualification.body_granting_qualifications}" class="edit-input">
-                        </div>
-                        <div class="document-link">
-                            <a href="${qualification.documentLink}" target="_blank">View supportive document.</a>
                         </div>
                     `;
                     qualificationContainer.appendChild(qualificationDiv);
