@@ -210,7 +210,7 @@
 
         function fetchDoctorInformation() {
             const urlParams = new URLSearchParams(window.location.search);
-            const doctorId = urlParams.get('id');
+            const doctorId = urlParams.get('doctorId');
 
             fetch(`/retrieveDoctor/${doctorId}`)
                 .then(response => {
