@@ -202,7 +202,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const doctorId = urlParams.get('id'); // Retrieve doctorId from URL parameter
 
-        fetch(`/retrieveDoctor?id=${doctorId}`) // Fetch doctor data using the retrieved ID
+        fetch(`/retrieveDoctor?doctorId=${doctorId}`) // Fetch doctor data using the retrieved ID
             .then(response => response.json())
             .then(data => {
                 // Populate form fields
@@ -259,7 +259,7 @@
                 formData.forEach((value, key) => jsonData[key] = value);
                 const json = JSON.stringify(jsonData);
                 // Send updated data to the server via JSON
-                fetch(`/updateDoctor?id=${doctorId}`, {
+                fetch(`/updateDoctor?doctorId=${doctorId}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: json
