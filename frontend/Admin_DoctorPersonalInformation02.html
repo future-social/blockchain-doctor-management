@@ -1,283 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Personal Information</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            padding-left: 50px;
-        }
-        .big-container {
-            width: 80%;
-            margin: 0 auto 25px;
-            border: 2px solid #d3d3d3;
-            border-radius: 10px;
-            padding: 20px;
-        }
-        .circle-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            background-color: #ccc; /* Placeholder color */
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        padding-left: 50px;
+      }
+      .big-container {
+        width: 80%;
+        margin: 0 auto 25px;
+        border: 2px solid #d3d3d3;
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .circle-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        background-color: #ccc; /* Placeholder color */
+      }
 
-        .circle-image img {
-            width: 120px;
-            height: 120px;
-        }
+      .circle-image img {
+        width: 120px;
+        height: 120px;
+      }
 
-        .register-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+      .register-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-        .register-container label {
-            font-weight: bold;
-        }
+      .register-container label {
+        font-weight: bold;
+      }
 
-        .register-container .row {
-            display: flex;
-            gap: 10px;
-        }
+      .register-container .row {
+        display: flex;
+        gap: 10px;
+      }
 
-        .register-container .column {
-            flex: 1;
-            padding: 5px;
-        }
+      .register-container .column {
+        flex: 1;
+        padding: 5px;
+      }
 
-        .register-container input[type="text"],
-        .register-container input[type="tel"],
-        .register-container input[type="email"] {
-            width: 95%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .register-container input[type="text"][name="body_granting_qualifications"] {
-            width: 97.5%; 
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .register-container input[type="radio"] {
-            margin: 5px;
-        }
+      .register-container input[type="text"],
+      .register-container input[type="tel"],
+      .register-container input[type="email"] {
+        width: 95%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .register-container
+        input[type="text"][name="body_granting_qualifications"] {
+        width: 97.5%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .register-container input[type="radio"] {
+        margin: 5px;
+      }
 
-        .register-container button {
-            padding: 10px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100px;
-            margin: auto 10px;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .info-label {
-            font-weight: bold;
-        }
-        .qualification-container {
-            border: 3px solid #f3f3f3; 
-            padding: 10px;
-            margin: 20px auto;
-            width: 90%;
-        }
-        .qualification-header {
-            text-align: center;
-        }
-        .document-link {
-            text-align: left;
-            margin-top: 20px;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+      .register-container button {
+        padding: 10px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100px;
+        margin: auto 10px;
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .info-label {
+        font-weight: bold;
+      }
+      .qualification-container {
+        border: 3px solid #f3f3f3;
+        padding: 10px;
+        margin: 20px auto;
+        width: 90%;
+      }
+      .qualification-header {
+        text-align: center;
+      }
+      .document-link {
+        text-align: left;
+        margin-top: 20px;
+      }
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
 
-        .register-container button.edit, .register-container button.submit {
-            background-color: #CA1F7B; 
-            color: white;
-        }
+      .register-container button.edit,
+      .register-container button.submit {
+        background-color: #ca1f7b;
+        color: white;
+      }
 
-        .register-container button.edit:hover , .register-container button.submit:hover {
-            background-color: #8E004A; 
-        }
+      .register-container button.edit:hover,
+      .register-container button.submit:hover {
+        background-color: #8e004a;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="headerContainer"></div>
 
     <h1>Doctor Personal Information</h1>
     <div class="big-container">
-    <div class="register-container">
+      <div class="register-container">
         <form id="registrationForm">
-        <div class="circle-image">
-            <img src="portrait.png" alt="doctor portrait">
-        </div>
-            <div class="row">
-                <div class="column">
-                    <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required disabled>
-                </div>
-                <div class="column">
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required disabled>
-                </div>
+          <div class="circle-image">
+            <img src="portrait.png" alt="doctor portrait" />
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="first_name">First Name:</label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                required
+                disabled
+              />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="ic_no">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_no" name="ic_no" required disabled>
-                </div>
-                <div class="column">
-                    <label>Gender:</label>
-                    <div>
-                        <input type="radio" id="male" name="gender" value="male" required disabled>
-                        <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required disabled>
-                        <label for="female">Female</label>
-                    </div>
-                </div>
+            <div class="column">
+              <label for="last_name">Last Name:</label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                required
+                disabled
+              />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="doctor_id">Doctor ID:</label>
-                    <input type="text" id="doctor_id" name="doctor_id" required disabled>
-                </div>
-                <div class="column">
-                    <label for="birth_date">DOB:</label>
-                    <input type="text" id="birth_date" name="birth_date" required disabled>
-                </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="ic_no">IC No./ Passport Number:</label>
+              <input type="text" id="ic_no" name="ic_no" required disabled />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="mobile_number">Mobile Number:</label>
-                    <input type="tel" id="mobile_number" name="mobile_number" required disabled>
-                </div>
-                <div class="column">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required disabled>
-                </div>
+            <div class="column">
+              <label>Gender:</label>
+              <div>
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  value="male"
+                  required
+                  disabled
+                />
+                <label for="male">Male</label>
+                <input
+                  type="radio"
+                  id="female"
+                  name="gender"
+                  value="female"
+                  required
+                  disabled
+                />
+                <label for="female">Female</label>
+              </div>
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" required disabled>
-                </div>
-                <div class="column">
-                    <label for="specialisation">Specialisation:</label>
-                    <input type="text" id="specialisation" name="specialisation" required disabled>
-                </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="doctor_id">Doctor ID:</label>
+              <input
+                type="text"
+                id="doctor_id"
+                name="doctor_id"
+                required
+                disabled
+              />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="degree">Degree:</label>
-                    <input type="text" id="degree" name="degree" required disabled>
-                </div>
-                <div class="column">
-                    <label for="recognize_date">Recognized Date:</label>
-                    <input type="text" id="recognize_date" name="recognize_date" required disabled>
-                </div>
+            <div class="column">
+              <label for="birth_date">DOB:</label>
+              <input
+                type="text"
+                id="birth_date"
+                name="birth_date"
+                required
+                disabled
+              />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="country">Country:</label>
-                    <input type="text" id="country" name="country" required disabled>
-                </div>
-                <div class="column">
-                    <label for="institution">Institution:</label>
-                    <input type="text" id="institution" name="institution" required disabled>
-                </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="mobile_number">Mobile Number:</label>
+              <input
+                type="tel"
+                id="mobile_number"
+                name="mobile_number"
+                required
+                disabled
+              />
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="body_granting_qualifications">Body Granting Qualifications:</label>
-                    <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required disabled>
-                </div>
+            <div class="column">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required disabled />
             </div>
-            
-            <div class="button-container">
-                <a id="editLink" href="#"> <!-- Set href to "#" initially -->
-                    <button type="button" class="edit">Edit</button>
-                </a>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="address">Address:</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                required
+                disabled
+              />
             </div>
+            <div class="column">
+              <label for="specialisation">Specialisation:</label>
+              <input
+                type="text"
+                id="specialisation"
+                name="specialisation"
+                required
+                disabled
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="degree">Degree:</label>
+              <input type="text" id="degree" name="degree" required disabled />
+            </div>
+            <div class="column">
+              <label for="recognize_date">Recognized Date:</label>
+              <input
+                type="text"
+                id="recognize_date"
+                name="recognize_date"
+                required
+                disabled
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="country">Country:</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                required
+                disabled
+              />
+            </div>
+            <div class="column">
+              <label for="institution">Institution:</label>
+              <input
+                type="text"
+                id="institution"
+                name="institution"
+                required
+                disabled
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label for="body_granting_qualifications"
+                >Body Granting Qualifications:</label
+              >
+              <input
+                type="text"
+                id="body_granting_qualifications"
+                name="body_granting_qualifications"
+                required
+                disabled
+              />
+            </div>
+          </div>
+
+          <div class="button-container">
+            <a id="editLink" href="#">
+              <!-- Set href to "#" initially -->
+              <button type="button" class="edit">Edit</button>
+            </a>
+          </div>
         </form>
-    </div>
+      </div>
     </div>
     <div id="footerContainer"></div>
 
     <script>
-        fetch("Admin_Header.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("headerContainer").innerHTML = html;
-          });
+      fetch("Admin_Header.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("headerContainer").innerHTML = html;
+        });
 
-        fetch("Footer.html")
+      fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
-          document.getElementById("year").textContent = new Date().getFullYear();
+          document.getElementById("year").textContent =
+            new Date().getFullYear();
         });
 
-       // Fetch doctor information and populate form fields
-    document.addEventListener("DOMContentLoaded", function () {
+      // Fetch doctor information and populate form fields
+      document.addEventListener("DOMContentLoaded", function () {
         fetchDoctorInformation();
 
         function fetchDoctorInformation() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const doctorId = urlParams.get('doctorId');
+          const urlParams = new URLSearchParams(window.location.search);
+          const doctorId = urlParams.get("doctorId");
 
-            // Update edit link href
-            document.getElementById("editLink").href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
+          // Update edit link href
+          document.getElementById(
+            "editLink"
+          ).href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
 
-            fetch(`/retrieveDoctor/${doctorId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    populateForm(data);
-                    //populateQualifications(data.qualifications);
-                    
-                })
-                .catch(error => {
-                    console.error("Error fetching doctor information:", error);
-                });
+          fetch(`/retrieveDoctor/${doctorId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              populateForm(data);
+              //populateQualifications(data.qualifications);
+            })
+            .catch((error) => {
+              console.error("Error fetching doctor information:", error);
+            });
         }
 
         function populateForm(data) {
-            // Populate form fields with the retrieved data
-            const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation", "degree", "recognize_date","country", "institution","body_granting_qualifications"];
-            formFields.forEach(field => {
-                document.getElementById(field).value = data[field];
-            });
+          const bufferData = data;
 
-            // Enable form fields for editing
-            formFields.forEach(field => {
-                document.getElementById(field).disabled = false;
-            });
+          // convert Buffer to Uint8Array
+          const uint8Array = new Uint8Array(bufferData.data);
 
-            // Enable gender radio buttons
-            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
-            genderRadioButtons.forEach(radio => {
-                radio.disabled = false;
-            });
+          // convert Uint8Array to string
+          const jsonString = String.fromCharCode.apply(null, uint8Array);
+
+          // parse JSON to JavaScript object
+          const jsonData = JSON.parse(jsonString);
+
+          // Populate form fields with the retrieved data
+          const formFields = [
+            "first_name",
+            "last_name",
+            "ic_no",
+            "doctor_id",
+            "birth_date",
+            "mobile_number",
+            "email",
+            "address",
+            "specialisation",
+            "degree",
+            "recognize_date",
+            "country",
+            "institution",
+            "body_granting_qualifications",
+          ];
+          formFields.forEach((field) => {
+            document.getElementById(field).value = jsonData[field];
+          });
+
+          // Enable form fields for editing
+          formFields.forEach((field) => {
+            document.getElementById(field).disabled = false;
+          });
+
+          // Enable gender radio buttons
+          const genderRadioButtons = document.querySelectorAll(
+            'input[type="radio"][name="gender"]'
+          );
+          genderRadioButtons.forEach((radio) => {
+            radio.disabled = false;
+          });
         }
 
         /*function populateQualifications(qualifications) {
@@ -305,8 +421,7 @@
                 qualificationContainer.appendChild(qualificationDiv);
             });
         }*/
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
