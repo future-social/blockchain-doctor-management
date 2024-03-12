@@ -387,14 +387,16 @@
             document.getElementById(field).disabled = false;
           });
 
-          // Enable gender radio buttons
-          const genderRadioButtons = document.querySelectorAll(
-            'input[type="radio"][name="gender"]'
-          );
-          genderRadioButtons.forEach((radio) => {
-            radio.disabled = false;
-          });
-        }
+          const gender = jsonData.gender; // Retrieve gender from jsonData
+            // Enable gender radio buttons based on retrieved gender
+            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
+            genderRadioButtons.forEach((radio) => {
+              if (radio.value === gender) {
+                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+              }
+              radio.disabled = false; // Enable the radio button
+            });
+          }
 
         /*function populateQualifications(qualifications) {
             const qualificationContainer = document.getElementById("qualificationContainer");
