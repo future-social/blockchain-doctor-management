@@ -66,9 +66,9 @@ router.get('/retrieveDoctor/:doctorId', async (req, res) => {
 // Route to update doctor data
 router.put('/updateDoctor/:doctorId', async (req, res) => {
     try {
-        // const doctorId = req.params.doctorId;
+        const doctorId = req.params.doctorId;
         const updatedData = req.body;
-        const result = await doctorController.updateDoctor(DMSAdminId, updatedData);
+        const result = await doctorController.updateDoctor(DMSAdminId, doctorId, updatedData);
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
