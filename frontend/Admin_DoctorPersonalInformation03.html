@@ -80,7 +80,11 @@
         .information-container input[type="radio"] {
             margin: 5px;
         }
-
+        .information-container input[type="text"][name="body_granting_qualifications"] {
+            width: 97.5%; 
+            padding: 8px;
+            border-radius: 5px;
+        }
         .information-container button {
             padding: 10px 10px;
             border: none;
@@ -172,6 +176,32 @@
                   <input type="text" id="specialisation" name="specialisation" required>
               </div>
           </div>
+          <div class="row">
+            <div class="column">
+                <label for="degree">Degree:</label>
+                <input type="text" id="degree" name="degree" required>
+            </div>
+            <div class="column">
+                <label for="recognize_date">Recognized Date:</label>
+                <input type="text" id="recognize_date" name="recognize_date" required >
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
+            </div>
+            <div class="column">
+                <label for="institution">Institution:</label>
+                <input type="text" id="institution" name="institution" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="body_granting_qualifications">Body Granting Qualifications:</label>
+                <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required>
+            </div>
+        </div>
           <div class="qualification-container" id="qualificationContainer">
             <!-- Qualification details will be inserted here dynamically -->
         </div>
@@ -200,7 +230,7 @@
     
         // Fetch doctor data and populate form
         const urlParams = new URLSearchParams(window.location.search);
-        const doctorId = urlParams.get('id'); // Retrieve doctorId from URL parameter
+        const doctorId = urlParams.get('doctorId'); // Retrieve doctorId from URL parameter
 
         fetch(`/retrieveDoctor/${doctorId}`) // Fetch doctor data using the retrieved ID
             .then(response => response.json())
