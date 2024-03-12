@@ -159,9 +159,6 @@
                 return response.json();
             })
             .then(data => {
-                if (!Array.isArray(data)) {
-                    throw new Error('Data is not an array');
-                }
                 const tableBody = document.querySelector("#doctorTable tbody");
                 if (!data || data.length === 0) {
                     tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
@@ -190,14 +187,14 @@
                 viewImages.forEach(image => {
                     image.addEventListener('click', () => {
                         const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation02.html?id=${doctorId}`;
+                        window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
                     });
                 });
 
                 editImages.forEach(image => {
                     image.addEventListener('click', () => {
                         const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation03.html?id=${doctorId}`;
+                        window.location.href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
                     });
                 });
 
@@ -220,7 +217,7 @@
 
         // Function to delete doctor data
         function deleteDoctor(doctorId) {
-            fetch(`/deleteDoctor?id=${doctorId}`, {
+            fetch(`/deleteDoctor?doctorId=${doctorId}`, {
                 method: 'DELETE'
             })
             .then(response => {
