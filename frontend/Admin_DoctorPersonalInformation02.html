@@ -382,10 +382,10 @@
             document.getElementById(field).value = jsonData[field];
           });
 
-          // Enable form fields for editing
+          /*// Enable form fields for editing
           formFields.forEach((field) => {
             document.getElementById(field).disabled = false;
-          });
+          });*/
 
           const gender = jsonData.gender; // Retrieve gender from jsonData
             // Enable gender radio buttons based on retrieved gender
@@ -394,7 +394,7 @@
               if (radio.value === gender) {
                 radio.checked = true; // Check the radio button that corresponds to the retrieved gender
               }
-              radio.disabled = false; // Enable the radio button
+              //radio.disabled = false; // Enable the radio button
             });
           }
 
