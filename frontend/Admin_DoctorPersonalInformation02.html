@@ -61,7 +61,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
+        .register-container input[type="text"][name="body_granting_qualifications"] {
+            width: 97.5%; 
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
         .register-container input[type="radio"] {
             margin: 5px;
         }
@@ -177,6 +182,32 @@
                     <input type="text" id="specialisation" name="specialisation" required disabled>
                 </div>
             </div>
+            <div class="row">
+                <div class="column">
+                    <label for="degree">Degree:</label>
+                    <input type="text" id="degree" name="degree" required disabled>
+                </div>
+                <div class="column">
+                    <label for="recognize_date">Recognized Date:</label>
+                    <input type="text" id="recognize_date" name="recognize_date" required disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required disabled>
+                </div>
+                <div class="column">
+                    <label for="institution">Institution:</label>
+                    <input type="text" id="institution" name="institution" required disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="body_granting_qualifications">Body Granting Qualifications:</label>
+                    <input type="text" id="body_granting_qualifications" name="body_granting_qualifications" required disabled>
+                </div>
+            </div>
             <div class="qualification-container" id="qualificationContainer">
                 <!-- Qualification details will be inserted here dynamically -->
             </div>
@@ -230,7 +261,7 @@
 
         function populateForm(data) {
             // Populate form fields with the retrieved data
-            const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation"];
+            const formFields = ["first_name", "last_name", "ic_no", "doctor_id", "birth_date", "mobile_number", "email", "address", "specialisation", "degree", "recognize_date","country", "institution","body_granting_qualifications"];
             formFields.forEach(field => {
                 document.getElementById(field).value = data[field];
             });
