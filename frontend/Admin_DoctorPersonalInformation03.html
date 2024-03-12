@@ -385,41 +385,39 @@
 
             // Handle form submission
             document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form submission
-            // Validate form fields
-            const form = this;
-            if (!form.checkValidity()) {
-                window.alert("Please fill in all required fields.");
-                return;
-            }
-            // Confirmation dialog
-            const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
-            if (confirmation) {
-                // Gather updated data
-                const urlParams = new URLSearchParams(window.location.search);
-                const DoctorId = urlParams.get("doctorId");
-                const doctorId = encodeURIComponent(DoctorId);
-                const formData = new FormData(form);
-                const jsonData = {};
-                formData.forEach((value, key) => jsonData[key] = value);
-                const json = JSON.stringify(jsonData);
-                // Send updated data to the server via JSON
-                fetch(`/updateDoctor/${doctorId}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: json
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.json();
-                })
-                .then(data => {
-                    window.alert("Data updated successfully.");
-                    window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
-                })
-                .catch(error => console.error("Error updating data:", error));
-            }
-        });
+                event.preventDefault(); // Prevent form submission
+                // Validate form fields
+                const form = this;
+                if (!form.checkValidity()) {
+                    window.alert("Please fill in all required fields.");
+                    return;
+                }
+                // Confirmation dialog
+                const confirmation = window.confirm("Please confirm:\n\nThe old data will be removed, and the changes will be saved as the latest information.");
+                if (confirmation) {
+                    // Gather updated data
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const DoctorId = urlParams.get("doctorId");
+                    const doctorId = encodeURIComponent(DoctorId);
+                    const formData = new FormData(form);
+                    const jsonData = {};
+                    formData.forEach((value, key) => jsonData[key] = value);
+                    // Send updated data to the server via AJAX
+                    $.ajax({
+                        type: "PUT",
+                        url: `/updateDoctor/${doctorId}`,
+                        contentType: "application/json",
+                        data: JSON.stringify(jsonData),
+                        success: function(data) {
+                            window.alert("Data updated successfully.");
+                            window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating data:", error);
+                        }
+                    });
+                }
+            });
 
         // Initialize datepicker
         $(function() {
