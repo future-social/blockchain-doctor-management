@@ -315,7 +315,8 @@
 
         function fetchDoctorInformation() {
           const urlParams = new URLSearchParams(window.location.search);
-          const doctorId = urlParams.get("doctorId");
+          const DoctorId = urlParams.get("doctorId");
+          const doctorId = encodeURIComponent(DoctorId);// Encode the doctor ID
 
           fetch(`/retrieveDoctor/${doctorId}`)
             .then((response) => {
@@ -396,7 +397,8 @@
             if (confirmation) {
                 // Gather updated data
                 const urlParams = new URLSearchParams(window.location.search);
-                const doctorId = urlParams.get("doctorId");
+                const DoctorId = urlParams.get("doctorId");
+                const doctorId = encodeURIComponent(DoctorId);
                 const formData = new FormData(form);
                 const jsonData = {};
                 formData.forEach((value, key) => jsonData[key] = value);
