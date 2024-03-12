@@ -10,7 +10,8 @@ router.post("/createDoctor", async (req, res) => {
     const doctorData = req.body;
     const result = await doctorController.createDoctor(doctorData, DMSAdminId);
     registerDoctor.registerDoctorUser(doctorData["doctor_id"]);
-    res.json(result);
+    //res.json(result);
+    res.json({ success: true, message: "Doctor data created successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
