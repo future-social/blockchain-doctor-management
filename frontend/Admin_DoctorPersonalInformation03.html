@@ -30,32 +30,26 @@
         margin: 0 auto 20px;
         background-color: #ccc; /* Placeholder color */
       }
-
       .circle-image img {
         width: 120px;
         height: 120px;
       }
-
       .register-container {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
-
       .register-container label {
         font-weight: bold;
       }
-
       .register-container .row {
         display: flex;
         gap: 10px;
       }
-
       .register-container .column {
         flex: 1;
         padding: 5px;
       }
-
       .register-container input[type="text"],
       .register-container input[type="tel"],
       .register-container input[type="email"] {
@@ -74,7 +68,6 @@
       .register-container input[type="radio"] {
         margin: 5px;
       }
-
       .register-container button {
         padding: 10px 10px;
         border: none;
@@ -110,13 +103,11 @@
         justify-content: center;
         margin-top: 20px;
       }
-
       .register-container button.edit,
       .register-container button.save {
         background-color: #ca1f7b;
         color: white;
       }
-
       .register-container button.edit:hover,
       .register-container button.save:hover {
         background-color: #8e004a;
@@ -125,7 +116,6 @@
   </head>
   <body>
     <div id="headerContainer"></div>
-
     <h1>Doctor Personal Information</h1>
     <div class="big-container">
       <div class="register-container">
@@ -284,23 +274,19 @@
               />
             </div>
           </div>
-
         <div class="button-container">
             <button type="submit" class="save">Save</button>
         </div>
-
         </form>
       </div>
     </div>
     <div id="footerContainer"></div>
-
     <script>
       fetch("Admin_Header.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("headerContainer").innerHTML = html;
         });
-
       fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
@@ -308,7 +294,6 @@
           document.getElementById("year").textContent =
             new Date().getFullYear();
         });
-
       // Fetch doctor information and populate form fields
       document.addEventListener("DOMContentLoaded", function () {
         fetchDoctorInformation();
@@ -333,19 +318,14 @@
               console.error("Error fetching doctor information:", error);
             });
         }
-
         function populateForm(data) {
           const bufferData = data;
-
           // convert Buffer to Uint8Array
           const uint8Array = new Uint8Array(bufferData.data);
-
           // convert Uint8Array to string
           const jsonString = String.fromCharCode.apply(null, uint8Array);
-
           // parse JSON to JavaScript object
           const jsonData = JSON.parse(jsonString);
-
           // Populate form fields with the retrieved data
           const formFields = [
             "first_name",
@@ -366,12 +346,10 @@
           formFields.forEach((field) => {
             document.getElementById(field).value = jsonData[field];
           });
-
           /*// Enable form fields for editing
           formFields.forEach((field) => {
             document.getElementById(field).disabled = false;
           });*/
-
           const gender = jsonData.gender; // Retrieve gender from jsonData
             // Enable gender radio buttons based on retrieved gender
             const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
@@ -382,43 +360,43 @@
               //radio.disabled = false; // Enable the radio button
             });
           }
-
             // Handle form submission
             document.getElementById("registrationForm").addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent form submission
-                // Validate form fields
-                const form = this;
-                if (!form.checkValidity()) {
-                    window.alert("Please fill in all required fields.");
-                    return;
-                }
-                // Confirmation dialog
-                const confirmation = window.confirm("Please confirm:\n\nThe old data will be removed, and the changes will be saved as the latest information.");
-                if (confirmation) {
-                    // Gather updated data
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const DoctorId = urlParams.get("doctorId");
-                    const doctorId = encodeURIComponent(DoctorId);
-                    const formData = new FormData(form);
-                    const jsonData = {};
-                    formData.forEach((value, key) => jsonData[key] = value);
-                    // Send updated data to the server via AJAX
-                    $.ajax({
-                        type: "PUT",
-                        url: `/updateDoctor/${doctorId}`,
-                        contentType: "application/json",
-                        data: JSON.stringify(jsonData),
-                        success: function(data) {
-                            window.alert("Data updated successfully.");
-                            window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error updating data:", error);
-                        }
-                    });
-                }
-            });
-
+            event.preventDefault(); // Prevent form submission
+            // Validate form fields
+            const form = this;
+            if (!form.checkValidity()) {
+                window.alert("Please fill in all required fields.");
+                return;
+            }
+            // Confirmation dialog
+            const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
+            if (confirmation) {
+                // Gather updated data
+                const urlParams = new URLSearchParams(window.location.search);
+                const DoctorId = urlParams.get("doctorId");
+                const doctorId = encodeURIComponent(DoctorId);
+                const formData = new FormData(form);
+                const jsonData = {};
+                formData.forEach((value, key) => jsonData[key] = value);
+                const json = JSON.stringify(jsonData);
+                // Send updated data to the server via JSON
+                fetch(`/updateDoctor/${doctorId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: json
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    window.alert("Data updated successfully.");
+                    window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
+                })
+                .catch(error => console.error("Error updating data:", error));
+            }
+        });
         // Initialize datepicker
         $(function() {
             $("#birth_date, #recognize_date").datepicker({
@@ -429,7 +407,6 @@
                 maxDate: new Date(),
             });
         });
-
       });
     </script>
   </body>
