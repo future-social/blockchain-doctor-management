@@ -52,20 +52,17 @@ async function createDoctor(doctorData, DMSAdminId) {
       doctorData['last_name'],
       doctorData['ic_no'],
       doctorData['gender'],
-      //doctorData['birth_date'],
       formattedBirthDate,
       doctorData['mobile_number'],
       doctorData['email'],
       doctorData['address'],
-      doctorData['specialisation'],
-    //   JSON.stringify(doctorData)
       doctorData['specialisation'],
       doctorData['degree'],
       formattedRecognizeDate,
       doctorData['country'],
       doctorData['institution'],
       doctorData['body_granting_qualifications'],
-      doctorData['certificate']
+      // doctorData['certificate']
     );
     console.log("Doctor data created successfully");
 
