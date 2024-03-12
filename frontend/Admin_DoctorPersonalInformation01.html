@@ -187,14 +187,14 @@
                 viewImages.forEach(image => {
                     image.addEventListener('click', () => {
                         const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation02.html/${doctorId}`;
+                        window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
                     });
                 });
 
                 editImages.forEach(image => {
                     image.addEventListener('click', () => {
                         const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation03.html/${doctorId}`;
+                        window.location.href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
                     });
                 });
 
@@ -217,7 +217,7 @@
 
         // Function to delete doctor data
         function deleteDoctor(doctorId) {
-            fetch(`/deleteDoctor/${doctorId}`, {
+            fetch(`/deleteDoctor?doctorId=${doctorId}`, {
                 method: 'DELETE'
             })
             .then(response => {
