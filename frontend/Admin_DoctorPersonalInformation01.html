@@ -217,7 +217,7 @@
 
         // Function to delete doctor data
         function deleteDoctor(doctorId) {
-            fetch(`/deleteDoctor?doctorId=${doctorId}`, {
+            fetch(`/deleteDoctor/${doctorId}`, {
                 method: 'DELETE'
             })
             .then(response => {
