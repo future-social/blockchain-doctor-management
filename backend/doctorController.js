@@ -1,7 +1,7 @@
 const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
-const moment = require('moment');
+const moment = require("moment");
 
 async function createDoctor(doctorData, DMSAdminId) {
   try {
@@ -41,27 +41,33 @@ async function createDoctor(doctorData, DMSAdminId) {
     const contract = network.getContract("basic");
 
     // Format Date Parameters
-    const formattedBirthDate = moment(doctorData['birth_date'], 'YYYY-MM-DD').format(); 
-    const formattedRecognizeDate = moment(doctorData['recognize_date'], 'YYYY-MM-DD').format(); 
+    const formattedBirthDate = moment(
+      doctorData["birth_date"],
+      "YYYY-MM-DD"
+    ).format();
+    const formattedRecognizeDate = moment(
+      doctorData["recognize_date"],
+      "YYYY-MM-DD"
+    ).format();
 
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
       "CreateDoctor",
-      doctorData['doctor_id'],
-      doctorData['first_name'],
-      doctorData['last_name'],
-      doctorData['ic_no'],
-      doctorData['gender'],
+      doctorData["doctor_id"],
+      doctorData["first_name"],
+      doctorData["last_name"],
+      doctorData["ic_no"],
+      doctorData["gender"],
       formattedBirthDate,
-      doctorData['mobile_number'],
-      doctorData['email'],
-      doctorData['address'],
-      doctorData['specialisation'],
-      doctorData['degree'],
+      doctorData["mobile_number"],
+      doctorData["email"],
+      doctorData["address"],
+      doctorData["specialisation"],
+      doctorData["degree"],
       formattedRecognizeDate,
-      doctorData['country'],
-      doctorData['institution'],
-      doctorData['body_granting_qualifications'],
+      doctorData["country"],
+      doctorData["institution"],
+      doctorData["body_granting_qualifications"]
       // doctorData['certificate']
     );
     console.log("Doctor data created successfully");
@@ -201,25 +207,36 @@ async function updateDoctor(userId, doctorId, updatedData) {
     // Get the network and contract
     const network = await gateway.getNetwork("medicpro");
     const contract = network.getContract("basic");
+
+    // Format Date Parameters
+    const formattedBirthDate = moment(
+      doctorData["birth_date"],
+      "YYYY-MM-DD"
+    ).format();
+    const formattedRecognizeDate = moment(
+      doctorData["recognize_date"],
+      "YYYY-MM-DD"
+    ).format();
+
     // Submit the transaction to update doctor data
     await contract.submitTransaction(
       "UpdateDoctor",
       doctorId,
-      updatedData['doctor_id'],
-      updatedData['first_name'],
-      updatedData['last_name'],
-      updatedData['ic_no'],
-      updatedData['gender'],
+      updatedData["doctor_id"],
+      updatedData["first_name"],
+      updatedData["last_name"],
+      updatedData["ic_no"],
+      updatedData["gender"],
       formattedBirthDate,
-      updatedData['mobile_number'],
-      updatedData['email'],
-      updatedData['address'],
-      updatedData['specialisation'],
-      updatedData['degree'],
+      updatedData["mobile_number"],
+      updatedData["email"],
+      updatedData["address"],
+      updatedData["specialisation"],
+      updatedData["degree"],
       formattedRecognizeDate,
-      updatedData['country'],
-      updatedData['institution'],
-      updatedData['body_granting_qualifications'],
+      updatedData["country"],
+      updatedData["institution"],
+      updatedData["body_granting_qualifications"]
       // updatedData['certificate']
     );
     console.log("Doctor data updated successfully");
