@@ -2,14 +2,7 @@ const express = require("express");
 const router = express.Router();
 const doctorController = require("./doctorController");
 const registerDoctor = require("./registerDoctor");
-var DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
-
-// const app = express();
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
+const DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 
 // Route to create a new doctor
 router.post("/createDoctor", async (req, res) => {
@@ -154,113 +147,5 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
 //         res.status(500).json({ success: false, message: error.message });
 //     }
 // });
-
-
-// REG & LOGIN
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://meisuenn:password%40123@cluster0.krxkuxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-// Create a User model
-const User = mongoose.model('users', {
-  username: String,
-  password: String,
-});
-
-// Handle registration
-router.post('/register', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    // Hash the password before saving to the database
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const user = new User({ username, password: hashedPassword });
-    
-    // Log user information
-    console.log('User attempting to register:', user);
-
-    await user.save();
-
-    // Log successful registration
-    console.log('User registered successfully:', user);
-
-    //res.send('Registration successful!');
-    res.redirect('/LoginPage.html');
-  } catch (error) {
-    // Log registration error
-    console.error('Error during registration:', error);
-    console.log(res.statusCode);
-    res.status(500).send('Error during registration.');
-  }
-});
-
-// Handle login
-router.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    /*
-    if (user && await bcrypt.compare(password, user.password)) {
-      DMSAdminId = username; 
-      res.redirect('/Doctor_PersonalInformation02.html');  */
-    if (user && await bcrypt.compare(password, user.password)) {
-      if (username.includes("adm")){
-        DMSAdminId = username;
-        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);
-      }
-      else if (username.includes("doc")){
-        DMSAdminId = username;
-        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);     
-      } 
-      else{
-      res.status(401).send('Invalid credentials.');
-      }
-    }
-  } catch (error) {
-    res.status(500).send('Error during login.');
-  }
-});
-
-// Handle change password
-router.post('/changepassword', async (req, res) => {
-  try {
-    const { username, oldPassword, newPassword, confirmNewPassword } = req.body;
-    console.log('Received data:', { username, oldPassword, newPassword, confirmNewPassword });
-
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      return res.status(404).send('User not found.');
-    }
-
-    if (!(await bcrypt.compare(oldPassword, user.password))) {
-      return res.status(401).send('Invalid old password.');
-    }
-
-    if (newPassword !== confirmNewPassword) {
-      return res.status(400).send('New password and confirm new password do not match.');
-    }
-
-    // Ensure newPassword and user.password are valid strings
-    const isValidString = (str) => typeof str === 'string' && str.trim().length > 0;
-
-    if (!isValidString(newPassword) || !isValidString(user.password)) {
-      return res.status(500).send('Invalid data for password change.');
-    }
-
-    // Hash the new password before updating
-    user.password = await bcrypt.hash(newPassword, 10);
-    await user.save();
-
-    // Send a redirect response to the login page
-    res.redirect('/login');
-  } catch (error) {
-    console.error('Error during password change:', error);
-    res.status(500).send(`Error during password change: ${error.message}`);
-  }
-});
 
 module.exports = router;
