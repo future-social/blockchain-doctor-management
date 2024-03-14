@@ -49,10 +49,6 @@
         input[type="submit"]:hover {
             background-color: #8E004A;
         }
-        .change-password {
-            margin-top: 8px;
-	    font-size:12px;
-        }
     </style>
 </head>
 <body>
@@ -60,12 +56,70 @@
         <img src="medicpro.jpg" alt="Photo">
     </div>
     <h2 style="text-align: center;">Login</h2>
-    <form action="/login" method="POST">
+    <form id="loginForm" onsubmit="login(event)">
         <div class="login-container">
-            <input type="text" name="username" placeholder="Username" required><br>
-            <input type="password" name="password" placeholder="Password" required><br><br>
+            <input type="text" id="username" name="username" placeholder="Username" required><br>
+            <input type="password" id="password" name="password" placeholder="Password" required><br><br>
             <input type="submit" value="Login">
         </div>
     </form>
+
+    <script>
+        function login(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get username and password from the form
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Create an object with user credentials
+        const credentials = {
+            username: username,
+            password: password
+        };
+
+        // Send a POST request to the backend for authentication
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        })
+        .then(response => {
+            if (response.ok) {
+                // Parse the response JSON
+                return response.json();
+            } else {
+                // Handle non-200 status codes (e.g., authentication failure)
+                throw new Error('Invalid username or password. Please try again.');
+            }
+        })
+        .then(data => {
+            // Check the role received from the backend
+            if (data.role === 'admin') {
+                // Redirect to admin portal
+                window.location.href = 'Admin_Home.html';
+            } else if (data.role === 'doctor') {
+                // Redirect to doctor portal
+                window.location.href = 'Doctor_Home.html';
+            } else {
+                // Handle unexpected role (should not occur if backend is properly implemented)
+                throw new Error('Invalid role received from the server.');
+            }
+        })
+        .catch(error => {
+            // Display more specific error messages based on the error message received from the server
+            if (error.message.includes('username')) {
+                alert('Invalid username. Please check your username and try again.');
+            } else if (error.message.includes('password')) {
+                alert('Invalid password. Please check your password and try again.');
+            } else {
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    }
+
+    </script>
 </body>
 </html>
