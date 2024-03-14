@@ -85,17 +85,26 @@
             justify-content: center;
             margin-top: 20px;
         }
-        .register-container button.submit, .register-container button.clear, .register-container button.back {
+        .register-container button.submit, .register-container button.clear, .register-container button.next {
             background-color: #CA1F7B; 
             color: white;
         }
-        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.back:hover {
+        .register-container button.submit:hover, .register-container button.clear:hover, .register-container button.next:hover {
             background-color: #8E004A; 
+        }
+        #alertMessage {
+            background-color: #8E004A; 
+            color: white;
+            text-align: center; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div id="headerContainer"></div>
+     <!-- Alert message container (<div id="alertMessage"></div>)-->
     <h1>Doctor Registration</h1>
     <div class="big-container">
     <div class="register-container">
@@ -186,7 +195,7 @@
         </div>
             <div class="button-container">
                     <button type="button" class="clear">Clear</button>
-                    <button type="submit" class="submit">Submit</button>
+                    <button type="button" class="next">Next</button>
             </div>
         </form>
     </div>
@@ -206,9 +215,42 @@
             $('#footerContainer').html(html);
             $('#year').text(new Date().getFullYear());
         });
+
+        // Event listener for Next button
+    $('.next').click(function(event) {
+        // Prevent default form submission behavior
+        event.preventDefault();
+
+        // Perform validation
+        var isValid = true;
+        $('.register-container input[required]').each(function() {
+            if ($(this).val().trim() === '') {
+                isValid = false;
+                return false; // Exit the loop if any required field is empty
+            }
+        });
+
+        // Check if gender radio buttons are selected
+        if (!$('input[name="gender"]:checked').val()) {
+            isValid = false;
+        }
+
+        // If all required fields are filled, proceed to the next page
+        if (isValid) {
+            // Serialize form data
+            var page01Data = $('#registrationForm').serializeArray();
+            // Store serialized form data in sessionStorage
+            sessionStorage.setItem('page01Data', JSON.stringify(page01Data));
+            // Redirect to the next page
+            window.location.href = "Admin_DoctorRegistration03.html";
+        } else {
+            // Display an alert message or handle the validation error in another way
+            alert("Please fill in all required fields.");
+        }
+    });
         
         // Event listener for form submission
-        $('#registrationForm').submit(function(event) {
+        /*$('#registrationForm').submit(function(event) {
             event.preventDefault(); // Prevent default form submission
             // Convert serialized form data to JSON object
             var formData = {};
@@ -223,11 +265,13 @@
                 contentType: 'application/json', // Set content type
                 success: function(response) {
                     console.log('Doctor data sent successfully');
-                    window.alert("Register successfully.");
+                    window.alert("Registration successful.");
+                    // Show success message
+                    //$('#alertMessage').text('Registration successful.');
                     // Clear the form fields
-                    $('#registrationForm')[0].reset();
+                    //$('#registrationForm')[0].reset();
                     // Optionally, handle the server response here
-                    //window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
+                    window.location.href = "Admin_DoctorRegistration03.html"; // Redirect to another page
                 },
                 error: function(xhr, status, error) {
                     console.error('Error sending doctor data:', error);
@@ -238,6 +282,7 @@
             // Print posted data in JSON format
             console.log('Posted Data:', JSON.stringify(formData));
         });
+        as will navigate to Admin_DoctorRegistration03.html*/
 
         // Initialize datepicker
         $("#birth_date").datepicker({
