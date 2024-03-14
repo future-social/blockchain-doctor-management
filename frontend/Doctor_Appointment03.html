@@ -96,8 +96,8 @@
         <form id="appointmentForm">
             <div class="row">
                 <div class="column">
-                    <label for="patient_name">Patient Name:</label>
-                    <input type="text" id="patient_name" name="patient_name" required disabled>
+                    <label for="patientName">Patient Name:</label>
+                    <input type="text" id="patientName" name="patientName" required disabled>
                 </div>
                 <div class="column">
                     <label>Gender:</label>
@@ -111,24 +111,24 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required disabled>
+                    <label for="icno">IC No./ Passport Number:</label>
+                    <input type="text" id="icno" name="icno" required disabled>
                 </div>
                 <div class="column">
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required disabled pattern="[0-9]*">
+                    <label for="mobileNumber">Mobile Number:</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" required disabled pattern="[0-9]*">
                 </div>                
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="appointment_date">Date:</label>
-                    <select id="appointment_date" name="appointment_date" required disabled>
+                    <label for="date">Date:</label>
+                    <select id="date" name="date" required disabled>
                         <!-- JavaScript will populate options here -->
                     </select>
                 </div>
                 <div class="column">
-                    <label for="appointment_time">Time:</label>
-                    <select id="appointment_time" name="appointment_time" required disabled>
+                    <label for="time">Time:</label>
+                    <select id="time" name="time" required disabled>
                         <!-- Options for time -->
                         <option value="" disabled selected>Select time</option>
                         <option value="09:00">9:00 AM</option>
@@ -152,10 +152,10 @@
                 </div>
             </div>
             <div class="button-container">
-                <a href="Doctor_Appointment04.html">
-                    <button type="button" class="edit" id="editButton">Edit</button>
+                <a id="editLink" href="#"> <!-- Set href to "#" initially -->
+                  <button type="button" class="edit">Edit</button>
                 </a>
-            </div>
+              </div>
         </form>
     </div>
     </div>
@@ -172,32 +172,76 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
+        // Fetch appointment information and populate form fields
+        document.addEventListener("DOMContentLoaded", function () {
+        fetchAppointmentInformation();
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("appointmentForm");
-        fetch('/getAppointment')
-            .then(response => response.json())
-            .then(appointment => {
-                appointment.forEach(appointment => {
-                    const option = document.createElement("option");
-                    option.value = appointment.date; 
-                    option.text = appointment.date; 
-                    dateSelect.add(option); 
-                });
+        function fetchAppointmentInformation() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const appointmentId = urlParams.get("appointmentId");
+
+          // Update edit link href
+          document.getElementById(
+            "editLink"
+          ).href = `Doctor_Appointment04.html?appointmentId=${appointmentId}`;
+
+          fetch(`/retrieveAppointment/${appointmentId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
             })
-
-            .catch(error => {
-                console.error('Error:', error);
-                // 处理错误情况
+            .then((data) => {
+              populateForm(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching appointment information:", error);
             });
-        
-        
-    });
+        }
 
-</script>
+        function populateForm(data) {
+          const bufferData = data;
 
+          // convert Buffer to Uint8Array
+          const uint8Array = new Uint8Array(bufferData.data);
 
-</body>
+          // convert Uint8Array to string
+          const jsonString = String.fromCharCode.apply(null, uint8Array);
+
+          // parse JSON to JavaScript object
+          const jsonData = JSON.parse(jsonString);
+
+          // Populate form fields with the retrieved data
+          const formFields = [
+            "patientName",
+            "gender",
+            "icno",
+            "mobileNumber",
+            "date",
+            "time",
+            "remarks",
+          ];
+          formFields.forEach((field) => {
+            document.getElementById(field).value = jsonData[field];
+          });
+
+          const gender = jsonData.gender; // Retrieve gender from jsonData
+            // Enable gender radio buttons based on retrieved gender
+            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
+            genderRadioButtons.forEach((radio) => {
+              if (radio.value === gender) {
+                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+              }
+              //radio.disabled = false; // Enable the radio button
+            });
+          }
+
+       
+      });
+    </script>
+  </body>
 </html>
