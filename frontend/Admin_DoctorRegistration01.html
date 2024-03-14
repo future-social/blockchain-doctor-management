@@ -223,6 +223,9 @@
                 contentType: 'application/json', // Set content type
                 success: function(response) {
                     console.log('Doctor data sent successfully');
+                    window.alert("Register successfully.");
+                    // Clear the form fields
+                    $('#registrationForm')[0].reset();
                     // Optionally, handle the server response here
                     //window.location.href = "Admin_DoctorRegistration02.html"; // Redirect to another page
                 },
