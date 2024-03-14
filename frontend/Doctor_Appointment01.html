@@ -123,7 +123,7 @@
                 <select>
                     <option value="" disabled selected>Filter by...</option>
                     <option value="date">Date</option>
-                    <option value="patientname">Patient Name</option>
+                    <option value="patientName">Patient Name</option>
                     <!-- Add more options as needed -->
                 </select>
             </div>
@@ -170,117 +170,119 @@
           document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-            // Fetch appointment data from backend and populate table
+        // Fetch appointment data from backend and populate table
         fetch("/retrieveAllAppointment")
-        .then(response => {
+            .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to retrieve appointment data");
                 }
                 return response.json();
             })
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.querySelector("#appointmentTable tbody");
-            data.forEach((appointment, index) => {
-                const row = tableBody.insertRow();
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${appointment.date}</td>
-                    <td>${appointment.time}</td>
-                    <td>${appointment.name}</td>
-                    <td>${appointment.gender}</td>
-                    <td>${appointment.mobilenumber}</td>
-                    <td class="action-images">
-                        <img class="view-image" src="view.png" alt="View" data-id="${doctor.doctor_id}">
-                        <img class="edit-image" src="edit.png" alt="Edit" data-id="${doctor.doctor_id}">
-                        <img class="delete-image" src="delete.png" alt="Delete" data-id="${doctor.doctor_id}">
-                    </td>
-                `;
+            .then(data => {
+                const tableBody = document.querySelector("#appointmentTable tbody");
+                if (!data || data.length === 0) {
+                    tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
+                } else {
+                    data.forEach((appointment, index) => {
+                        const row = tableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${appointment.date}</td>
+                            <td>${appointment.time}</td>
+                            <td>${appointment.name}</td>
+                            <td>${appointment.gender}</td>
+                            <td>${appointment.mobilenumber}</td>
+                            <td class="action-images">
+                                <img class="view-image" src="view.png" alt="View" data-id="${appointment.appointmentId}">
+                                <img class="edit-image" src="edit.png" alt="Edit" data-id="${appointment.appointmentId}">
+                                <img class="delete-image" src="delete.png" alt="Delete" data-id="${appointment.appointmentId}">
+                            </td>
+                        `;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching doctor data:", error);
+                // Display an error message to the user or handle the error appropriately
             });
 
-            // Add event listeners to image elements
-            const viewImages = document.querySelectorAll('.view-image');
-            const editImages = document.querySelectorAll('.edit-image');
-            const deleteImages = document.querySelectorAll('.delete-image');
+        // Add event listeners to image elements
+        const viewImages = document.querySelectorAll('.view-image');
+        const editImages = document.querySelectorAll('.edit-image');
+        const deleteImages = document.querySelectorAll('.delete-image');
 
-            viewImages.forEach(image => {
-                image.addEventListener('click', () => {
-                    const doctorId = image.getAttribute('data-id');
-                    window.location.href = `Doctor_Appointment03.html?id=${mobilenumber}`;
-                });
+        viewImages.forEach(image => {
+            image.addEventListener('click', () => {
+                const appointmentId = image.getAttribute('data-id');
+                window.location.href = `Doctor_Appointment03.html?appointmentId=${appointmentId}`;
             });
-
-            editImages.forEach(image => {
-                image.addEventListener('click', () => {
-                    const doctorId = image.getAttribute('data-id');
-                    window.location.href = `Doctor_Appointment04.html?id=${mobilenumber}`;
-                });
-            });
-
-            deleteImages.forEach(image => {
-                image.addEventListener('click', () => {
-                    const doctorId = image.getAttribute('data-id');
-                    const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
-                    if (confirmation) {
-                        // Send delete request to backend
-                        fetch(`/deleteAppointment?id=${patientMobile}`, {
-                            method: 'DELETE'
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                // Display a pop-up message indicating successful deletion
-                                alert("Delete successful");
-                                location.reload(); // Reload the page to reflect changes
-                            } else {
-                                // Handle error response
-                                console.error("Error deleting appointment data:", response.statusText);
-                                // Show an error message to the user
-                                alert("An error occurred while deleting appointment data. Please try again later.");
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error deleting appointment data:", error);
-                            // Show an error message to the user
-                            alert("An error occurred while deleting appointment data. Please try again later.");
-                        });
-                    }
-                });
-            });
-        })
-        .catch(error => {
-            console.error("Error retrieving appointment data:", error);
         });
 
-       // Function to handle search
-function handleSearch() {
-    const input = document.querySelector(".searchbar input[type='text']");
-    const filter = input.value.toUpperCase();
-    const table = document.getElementById("appointmentTable");
-    const tbody = table.querySelector("tbody");
-    const rows = tbody.getElementsByTagName("tr");
+        editImages.forEach(image => {
+            image.addEventListener('click', () => {
+                const appointmentId = image.getAttribute('data-id');
+                window.location.href = `Doctor_Appointment04.html?appointmentId=${appointmentId}`;
+            });
+        });
 
-    // Separate table headers
-    const thead = table.querySelector("thead");
-
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        let found = false;
-        for (let j = 0; j < cells.length; j++) {
-            const cell = cells[j];
-            if (cell) {
-                const textValue = cell.textContent || cell.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    found = true;
-                    break;
+        deleteImages.forEach(image => {
+            image.addEventListener('click', () => {
+                const appointmentId = image.getAttribute('data-id');
+                const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
+                if (confirmation) {
+                    deleteDoctor(appointmentId);
                 }
-            }
-        }
-        rows[i].style.display = found ? "" : "none";
-    }
+            });
+        });
 
-    // Append thead back to the table
-    table.appendChild(thead);
-}
+        // Function to delete doctor data
+        function deleteDoctor(appointmentId) {
+            fetch(`/deleteDoctor/${appointmentId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    throw new Error('Failed to delete doctor data');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting doctor data:', error);
+                // Display an error message to the user or handle the error appropriately
+            });
+        }
+
+        // Function to handle search
+        function handleSearch() {
+            const input = document.querySelector(".searchbar input[type='text']");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("appointmentTable");
+            const tbody = table.querySelector("tbody");
+            const rows = tbody.getElementsByTagName("tr");
+
+            // Separate table headers
+            const thead = table.querySelector("thead");
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    const cell = cells[j];
+                    if (cell) {
+                        const textValue = cell.textContent || cell.innerText;
+                        if (textValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                rows[i].style.display = found ? "" : "none";
+            }
+
+            // Append thead back to the table
+            table.appendChild(thead);
+        }
 
         // Function to handle sorting based on filter dropdown
         function handleFilter() {
@@ -295,7 +297,7 @@ function handleSearch() {
                 case "date":
                     columnIndex = 4;
                     break;
-                case "patientname":
+                case "patientName":
                     columnIndex = 5;
                     break;
             }
