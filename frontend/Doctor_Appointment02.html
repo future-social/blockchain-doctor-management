@@ -96,8 +96,8 @@
         <form id="appointmentForm">
             <div class="row">
                 <div class="column">
-                    <label for="patient_name">Patient Name:</label>
-                    <input type="text" id="patient_name" name="patient_name" required>
+                    <label for="patientName">Patient Name:</label>
+                    <input type="text" id="patientName" name="patientName" required>
                 </div>
                 <div class="column">
                     <label>Gender:</label>
@@ -111,24 +111,24 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required>
+                    <label for="icno">IC No./ Passport Number:</label>
+                    <input type="text" id="icno" name="icno" required>
                 </div>
                 <div class="column">
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required pattern="[0-9]*">
+                    <label for="mobileNumber">Mobile Number:</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" required pattern="[0-9]*">
                 </div>                
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="appointment_date">Date:</label>
-                    <select id="appointment_date" name="appointment_date" required>
+                    <label for="date">Date:</label>
+                    <select id="date" name="date" required>
                         <!-- JavaScript will populate options here -->
                     </select>
                 </div>
                 <div class="column">
-                    <label for="appointment_time">Time:</label>
-                    <select id="appointment_time" name="appointment_time" required>
+                    <label for="time">Time:</label>
+                    <select id="time" name="time" required>
                         <!-- Options for time -->
                         <option value="" disabled selected>Select time</option>
                         <option value="09:00">9:00 AM</option>
@@ -151,9 +151,9 @@
                 <div class="column">
                 </div>
             </div>
-            <div class="button-container">
-                    <button type="button" class="clear">Clear</button>
-                    <button type="submit" class="submit">Submit</button>
+            <div class="button-container"> 
+                <button type="button" class="clear">Clear</button>
+                <button type="submit" class="submit">Submit</button>
             </div>
         </form>
     </div>
@@ -171,10 +171,11 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
         // JavaScript to populate date options
-        var dateSelect = document.getElementById("appointment_date");
+        var dateSelect = document.getElementById("date");
         var currentDate = new Date();
         var defaultDateOption = document.createElement("option");
         defaultDateOption.value = "";
@@ -197,14 +198,20 @@
             
             // Collect data from form fields
             const formData = {
-                patient_name: document.getElementById("patient_name").value,
+                patientName: document.getElementById("patientName").value,
                 gender: document.querySelector('input[name="gender"]:checked').value,
-                ic_passport: document.getElementById("ic_passport").value,
-                mobile: document.getElementById("mobile").value,
-                appointment_date: document.getElementById("appointment_date").value,
-                appointment_time: document.getElementById("appointment_time").value,
+                icno: document.getElementById("icno").value,
+                mobileNumber: document.getElementById("mobileNumber").value,
+                date: document.getElementById("date").value,
+                time: document.getElementById("time").value,
                 remarks: document.getElementById("remarks").value
             };
+            
+            // Generate the appointment ID using IC number, date, and time
+            const appointmentID = formData.icno + '_' + formData.date + '_' + formData.time;
+
+            // Add appointmentID to formData
+            formData.appointmentId = appointmentID;
 
             // Send formData to the server using AJAX or fetch API
             fetch('/createAppointment', {
