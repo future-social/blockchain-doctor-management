@@ -208,10 +208,12 @@ router.post('/login', async (req, res) => {
       res.redirect('/Doctor_PersonalInformation02.html');  */
     if (user && await bcrypt.compare(password, user.password)) {
       if (username.includes("adm")){
-        res.redirect('/Admin_DoctorPersonalInformation01.html');
+        DMSAdminId = username;
+        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);
       }
       else if (username.includes("doc")){
-        res.redirect('/Doctor_PersonalInformation02.html');     
+        DMSAdminId = username;
+        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);     
       } 
       else{
       res.status(401).send('Invalid credentials.');
