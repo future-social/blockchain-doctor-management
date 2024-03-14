@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Appointment</title>
+    <title>View Appointment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,12 +77,12 @@
             margin-top: 20px;
         }
 
-        .appointment-container button.submit, .appointment-container button.clear, .appointment-container button.back {
+        .appointment-container button.save {
             background-color: #CA1F7B; 
             color: white;
         }
 
-        .appointment-container button.submit:hover, .appointment-container button.clear:hover, .appointment-container button.back:hover {
+        .appointment-container button.save:hover {
             background-color: #8E004A; 
         }
     </style>
@@ -90,14 +90,14 @@
 <body>
     <div id="headerContainer"></div>
 
-    <h1>Edit Appointment</h1>
+    <h1>Appointment Information</h1>
     <div class="big-container">
     <div class="appointment-container">
         <form id="appointmentForm">
             <div class="row">
                 <div class="column">
-                    <label for="patient_name">Patient Name:</label>
-                    <input type="text" id="patient_name" name="patient_name" required>
+                    <label for="patientName">Patient Name:</label>
+                    <input type="text" id="patientName" name="patientName" required>
                 </div>
                 <div class="column">
                     <label>Gender:</label>
@@ -111,24 +111,24 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="ic_passport">IC No./ Passport Number:</label>
-                    <input type="text" id="ic_passport" name="ic_passport" required>
+                    <label for="icno">IC No./ Passport Number:</label>
+                    <input type="text" id="icno" name="icno" required>
                 </div>
                 <div class="column">
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" name="mobile" required pattern="[0-9]*">
+                    <label for="mobileNumber">Mobile Number:</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" required pattern="[0-9]*">
                 </div>                
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="appointment_date">Date:</label>
-                    <select id="appointment_date" name="appointment_date" required>
+                    <label for="date">Date:</label>
+                    <select id="date" name="date" required>
                         <!-- JavaScript will populate options here -->
                     </select>
                 </div>
                 <div class="column">
-                    <label for="appointment_time">Time:</label>
-                    <select id="appointment_time" name="appointment_time" required>
+                    <label for="time">Time:</label>
+                    <select id="time" name="time" required>
                         <!-- Options for time -->
                         <option value="" disabled selected>Select time</option>
                         <option value="09:00">9:00 AM</option>
@@ -146,13 +146,13 @@
             <div class="row">
                 <div class="column">
                     <label for="remarks">Remarks</label>
-                    <input type="text" id="remarks" name="remarks">
+                    <input type="text" id="remarks" name="remarks" required>
                 </div>
                 <div class="column">
                 </div>
             </div>
             <div class="button-container">
-                    <button type="submit" class="submit">Submit</button>
+                <button type="submit" class="save">Save</button>
             </div>
         </form>
     </div>
@@ -170,10 +170,71 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
+          document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        // JavaScript to populate date options
-        var dateSelect = document.getElementById("appointment_date");
+        // Fetch appointment information and populate form fields
+        document.addEventListener("DOMContentLoaded", function () {
+        fetchAppointmentInformation();
+
+        function fetchAppointmentInformation() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const appointmentId = urlParams.get("appointmentId");
+
+          fetch(`/retrieveAppointment/${appointmentId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              populateForm(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching appointment information:", error);
+            });
+        }
+
+        function populateForm(data) {
+          const bufferData = data;
+
+          // convert Buffer to Uint8Array
+          const uint8Array = new Uint8Array(bufferData.data);
+
+          // convert Uint8Array to string
+          const jsonString = String.fromCharCode.apply(null, uint8Array);
+
+          // parse JSON to JavaScript object
+          const jsonData = JSON.parse(jsonString);
+
+          // Populate form fields with the retrieved data
+          const formFields = [
+            "patientName",
+            "gender",
+            "icno",
+            "mobileNumber",
+            "date",
+            "time",
+            "remarks",
+          ];
+          formFields.forEach((field) => {
+            document.getElementById(field).value = jsonData[field];
+          });
+
+          const gender = jsonData.gender; // Retrieve gender from jsonData
+            // Enable gender radio buttons based on retrieved gender
+            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
+            genderRadioButtons.forEach((radio) => {
+              if (radio.value === gender) {
+                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+              }
+              //radio.disabled = false; // Enable the radio button
+            });
+          }
+
+          // JavaScript to populate date options
+        var dateSelect = document.getElementById("date");
         var currentDate = new Date();
         var defaultDateOption = document.createElement("option");
         defaultDateOption.value = "";
@@ -188,75 +249,44 @@
             currentDate.setDate(currentDate.getDate() + 1); // Increment date by 1 day
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("appointmentForm");
+        // Handle form submission
+        document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            // Validate form fields
+            const form = this;
+            if (!form.checkValidity()) {
+                window.alert("Please fill in all required fields.");
+                return;
+            }
+            // Confirmation dialog
+            const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
+            if (confirmation) {
+                // Gather updated data
+                const appointmentId = encodeURIComponent(new URLSearchParams(window.location.search).get("appointmentId"));
 
-        fetch('/getDoctorAppointment')
-        .then(response => response.json())
-        .then(appointment => {
-            appointment.forEach(appointment => {
-                document.getElementById("patient_name").value = appointment.patient_name;
-                const genderRadio = document.querySelector(`input[name="gender"][value="${appointment.gender}"]`);
-                if (genderRadio) {
-                    genderRadio.checked = true;
-                }
-                document.getElementById("ic_passport").value = appointment.ic_passport;
-                document.getElementById("mobile").value = appointment.mobile;
-                document.getElementById("appointment_date").value = appointment.appointment_date;
-                document.getElementById("appointment_time").value = appointment.appointment_time;
-                document.getElementById("remarks").value = appointment.remarks;
-            });
-        })
-    
-        .catch(error => {
-            console.error('Error:', error);
+                const formData = new FormData(form);
+                const jsonData = {};
+                formData.forEach((value, key) => jsonData[key] = value);
+                const json = JSON.stringify(jsonData);
+                // Send updated data to the server via JSON
+                fetch(`/updateAppointment/${appointmentId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: json
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();//solved yay
+                })
+                .then(data => {
+                    window.alert("Data updated successfully.");
+                    window.location.href = `Doctor_Appointment03.html?appointmentId=${appointmentId}`;
+                })
+                .catch(error => console.error("Error updating data:", error));
+            }
         });
-    });
-
-        document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("appointmentForm");
-
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            // Collect data from form fields
-            const formData = {
-                patient_name: document.getElementById("patient_name").value,
-                gender: document.querySelector('input[name="gender"]:checked').value,
-                ic_passport: document.getElementById("ic_passport").value,
-                mobile: document.getElementById("mobile").value,
-                appointment_date: document.getElementById("appointment_date").value,
-                appointment_time: document.getElementById("appointment_time").value,
-                remarks: document.getElementById("remarks").value
-            };
-
-            // Send formData to the server using AJAX or fetch API
-            fetch('/updateAppointment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Show pop-up message
-                    alert('Update Successfully.');
-                    // Redirect to Doctor_Appointment03.html after successful submission to view the appointment information
-                    window.location.href = 'Doctor_Appointment03.html';
-                } else {
-                    throw new Error('Failed to submit appointment data.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle errors here if necessary
-            });
-        });
-
-    });
-</script>
-
-
-</body>
+        
+      });
+    </script>
+  </body>
 </html>
