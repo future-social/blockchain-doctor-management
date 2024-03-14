@@ -1,4 +1,4 @@
-<!DOCTYPE html> <try store the id using hiddenusername>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
             height: auto;
         }
         .login-container {
-            width: 400px;
+            width: 300px;
             margin: 0 auto;
             margin-top: 5px;
             text-align: center;
@@ -28,18 +28,12 @@
             border-radius: 10px;
             padding: 20px;
         }
-        .register-container label{
-            text-align: left;
-            width: 25px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
         input[type="text"], input[type="password"] {
-            width: calc(100% - 125px);
+            width: calc(100% - 20px);
             padding: 10px;
-            margin: 15px 0;
-	        border: 2px solid #d3d3d3;
-	        border-radius: 10px;
+            margin: 10px 0;
+	    border: 2px solid #d3d3d3;
+	    border-radius: 10px;
             box-sizing: border-box;
         }
         input[type="submit"] {
@@ -51,7 +45,6 @@
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 16px;
         }
         input[type="submit"]:hover {
             background-color: #8E004A;
@@ -60,19 +53,14 @@
 </head>
 <body>
     <div class="header">
-        <img src="medicpro.jpg" alt="Photo">
+        <img src="/HTML/medicpro.jpg" alt="Photo">
     </div>
     <h2 style="text-align: center;">Login</h2>
-    <form id="loginForm" onsubmit="login(event)">
+    <form action="/login" method="POST">
         <div class="login-container">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Password" required><br><br>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="password" name="password" placeholder="Password" required><br><br>
             <input type="submit" value="Login">
-
-            <!-- Add a hidden input field to hold the username, to be retrieved in pages -->
-            <input type="hidden" id="hiddenUsername" name="hiddenUsername">
         </div>
     </form>
 
@@ -108,10 +96,6 @@
             }
         })
         .then(data => {
-            // Save the adminId or doctorId in the session storage based on the user's role
-            const hiddenUsername = data.role === 'admin' ? data.adminId : (data.role === 'doctor' ? data.doctorId : username);
-            sessionStorage.setItem('hiddenUsername', hiddenUsername);
-
             // Check the role received from the backend
             if (data.role === 'admin') {
                 // Redirect to admin portal
