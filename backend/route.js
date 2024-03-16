@@ -6,18 +6,19 @@ var DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
-const session = require('express-session');
+//const session = require('express-session');
 
-router.use(session({
-    secret: 'secretkey',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}));
 
 //const app = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+/*
+router.use(session({
+  secret: 'secretkey',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));*/
 
 // Route to create a new doctor
 router.post("/createDoctor", async (req, res) => {
@@ -239,35 +240,33 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ username });
 
     if (user && await bcrypt.compare(password, user.password)) {
-      req.session.user = user;
-      if (username.includes("adm")) {
-        return res.status(200).json({ success: true, message: "Login successful.", redirect: '/Admin_DoctorPersonalInformation01.html?id=' + username });
-      } else if (username.includes("doc")) {
-        return res.status(200).json({ success: true, message: "Login successful.", redirect: '/Doctor_PersonalInformation02.html?id=' + username });
-      } else {
-        return res.status(401).send('Invalid credentials.');
-      }
-    } else {
-      res.status(401).send('Invalid credentials.'); // Authentication failed
+      //req.session.user = user;
+      return res.status(200).json({ success: true, message: "Login successful.", username: username});
     }
   } catch (error) {
     console.error(error);
     res.status(500).send('Error during login.');
   }
 });
-
-const requireAuth = (req, res, next) => {
+/*
+router.get("/requireAuth", async (req, res) => {
+  console.log(req.session.user);
   if (req.session.user) {
-      next(); // User is authenticated, continue to next middleware
+    res.json({ authenticated: true });
   } else {
-      res.redirect('LoginPage.html'); // User is not authenticated, redirect to login page
+    res.json({ authenticated: false });
   }
-}
-
-router.get('/', requireAuth, (req, res) =>  {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'LoginPage.html'));
-});
-
+});*/
+/*
+const requireAuth = (req, res, next) => {
+  console.log(req.session.user);
+  if (req.session.user) {
+    next(); // User is authenticated, continue to next middleware
+  } else {
+    res.redirect('/LoginPage.html'); // User is not authenticated, redirect to login page
+  }
+} */
+/*
 // Handle logout
 router.post('/logout', (req, res) => {
   console.log("Logout route invoked");
@@ -280,7 +279,7 @@ router.post('/logout', (req, res) => {
           console.log("Session end");
       }
   });
-});
+});*/
 
 
 // Handle change password
