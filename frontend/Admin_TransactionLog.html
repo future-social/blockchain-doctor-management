@@ -127,6 +127,7 @@
             <thead>
                 <tr>
                     <th>NO.</th>
+                    <th>Transaction ID</th>
                     <th>Person</th>
                     <th>Action Performed</th>
                     <th>Date & Time</th>
@@ -168,13 +169,14 @@
                 if (!data || data.length === 0) {
                     tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
                 } else {
-                    data.forEach((doctor, index) => {
+                    data.forEach((transaction, index) => {
                         const row = tableBody.insertRow();
                         row.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${doctor.user_id}</td>
-                            <td>${doctor.actionperformed}</td>
-                            <td>${doctor.date} ${doctor.time}</td>
+                            <td>${transaction.transaction_id}</td>
+                            <td>${transaction.person}</td>
+                            <td>${transaction.actionperformed}</td>
+                            <td>${transaction.date} ${transaction.time}</td>
                         `;
                     });
                 }
