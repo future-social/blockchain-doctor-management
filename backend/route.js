@@ -15,6 +15,12 @@ const app = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
+// Configure session middleware
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/session',
+  collection: 'session' // Collection name to store sessions
+});
+
 // Route to create a new doctor
 router.post("/createDoctor", async (req, res) => {
   try {
