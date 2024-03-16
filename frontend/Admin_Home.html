@@ -167,7 +167,7 @@
         });
 
         function fetchUserInfo() {
-        fetch('endpoint')
+        fetch('get_username_endpoint')
        .then(response => response.json())
        .then(data => {
          const username = data.username;
