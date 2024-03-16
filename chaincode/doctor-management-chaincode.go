@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 	"log"
 	"reflect"
 	"strings"
 	"time"
+
+	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
 // DoctorContract to define the smart contract
@@ -33,6 +34,13 @@ type Doctor struct {
 	Institution                string `json:"institution"`
 	BodyGrantingQualifications string `json:"body_granting_qualifications"`
 	//Certificate                []byte    `json:"certificate"`
+}
+
+type TransactionLog struct {
+	TransactionID string    `json:"transactionID"`
+	Caller        string    `json:"caller"`
+	ActionItem    string    `json:"action_item"`
+	Timestamp     time.Time `json:"timestamp"`
 }
 
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
@@ -113,26 +121,36 @@ func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate string, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate string, country string, institution string, bodyGrantingQualification string) (string, []byte, string, error) {
+	recognizedDate string, country string, institution string, bodyGrantingQualification string) error {
 
 	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
-		return "", nil, "", fmt.Errorf("failed to read doctor from world state: %v", err)
+		return fmt.Errorf("failed to read doctor from world state: %v", err)
 	}
 	if !exists {
-		return "", nil, "", fmt.Errorf("the doctor with ID %s does not exist", doctorID)
+		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
 	}
 
 	// Get updatedBy (caller)
 	caller, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
-		return "", nil, "", fmt.Errorf("failed to get caller ID: %v", err)
+		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
+
+	//get timestamp
+	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return fmt.Errorf("failed to get transaction timestamp: %v", err)
+	}
+	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
+
+	//get transaction ID
+	transactionID := ctx.GetStub().GetTxID()
 
 	// Unmarshal current doctor details
 	var currentDoctor Doctor
 	if err := json.Unmarshal(currentDoctorJSON, &currentDoctor); err != nil {
-		return "", nil, "", fmt.Errorf("failed to unmarshal existing doctor JSON: %v", err)
+		return fmt.Errorf("failed to unmarshal existing doctor JSON: %v", err)
 	}
 
 	updateDoctor := Doctor{
@@ -167,24 +185,48 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	// Marshal updated fields
-	updatedFieldsJSON, err := json.Marshal(updatedFields)
-	if err != nil {
-		return "", nil, "", fmt.Errorf("failed to marshal updated fields JSON: %v", err)
+	// updatedFieldsJSON, err := json.Marshal(updatedFields)
+	//if err != nil {
+	// return fmt.Errorf("failed to marshal updated fields JSON: %v", err)
+	// }
+
+	// get update fileds
+	var actionItem string
+	for _, val := range updatedFields {
+		actionItem += fmt.Sprintf("%v, ", val)
+	}
+	actionItem = strings.TrimSuffix(actionItem, ", ")
+
+	transactionLog := TransactionLog{
+		TransactionID: transactionID,
+		Caller:        caller,
+		ActionItem:    actionItem,
+		Timestamp:     timestamp,
 	}
 
-	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	// Marshal transaction log
+	transactionLogJSON, err := json.Marshal(transactionLog)
+	if err != nil {
+		return fmt.Errorf("failed to marshal transaction log: %v", err)
+	}
+
+	// Put transaction log to world state
+	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
+	if err != nil {
+		return fmt.Errorf("failed to put transaction log: %v", err)
+	}
 
 	updatedDoctorJSON, err := json.Marshal(updateDoctor)
 	if err != nil {
-		return "", nil, "", fmt.Errorf("failed to marshal updated doctor JSON: %v", err)
+		return fmt.Errorf("failed to marshal updated doctor JSON: %v", err)
 	}
 
 	err = ctx.GetStub().PutState(doctorID, updatedDoctorJSON)
 	if err != nil {
-		return "", nil, "", fmt.Errorf("failed to update doctor: %v", err)
+		return fmt.Errorf("failed to update doctor: %v", err)
 	}
 
-	return caller, updatedFieldsJSON, currentTime, nil
+	return nil
 }
 
 // DeleteDoctor deletes the doctor with the specified ID from the world state.
