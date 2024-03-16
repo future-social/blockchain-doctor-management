@@ -284,6 +284,44 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
 	}
 
+	// Get deleteBy (caller)
+	caller, err := ctx.GetClientIdentity().GetID()
+	if err != nil {
+		return fmt.Errorf("failed to get caller ID: %v", err)
+	}
+
+	//get timestamp
+	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return fmt.Errorf("failed to get transaction timestamp: %v", err)
+	}
+	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
+
+	//get transaction ID
+	transactionID := ctx.GetStub().GetTxID()
+
+	//get action about delete a doctor
+	actionItem := fmt.Sprintf("Delete Doctor : %s", doctorID)
+
+	transactionLog := TransactionLog{
+		TransactionID: transactionID,
+		Caller:        caller,
+		ActionItem:    actionItem,
+		Timestamp:     timestamp,
+	}
+
+	// Marshal transaction log
+	transactionLogJSON, err := json.Marshal(transactionLog)
+	if err != nil {
+		return fmt.Errorf("failed to marshal transaction log: %v", err)
+	}
+
+	// Put transaction log to world state
+	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
+	if err != nil {
+		return fmt.Errorf("failed to store transaction log: %v", err)
+	}
+
 	// Delete doctor for the world state
 	err = ctx.GetStub().DelState(doctorID)
 	if err != nil {
