@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
+	"reflect"
+	"strings"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
@@ -21,66 +22,23 @@ type Doctor struct {
 	LastName                   string    `json:"last_name"`
 	ICNo                       string    `json:"ic_no"`
 	Gender                     string    `json:"gender"`
-	BirthDate                  time.Time `json:"birth_date"`
+	BirthDate                  string `json:"birth_date"`
 	MobileNumber               string    `json:"mobile_number"`
 	Email                      string    `json:"email"`
 	Address                    string    `json:"address"`
 	Specialisation             string    `json:"specialisation"`
 	Degree                     string    `json:"degree"`
-	RecognizedDate             time.Time `json:"recognize_date"`
+	RecognizedDate             string `json:"recognize_date"`
 	Country                    string    `json:"country"`
 	Institution                string    `json:"institution"`
 	BodyGrantingQualifications string    `json:"body_granting_qualifications"`
 	//Certificate                []byte    `json:"certificate"`
 }
 
-// InitDoctor adds a base set of doctors to the ledger
-func (dc *DoctorContract) InitDoctor(ctx contractapi.TransactionContextInterface) error {
-	doctors := []Doctor{
-		{
-			DoctorID:       "doc1",
-			FirstName:      "John",
-			LastName:       "Doe",
-			ICNo:           "123456-12-1234",
-			Gender:         "Male",
-			BirthDate:      time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC),
-			MobileNumber:   "1234567890",
-			Email:          "john@example.com",
-			Address:        "123 Main St, Anytown, USA",
-			Specialisation: "General Medicine",
-		},
-		{
-			DoctorID:       "doc2",
-			FirstName:      "Jane",
-			LastName:       "Smith",
-			ICNo:           "987654-23-4567",
-			Gender:         "Female",
-			BirthDate:      time.Date(1975, 5, 10, 0, 0, 0, 0, time.UTC),
-			MobileNumber:   "9876543210",
-			Email:          "jane@example.com",
-			Address:        "456 Elm St, Othertown, USA",
-			Specialisation: "Pediatrics",
-		},
-	}
-
-	for _, doctor := range doctors {
-		doctorJSON, err := json.Marshal(doctor)
-		if err != nil {
-			return fmt.Errorf("failed to marshal doctor JSON: %v", err)
-		}
-		err = ctx.GetStub().PutState(doctor.DoctorID, doctorJSON)
-		if err != nil {
-			return fmt.Errorf("failed to create doctor: %v", err)
-		}
-	}
-
-	return nil
-}
-
 // CreateDoctor creates a new doctor with the provided information and stores it in the world state
 func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
-	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string) error {
+	icNo string, gender string, birthDate string, mobileNumber string, email string, address string, specialisation string, degree string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string) error {
 
 	// Check if client has 'admin' role
 	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
@@ -89,7 +47,7 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	//Check if the doctor already exists
-	exists, err := dc.DoctorExists(ctx, doctorID)
+	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
@@ -113,7 +71,6 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		Country:                    country,
 		Institution:                institution,
 		BodyGrantingQualifications: bodyGrantingQualification,
-		
 	}
 
 	// Convert doctor information to JSON format
@@ -131,49 +88,6 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 
 	return nil
 }
-
-// ViewQualification to view doctor's qualification
-/*
-func (dc *DoctorContract) ViewQualification(ctx contractapi.TransactionContextInterface, doctorID string) ([]byte, error) {
-	qualificationJSON, err := ctx.GetStub().GetState(doctorID)
-	if err != nil {
-		return nil, fmt.Errorf("falied to read from world state: %v", err)
-	}
-
-	if qualificationJSON == nil {
-		return nil, fmt.Errorf("qualification with ID %s does not exist", doctorID)
-	}
-
-	var qualification Doctor
-	err = json.Unmarshal(qualificationJSON, &qualification)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal qualification JSON: %v", err)
-	}
-
-	// Create a struct with only the qualifications
-	qualificationData := struct {
-		Degree         string `json:"degree"`
-		RecognizedDate string `json:"recognize_date"`
-		Country        string `json:"country"`
-		Institution    string `json:"institution"`
-		Certificate    []byte `json:"certificate"`
-	}{
-		Degree:         qualification.Degree,
-		RecognizedDate: qualification.RecognizedDate,
-		Country:        qualification.Country,
-		Institution:    qualification.Institution,
-		Certificate:    qualification.Certificate,
-	}
-
-	qualificationJSON, err = json.Marshal(qualificationData)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal qualification info: %v", err)
-	}
-
-	return qualificationJSON, nil
-}
-
-*/
 
 // ViewDoctor to view doctor's information
 func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface, doctorID string) (*Doctor, error) {
@@ -196,55 +110,22 @@ func (dc *DoctorContract) ViewDoctor(ctx contractapi.TransactionContextInterface
 	return &doctor, nil
 }
 
-/*
-// UpdateQualification updates an existing doctor's qualification in the world state with provided parameters.
-func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContextInterface, doctorID string, title string,
-	recognizedDate string, country string, institution string, bodyGrantingQualification string, certificate []byte) error {
-
-	//Check if the doctor already exists
-	exists, err := dc.DoctorExists(ctx, doctorID)
-	if err != nil {
-		return err
-	}
-	if !exists {
-		return fmt.Errorf("the doctor with ID %s does not exists", doctorID)
-	}
-
-	updateQualification := Qualification{
-		DoctorID:                   doctorID,
-		Title:                      title,
-		RecognizedDate:             recognizedDate,
-		Country:                    country,
-		Institution:                institution,
-		BodyGrantingQualifications: bodyGrantingQualification,
-		Certificate:                certificate,
-	}
-
-	updateQualificationJSON, err := json.Marshal(updateQualification)
-	if err != nil {
-		return fmt.Errorf("failed to marshal updated doctor JSON: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(doctorID, updateQualificationJSON)
-	if err != nil {
-		return fmt.Errorf("failed to update qualification: %v", err)
-	}
-
-	return nil
-}
-
-*/
-
 // UpdateDoctor updates an existing doctor's information in the world state with provided parameters.
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
-	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
-	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string) error {
+	icNo string, gender string, birthDate string, mobileNumber string, email string, address string, specialisation string, degree string,
+	recognizedDate string, country string, institution string, bodyGrantingQualification string) error {
 	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
 	if !exists {
 		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
+	}
+
+	// Get updatedBy (caller)
+	caller, err := ctx.GetClientIdentity().GetID()
+	if err != nil {
+		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
 
 	// Unmarshal current doctor details
@@ -269,7 +150,19 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		Country:                    country,
 		Institution:                institution,
 		BodyGrantingQualifications: bodyGrantingQualification,
+	}
 
+	// Compare existing and updated doctor objects to find modified fields
+	updatedFields := make(map[string]interface{})
+	existingFields := reflect.ValueOf(currentDoctor)
+	updatedFieldsVal := reflect.ValueOf(updateDoctor)
+	for i := 0; i < existingFields.NumField(); i++ {
+		existingVal := existingFields.Field(i).Interface()
+		updatedVal := updatedFieldsVal.Field(i).Interface()
+		if !reflect.DeepEqual(existingVal, updatedVal) {
+			fieldName := strings.ToLower(existingFields.Type().Field(i).Name)
+			updatedFields[fieldName] = updatedVal
+		}
 	}
 
 	updatedDoctorJSON, err := json.Marshal(updateDoctor)
@@ -285,35 +178,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	return nil
 }
 
-/*
-// DeleteQualification deletes the qualification with the specified ID from the world state.
-func (dc *DoctorContract) DeleteQualification(ctx contractapi.TransactionContextInterface, doctorID string) error {
 
-	// Check if client has 'admin' role
-	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
-	if err != nil {
-		return fmt.Errorf("only admin can delete doctor")
-	}
-
-	//Check if the doctor already exists
-	exists, err := dc.DoctorExists(ctx, doctorID)
-	if err != nil {
-		return err
-	}
-	if !exists {
-		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
-	}
-
-	// Delete qualification for the world state
-	err = ctx.GetStub().DelState(doctorID)
-	if err != nil {
-		return fmt.Errorf("failed to delete doctor: %v", err)
-	}
-
-	return nil
-}
-
-*/
 
 // DeleteDoctor deletes the doctor with the specified ID from the world state.
 func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterface, doctorID string) error {
@@ -324,7 +189,7 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("only admin can delete doctor")
 	}
 
-	exists, err := dc.DoctorExists(ctx, doctorID)
+	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
@@ -348,7 +213,7 @@ func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterfa
 		return nil, false, fmt.Errorf("failed to read from world state: %v", err)
 	}
 
-	return doctorJSON ,doctorJSON != nil, nil
+	return doctorJSON, doctorJSON != nil, nil
 }
 
 /*
@@ -440,25 +305,23 @@ func (dc *DoctorContract) CountDoctors(ctx contractapi.TransactionContextInterfa
 	// Get all doctor records
 	doctorIterator, err := ctx.GetStub().GetStateByRange("", "")
 	if err != nil {
-			return 0, fmt.Errorf("failed to read from world state: %v", err)
+		return 0, fmt.Errorf("failed to read from world state: %v", err)
 	}
 	defer doctorIterator.Close()
-
 
 	count := 0
 
 	// Iteration of doctors, counting the number
 	for doctorIterator.HasNext() {
-			_, err := doctorIterator.Next()
-			if err != nil {
-					return 0, fmt.Errorf("failed to iterate doctor iterator: %v", err)
-			}
-			count++
+		_, err := doctorIterator.Next()
+		if err != nil {
+			return 0, fmt.Errorf("failed to iterate doctor iterator: %v", err)
+		}
+		count++
 	}
 
 	return count, nil
 }
-
 
 func main() {
 	doctorContract := new(DoctorContract)
