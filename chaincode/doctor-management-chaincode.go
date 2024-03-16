@@ -429,6 +429,31 @@ func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterf
 	return doctors, nil
 }
 
+// CountDoctors returns the total number of doctors
+func (dc *DoctorContract) CountDoctors(ctx contractapi.TransactionContextInterface) (int, error) {
+	// Get all doctor records
+	doctorIterator, err := ctx.GetStub().GetStateByRange("", "")
+	if err != nil {
+			return 0, fmt.Errorf("failed to read from world state: %v", err)
+	}
+	defer doctorIterator.Close()
+
+
+	count := 0
+
+	// Iteration of doctors, counting the number
+	for doctorIterator.HasNext() {
+			_, err := doctorIterator.Next()
+			if err != nil {
+					return 0, fmt.Errorf("failed to iterate doctor iterator: %v", err)
+			}
+			count++
+	}
+
+	return count, nil
+}
+
+
 func main() {
 	doctorContract := new(DoctorContract)
 	doctorChaincode, err := contractapi.NewChaincode(doctorContract)
