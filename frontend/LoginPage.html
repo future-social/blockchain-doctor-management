@@ -136,7 +136,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
+                    }, 
                     body: JSON.stringify(credentials)
                 })
                 .then(response => {
@@ -146,6 +146,13 @@
                         throw new Error('Invalid username or password. Please try again.');
                     }
                 })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirect;
+                    } else {
+                        console.error(data.message);
+                    }
+                }) 
                 .catch(error => {
                     alert(error.message);
                 });
