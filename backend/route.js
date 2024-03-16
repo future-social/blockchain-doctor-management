@@ -4,12 +4,14 @@ const doctorController = require("./doctorController");
 // const appointmentController = require("./appointmentController");
 // const loggingController = require("./loggingController");
 const registerDoctor = require("./registerDoctor");
-const DMSAdminId = "";
+var DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
-// const app = express();
+const app = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
@@ -154,6 +156,23 @@ const User = mongoose.model('users', {
   password: String,
 });
 
+//Handle session
+router.use(session({
+  secret: 'secretkey',
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24 // Session expiry time (e.g., 1 day)
+  }
+})); 
+
+router.use((req, res, next) => {
+  // Log the session object
+  console.log("Session object:", req.session);
+  next(); // Call next to pass control to the next middleware/route handler
+});
+
 // Handle registration
 router.post('/register', async (req, res) => {
   try {
@@ -171,9 +190,6 @@ router.post('/register', async (req, res) => {
 
     // Log successful registration
     console.log('User registered successfully:', user);
-
-    //res.send('Registration successful!');
-    res.redirect('/LoginPage.html');
   } catch (error) {
     // Log registration error
     console.error('Error during registration:', error);
@@ -182,70 +198,86 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Handle login
+//Handle login
 router.post('/login', async (req, res) => {
+  console.log("Session inside login route:", req.session);
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    /*
+
     if (user && await bcrypt.compare(password, user.password)) {
-      DMSAdminId = username; 
-      res.redirect('/Doctor_PersonalInformation02.html');  */
-    if (user && await bcrypt.compare(password, user.password)) {
-      if (username.includes("adm")){
-        DMSAdminId = username;
-        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);
+      let redirectUrl;
+      if (username.includes("adm")) {
+        req.session.user = { username: user.username };
+        req.loggedInUser = username; // Set loggedInUser here
+        redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
+      } else if (username.includes("doc")) {
+        req.session.user = { username: user.username };
+        req.loggedInUser = username; // Set loggedInUser here
+        redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
+      } else {
+        return res.status(401).send('Invalid credentials.');
       }
-      else if (username.includes("doc")){
-        DMSAdminId = username;
-        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);     
-      } 
-      else{
-      res.status(401).send('Invalid credentials.');
-      }
+      
+      res.json({ redirectUrl }); // Send the redirect URL as JSON response
+    } else {
+      res.status(401).send('Invalid credentials.'); // Authentication failed
     }
   } catch (error) {
+    console.error(error);
     res.status(500).send('Error during login.');
   }
 });
 
 // Handle change password
-router.post('/changepassword', async (req, res) => {
+router.post("/changePassword", async (req, res) => {
   try {
-    const { username, oldPassword, newPassword, confirmNewPassword } = req.body;
-    console.log('Received data:', { username, oldPassword, newPassword, confirmNewPassword });
+    // Retrieve currentPassword and newPassword from the request body
+    const { currentPassword, newPassword } = req.body;
+    
+    console.log("Received Form Data:", req.body);
+    console.log("Current Password:", currentPassword);
+    console.log("New Password:", newPassword);
+    
+    // Fetch the user from the database based on the logged-in user's ID
+    const user = await User.findOne({ username: req.session.user.username });
 
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      return res.status(404).send('User not found.');
+    // Verify if the provided current password matches the stored password
+    if (!user || !user.password) {
+      return res.status(400).json({ success: false, message: "User or password not found." });
     }
 
-    if (!(await bcrypt.compare(oldPassword, user.password))) {
-      return res.status(401).send('Invalid old password.');
+    // Compare the provided current password with the stored password
+    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({ success: false, message: "Incorrect current password." });
     }
 
-    if (newPassword !== confirmNewPassword) {
-      return res.status(400).send('New password and confirm new password do not match.');
-    }
-
-    // Ensure newPassword and user.password are valid strings
-    const isValidString = (str) => typeof str === 'string' && str.trim().length > 0;
-
-    if (!isValidString(newPassword) || !isValidString(user.password)) {
-      return res.status(500).send('Invalid data for password change.');
-    }
-
-    // Hash the new password before updating
-    user.password = await bcrypt.hash(newPassword, 10);
+    // Hash the new password before saving it to the database
+    const hashedNewPass = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPass;
     await user.save();
 
-    // Send a redirect response to the login page
-    res.redirect('/login');
+    res.json({ success: true, message: "Password changed successfully." });
   } catch (error) {
-    console.error('Error during password change:', error);
-    res.status(500).send(`Error during password change: ${error.message}`);
+    console.error("Error changing password:", error);
+    res.status(500).json({ success: false, message: "Internal server error." });
   }
+});
+
+// Handle logout
+router.post('/logout', (req, res) => {
+  console.log("Logout route invoked");
+  req.session.destroy((err) => {
+      if (err) {
+          console.error("Error destroying session:", err);
+          res.status(500).send('Error during logout.');
+      } else {
+          res.redirect('/LoginPage.html');
+          console.log("Session end");
+      }
+  });
 });
 
 module.exports = router;
