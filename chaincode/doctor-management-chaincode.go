@@ -55,7 +55,7 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	//Check if the doctor already exists
-	_, exists, err := dc.DoctorExists(ctx, doctorID)
+	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
@@ -161,7 +161,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	icNo string, gender string, birthDate string, mobileNumber string, email string, address string, specialisation string, degree string,
 	recognizedDate string, country string, institution string, bodyGrantingQualification string) error {
 
-	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
+	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return fmt.Errorf("failed to read doctor from world state: %v", err)
 	}
@@ -184,6 +184,12 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 
 	//get transaction ID
 	transactionID := ctx.GetStub().GetTxID()
+
+	//Retrieve current doctor information
+	currentDoctorJSON, err := ctx.GetStub().GetState(doctorID)
+	if err != nil {
+		return fmt.Errorf("failed to read current doctor state: %v", err)
+	}
 
 	// Unmarshal current doctor details
 	var currentDoctor Doctor
@@ -276,7 +282,7 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("only admin can delete doctor")
 	}
 
-	_, exists, err := dc.DoctorExists(ctx, doctorID)
+	exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
@@ -332,13 +338,13 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 }
 
 // DoctorExists checks if a doctor with the given ID exists in the world state.
-func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterface, doctorID string) ([]byte, bool, error) {
+func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterface, doctorID string) (bool, error) {
 	doctorJSON, err := ctx.GetStub().GetState(doctorID)
 	if err != nil {
-		return nil, false, fmt.Errorf("failed to read from world state: %v", err)
+		return false, fmt.Errorf("failed to read from world state: %v", err)
 	}
 
-	return doctorJSON, doctorJSON != nil, nil
+	return doctorJSON != nil, nil
 }
 
 // GetTransactionLogs returns all transaction logs in world state
