@@ -2,7 +2,6 @@ const { Wallets, Gateway } = require("fabric-network");
 const fs = require("fs");
 const path = require("path");
 const moment = require('moment');
-// const fabricHelper = require('./fabricHelper');
 
 async function retrieveLogs(DMSAdminId) {
     try {
@@ -44,7 +43,7 @@ async function retrieveLogs(DMSAdminId) {
         const contract = network.getContract("basic");
   
         // Submit the transaction
-        const result = await contract.evaluateTransaction("RetrieveLogs");
+        const result = await contract.evaluateTransaction("GetTransactionLogs");
         console.log(`Logs retrieved: ${result.toString()}`);
 
         // Parse the result as JSON
