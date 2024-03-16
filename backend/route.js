@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const doctorController = require("./doctorController");
-// const appointmentController = require("./appointmentController");
-// const loggingController = require("./loggingController");
 const registerDoctor = require("./registerDoctor");
 var DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 const mongoose = require('mongoose');
@@ -36,12 +34,32 @@ router.post("/createDoctor", async (req, res) => {
 
 // Route to retrieve all doctor data
 router.get("/retrieveAllDoctor", async (req, res) => {
+  /*
   try {
     const result = await doctorController.retrieveAllDoctor(DMSAdminId);
+    // const result = [{
+    //     doctor_id: "DOC01",
+    //     first_name: "first name",
+    //     last_name: "last name",
+    //     gender: "male",
+    //     specialisation: "heart specialist"
+    // }, {
+    //     doctor_id: "DOC02",
+    //     first_name: "first name",
+    //     last_name: "last name",
+    //     gender: "male",
+    //     specialisation: "lung specialist"
+    // },{
+    //     doctor_id: "DOC03",
+    //     first_name: "first name",
+    //     last_name: "last name",
+    //     gender: "female",
+    //     specialisation: "skin specialist"
+    // }];
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
-  }
+  } */
 });
 
 // Route to retrieve doctor data by id
@@ -49,6 +67,13 @@ router.get("/retrieveDoctor/:doctorId", async (req, res) => {
   try {
     const doctorId = req.params.doctorId;
     const result = await doctorController.retrieveDoctor(doctorId);
+    // const result = {
+    //     doctor_id: doctorId,
+    //     first_name: "first name",
+    //     last_name: "last name",
+    //     gender: "male",
+    //     specialisation: "heart specialist"
+    // };
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -84,7 +109,7 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
   }
 });
 
-// // Route to create a new appointment
+// Route to create a new appointment
 // router.post('/createAppointment', async (req, res) => {
 //     try {
 //         const appointmentData = req.body;
@@ -139,15 +164,6 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
 //     }
 // });
 
-// Route to retrieve doctor count
-router.get('/countDoctor', async (req, res) => {
-  try {
-      const count = await doctorController.countDoctor(DMSAdminId);
-      res.json(count);
-  } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-  }
-});
 
 // REG & LOGIN
 // Connect to MongoDB
@@ -212,20 +228,22 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ username });
 
     if (user && await bcrypt.compare(password, user.password)) {
-      let redirectUrl;
+      //let redirectUrl;
       if (username.includes("adm")) {
         req.session.user = { username: user.username };
         req.loggedInUser = username; // Set loggedInUser here
-        redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
+        //redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
+        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);  
       } else if (username.includes("doc")) {
         req.session.user = { username: user.username };
         req.loggedInUser = username; // Set loggedInUser here
-        redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
+        //redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
+        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);
       } else {
         return res.status(401).send('Invalid credentials.');
       }
       
-      res.json({ redirectUrl }); // Send the redirect URL as JSON response
+      //res.json({ redirectUrl }); // Send the redirect URL as JSON response
     } else {
       res.status(401).send('Invalid credentials.'); // Authentication failed
     }
@@ -287,3 +305,5 @@ router.post('/logout', (req, res) => {
 });
 
 module.exports = router;
+
+
