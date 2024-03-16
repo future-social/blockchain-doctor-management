@@ -239,12 +239,18 @@ func (dc *DoctorContract) UpdateQualification(ctx contractapi.TransactionContext
 func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterface, doctorID string, firstName string, lastName string,
 	icNo string, gender string, birthDate time.Time, mobileNumber string, email string, address string, specialisation string, degree string,
 	recognizedDate time.Time, country string, institution string, bodyGrantingQualification string) error {
-	exists, err := dc.DoctorExists(ctx, doctorID)
+	currentDoctorJSON, exists, err := dc.DoctorExists(ctx, doctorID)
 	if err != nil {
 		return err
 	}
 	if !exists {
 		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
+	}
+
+	// Unmarshal current doctor details
+	var currentDoctor Doctor
+	if err := json.Unmarshal(currentDoctorJSON, &currentDoctor); err != nil {
+		return fmt.Errorf("failed to unmarshal existing doctor JSON: %v", err)
 	}
 
 	updateDoctor := Doctor{
@@ -336,13 +342,13 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 }
 
 // DoctorExists checks if a doctor with the given ID exists in the world state.
-func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterface, doctorID string) (bool, error) {
+func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterface, doctorID string) ([]byte, bool, error) {
 	doctorJSON, err := ctx.GetStub().GetState(doctorID)
 	if err != nil {
-		return false, fmt.Errorf("failed to read from world state: %v", err)
+		return nil, false, fmt.Errorf("failed to read from world state: %v", err)
 	}
 
-	return doctorJSON != nil, nil
+	return doctorJSON ,doctorJSON != nil, nil
 }
 
 /*
