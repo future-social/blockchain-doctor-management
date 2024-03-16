@@ -7,28 +7,17 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-//const MongoDBStore = require('connect-mongodb-session')(session);
 
-const app = express();
+router.use(session({
+    secret: 'secretkey',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+
+//const app = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-/*
-// Configure session middleware
-const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/session',
-  collection: 'session' // Collection name to store sessions
-}); */
-
-//Session setup
-router.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: true,
-})); 
-
-/*
-// Use route middleware
-app.use(router); */
 
 // Route to create a new doctor
 router.post("/createDoctor", async (req, res) => {
@@ -189,75 +178,6 @@ const User = mongoose.model('users', {
   password: String,
 });
 
-/*MONGO DB
-//Handle session
-router.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-  cookie: {
-      maxAge: 1000 * 60 * 60 * 24 // Session expiry time (e.g., 1 day)
-  }
-})); 
-
-router.use((req, res, next) => {
-  // Log the session object
-  console.log("Session object:", req.session);
-  next(); // Call next to pass control to the next middleware/route handler
-}); */
-
-//New Session 
-router.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
-
-//Handle login
-router.post('/login', async (req, res) => {
-  console.log("Session inside login route:", req.session);
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-
-    if (user && await bcrypt.compare(password, user.password)) {
-      if (username.includes("adm")) {
-        req.session.user = { username: user.username }; //Set session identifier
-        req.loggedInUser = username; // Set loggedInUser here
-        //redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
-        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);  
-      } else if (username.includes("doc")) {
-        req.session.user = { username: user.username };
-        req.loggedInUser = username; // Set loggedInUser here
-        //redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
-        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);
-      } else {
-        res.render('login',{error: 'Invalid username or password' });
-      }
-    } 
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error during login.');
-  }
-});
-
-//Create a middleware that check for the session identifier
-const requireAuth = (req, res, next) => {
-  if (req.session.user) {
-      next(); // User is authenticated, continue to next middleware
-  } else {
-      res.redirect('/login'); // User is not authenticated, redirect to login page
-  }
-}
-
-//Use the requireAuth middleware to protect routes that require authentication
-router.get('/dashboard', requireAuth, (req, res) => {
-  // Render the dashboard page
-  res.render('dashboard', { username: req.session.user.username });
-});
-
 // Handle registration
 router.post('/register', async (req, res) => {
   try {
@@ -282,6 +202,86 @@ router.post('/register', async (req, res) => {
     res.status(500).send('Error during registration.');
   }
 });
+
+/*
+//Handle login
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (user && await bcrypt.compare(password, user.password)) {
+      let redirectUrl;
+      if (username.includes("adm")) {
+        req.loggedInUser = username; // Set loggedInUser here
+        redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
+      } else if (username.includes("doc")) {
+        req.loggedInUser = username; // Set loggedInUser here
+        redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
+      } else {
+        return res.status(401).send('Invalid credentials.');
+      }
+      
+      res.json({ redirectUrl }); // Send the redirect URL as JSON response
+    } else {
+      res.status(401).send('Invalid credentials.'); // Authentication failed
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error during login.');
+  }
+}); */
+
+//Handle login with session
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (user && await bcrypt.compare(password, user.password)) {
+      req.session.user = user;
+      if (username.includes("adm")) {
+        return res.status(200).json({ success: true, message: "Login successful.", redirect: '/Admin_DoctorPersonalInformation01.html?id=' + username });
+      } else if (username.includes("doc")) {
+        return res.status(200).json({ success: true, message: "Login successful.", redirect: '/Doctor_PersonalInformation02.html?id=' + username });
+      } else {
+        return res.status(401).send('Invalid credentials.');
+      }
+    } else {
+      res.status(401).send('Invalid credentials.'); // Authentication failed
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error during login.');
+  }
+});
+
+const requireAuth = (req, res, next) => {
+  if (req.session.user) {
+      next(); // User is authenticated, continue to next middleware
+  } else {
+      res.redirect('LoginPage.html'); // User is not authenticated, redirect to login page
+  }
+}
+
+router.get('/', requireAuth, (req, res) =>  {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'LoginPage.html'));
+});
+
+// Handle logout
+router.post('/logout', (req, res) => {
+  console.log("Logout route invoked");
+  req.session.destroy((err) => {
+      if (err) {
+          console.error("Error destroying session:", err);
+          res.status(500).send('Error during logout.');
+      } else {
+          res.redirect('/LoginPage.html');
+          console.log("Session end");
+      }
+  });
+});
+
 
 // Handle change password
 router.post("/changePassword", async (req, res) => {
@@ -320,21 +320,4 @@ router.post("/changePassword", async (req, res) => {
   }
 });
 
-// Handle logout
-router.post('/logout', (req, res) => {
-  console.log("Logout route invoked");
-  req.session.destroy((err) => {
-      if (err) {
-          console.error("Error destroying session:", err);
-          res.status(500).send('Error during logout.');
-      } else {
-          res.redirect('/LoginPage.html');
-          console.log("Session end");
-      }
-  });
-});
-
 module.exports = router;
-
-
-
