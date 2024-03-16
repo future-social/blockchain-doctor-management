@@ -232,18 +232,18 @@ router.post('/login', async (req, res) => {
       if (username.includes("adm")) {
         req.session.user = { username: user.username };
         req.loggedInUser = username; // Set loggedInUser here
-        //redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
-        res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);  
+        redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
+        //res.redirect('/Admin_DoctorPersonalInformation01.html?id=' + username);  
       } else if (username.includes("doc")) {
         req.session.user = { username: user.username };
         req.loggedInUser = username; // Set loggedInUser here
-        //redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
-        res.redirect('/Doctor_PersonalInformation02.html?id=' + username);
+        redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
+        //res.redirect('/Doctor_PersonalInformation02.html?id=' + username);
       } else {
         return res.status(401).send('Invalid credentials.');
       }
       
-      //res.json({ redirectUrl }); // Send the redirect URL as JSON response
+      res.json({ redirectUrl }); // Send the redirect URL as JSON response
     } else {
       res.status(401).send('Invalid credentials.'); // Authentication failed
     }
