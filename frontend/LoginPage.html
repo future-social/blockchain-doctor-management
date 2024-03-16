@@ -20,7 +20,7 @@
             height: auto;
         }
         .login-container {
-            width: 400px;
+            width: 300px;
             margin: 0 auto;
             margin-top: 5px;
             text-align: center;
@@ -28,16 +28,10 @@
             border-radius: 10px;
             padding: 20px;
         }
-        .register-container label{
-            text-align: left;
-            width: 25px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
         input[type="text"], input[type="password"] {
-            width: calc(100% - 125px);
+            width: calc(100% - 20px);
             padding: 10px;
-            margin: 15px 0;
+            margin: 10px 0;
 	    border: 2px solid #d3d3d3;
 	    border-radius: 10px;
             box-sizing: border-box;
@@ -51,7 +45,6 @@
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 16px;
         }
         input[type="submit"]:hover {
             background-color: #8E004A;
@@ -63,17 +56,16 @@
         <img src="medicpro.jpg" alt="Photo">
     </div>
     <h2 style="text-align: center;">Login</h2>
-    <form action="/login" method="POST">
+    <form id="loginForm" form action="/login" method="POST">
         <div class="login-container">
-            <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="Username" required><br>
-            <label for="password">Password:</label>
             <input type="password" id="password" name="password" placeholder="Password" required><br><br>
             <input type="submit" value="Login">
         </div>
     </form>
-
+    
     <script>
+        /*  Jiaying's original code
         function login(event) {
         event.preventDefault(); // Prevent form submission
 
@@ -116,7 +108,7 @@
                 // Handle unexpected role (should not occur if backend is properly implemented)
                 throw new Error('Invalid role received from the server.');
             }
-        })
+        }) 
         .catch(error => {
             // Display more specific error messages based on the error message received from the server
             if (error.message.includes('username')) {
@@ -126,9 +118,46 @@
             } else {
                 alert('An error occurred. Please try again later.');
             }
-        });
-    }
+        });  
+    } */
+    window.addEventListener('load', function() {
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
 
-    </script>
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                const credentials = {
+                    username: username,
+                    password: password
+                };
+
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(credentials)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Invalid username or password. Please try again.');
+                    }
+                })
+                .then(data => {
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        throw new Error('Redirect URL not provided.');
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+            });
+        });
+    </script>  
 </body>
 </html>
