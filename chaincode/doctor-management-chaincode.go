@@ -63,6 +63,25 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("the doctor with ID %s already exists", doctorID)
 	}
 
+	// Get createBy (caller)
+	caller, err := ctx.GetClientIdentity().GetID()
+	if err != nil {
+		return fmt.Errorf("failed to get caller ID: %v", err)
+	}
+
+	//get timestamp
+	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
+	if err != nil {
+		return fmt.Errorf("failed to get transaction timestamp: %v", err)
+	}
+	timestamp := time.Unix(txTimestamp.Seconds, int64(txTimestamp.Nanos))
+
+	//get transaction ID
+	transactionID := ctx.GetStub().GetTxID()
+
+	//get information about creating a doctor account
+	actionItem := fmt.Sprintf("Register New Doctor: %s", doctorID)
+
 	newDoctor := Doctor{
 		DoctorID:                   doctorID,
 		FirstName:                  firstName,
@@ -79,6 +98,25 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		Country:                    country,
 		Institution:                institution,
 		BodyGrantingQualifications: bodyGrantingQualification,
+	}
+
+	transactionLog := TransactionLog{
+		TransactionID: transactionID,
+		Caller:        caller,
+		ActionItem:    actionItem,
+		Timestamp:     timestamp,
+	}
+
+	// Marshal transaction log
+	transactionLogJSON, err := json.Marshal(transactionLog)
+	if err != nil {
+		return fmt.Errorf("failed to marshal transaction log: %v", err)
+	}
+
+	// Put transaction log to world state
+	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
+	if err != nil {
+		return fmt.Errorf("failed to store transaction log: %v", err)
 	}
 
 	// Convert doctor information to JSON format
@@ -180,7 +218,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		updatedVal := updatedFieldsVal.Field(i).Interface()
 		if !reflect.DeepEqual(existingVal, updatedVal) {
 			fieldName := strings.ToLower(existingFields.Type().Field(i).Name)
-			updatedFields[fieldName] = fmt.Sprintf("%v -> %v", existingVal, updatedVal)
+			updatedFields[fieldName] = fmt.Sprintf("%s: %v -> %v", fieldName, existingVal, updatedVal)
 		}
 	}
 
@@ -193,9 +231,9 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	// get update fileds
 	var actionItem string
 	for _, val := range updatedFields {
-		actionItem += fmt.Sprintf("%v, ", val)
+		actionItem += fmt.Sprintf("%v; ", val)
 	}
-	actionItem = strings.TrimSuffix(actionItem, ", ")
+	actionItem = strings.TrimSuffix(actionItem, "; ")
 
 	transactionLog := TransactionLog{
 		TransactionID: transactionID,
@@ -263,6 +301,45 @@ func (dc *DoctorContract) DoctorExists(ctx contractapi.TransactionContextInterfa
 	}
 
 	return doctorJSON, doctorJSON != nil, nil
+}
+
+// GetTransactionLogs returns all transaction logs in world state
+func (dc *DoctorContract) GetTransactionLogs(ctx contractapi.TransactionContextInterface) ([]*TransactionLog, error) {
+	// Check if client has 'admin' role
+	err := ctx.GetClientIdentity().AssertAttributeValue("DMSrole", "admin")
+	if err != nil {
+		return nil, fmt.Errorf("only admin can get all doctors")
+	}
+
+	// Get iterator for all keys in the state
+	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get transaction log: %v", err)
+	}
+	defer resultsIterator.Close()
+
+	// Initialize an empty slice to store transaction logs
+	var transactionLogs []*TransactionLog
+
+	//Iterate through the result set
+	for resultsIterator.HasNext() {
+		response, err := resultsIterator.Next()
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate through transaction logs: %v", err)
+		}
+
+		// Unmarshal the transaction log into a TransactionLog object
+		var transactionLog TransactionLog
+		if err := json.Unmarshal(response.Value, &transactionLog); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal transaction log: %v", err)
+		}
+
+		// Append the transaction log to the slice
+		transactionLogs = append(transactionLogs, &transactionLog)
+
+	}
+
+	return transactionLogs, nil
 }
 
 // GetAllDoctors returns all doctors found in world state
