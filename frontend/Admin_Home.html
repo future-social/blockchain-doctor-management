@@ -56,10 +56,11 @@
         text-align: left;
         color: #929091;
         font-weight: bold;
+        padding:10px 20px;
       }
 
       td {
-        padding: 10px;
+        padding: 10px 20px;
         border:none;
         background-color: #fff;
         border-radius:15px;
@@ -114,6 +115,7 @@
           <table>
             <thead>
               <tr>
+                <th>Transaction ID</th>
                 <th>Person</th>
                 <th>Actions Performed</th>
                 <th>Date & Time</th>
@@ -167,7 +169,7 @@
         });
 
         function fetchUserInfo() {
-        fetch('get_username_endpoint')
+        fetch('endpoint')
        .then(response => response.json())
        .then(data => {
          const username = data.username;
@@ -184,7 +186,7 @@
             const transactionLogTable = document.getElementById('transactionLogTable');
             data.forEach(entry => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${entry.person}</td><td>${entry.actions}</td><td>${entry.dateTime}</td>`;
+                row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.person}</td><td>${entry.actions}</td><td>${entry.dateTime}</td>`;
                 transactionLogTable.appendChild(row);
             });
         })
