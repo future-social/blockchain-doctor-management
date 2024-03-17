@@ -104,21 +104,13 @@
     <h1>Transaction Log</h1>
     <div class="container">
         <div class="search-container">
-            <div class="searchbar">
-                <select id="monthSelect" >
-                    <!-- Options for selecting month -->
-                </select>
-                <select id="yearSelect" >
-                    <!-- Options for selecting year -->
-                </select>
-                <button onclick="handleSearch()" class="search-button" src="search.png" alt="search"></button>
-            </div>
+           
             <div class="dropdown">
                 <img class="filter-button" src="filter.png" alt="Filter">
                 <select>
                     <option value="" disabled selected>Filter by...</option>
-                    <option value="person">Person</option>
-                    <option value="DateTime">Date & Time</option>
+                    <option value="user">User</option>
+                    <option value="DateTime">Time Stamp</option>
                     <!-- Add more options as needed -->
                 </select>
             </div>
@@ -128,9 +120,9 @@
                 <tr>
                     <th>NO.</th>
                     <th>Transaction ID</th>
-                    <th>Person</th>
+                    <th>User</th>
                     <th>Action Performed</th>
-                    <th>Date & Time</th>
+                    <th>Time Stamp</th>
                 </tr>
             </thead>
             <tbody>
@@ -173,10 +165,10 @@
                         const row = tableBody.insertRow();
                         row.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${transaction.transaction_id}</td>
-                            <td>${transaction.person}</td>
-                            <td>${transaction.actionperformed}</td>
-                            <td>${transaction.date} ${transaction.time}</td>
+                            <td>${transaction.transactionID}</td>
+                            <td>${transaction.user}</td>
+                            <td>${transaction.action_item}</td>
+                            <td>${transaction.timestamp}</td>
                         `;
                     });
                 }
@@ -186,62 +178,6 @@
                 // Display an error message to the user or handle the error appropriately
             });
 
-        // Function to populate month select options
-        function populateMonths() {
-            const monthSelect = document.getElementById("monthSelect");
-            const months = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-            months.forEach((month, index) => {
-                const option = document.createElement("option");
-                option.value = index + 1;
-                option.textContent = month;
-                monthSelect.appendChild(option);
-            });
-        }
-
-        // Function to populate year select options
-        function populateYears() {
-            const yearSelect = document.getElementById("yearSelect");
-            const currentYear = new Date().getFullYear();
-            for (let year = currentYear; year >= (currentYear-2); year--) {
-                const option = document.createElement("option");
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
-            }
-        }
-
-        // Call functions to populate month and year selects
-        populateMonths();
-        populateYears();
-
-        // Function to handle search
-        function handleSearch() {
-            const monthSelect = document.getElementById("monthSelect");
-            const yearSelect = document.getElementById("yearSelect");
-            const selectedMonth = parseInt(monthSelect.value);
-            const selectedYear = parseInt(yearSelect.value);
-
-            const table = document.getElementById("transactionTable");
-            const tbody = table.querySelector("tbody");
-            const rows = tbody.getElementsByTagName("tr");
-
-            for (let i = 0; i < rows.length; i++) {
-                const cell = rows[i].getElementsByTagName("td")[3]; // Date & Time column
-                const dateTime = new Date(cell.textContent);
-                const transactionMonth = dateTime.getMonth() + 1; // Months are 0-indexed
-                const transactionYear = dateTime.getFullYear();
-
-                if (transactionMonth === selectedMonth && transactionYear === selectedYear) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-
         // Function to handle sorting based on filter dropdown
         function handleFilter() {
             const select = document.querySelector(".search-container select");
@@ -250,11 +186,11 @@
             const tbody = table.querySelector("tbody");
             const rows = Array.from(tbody.querySelectorAll("tr"));
 
-            if (value === "person") {
+            if (value === "user") {
                 rows.sort((a, b) => {
-                    const personA = a.cells[3].textContent.trim();
-                    const personB = b.cells[3].textContent.trim();
-                    return personA.localeCompare(personB);
+                    const userA = a.cells[3].textContent.trim();
+                    const userB = b.cells[3].textContent.trim();
+                    return userA.localeCompare(userB);
                 });
             } else if (value === "DateTime") {
                 rows.sort((a, b) => {
@@ -266,10 +202,6 @@
 
             rows.forEach(row => tbody.appendChild(row));
         }
-
-        // Add event listeners to search input and filter dropdown
-        const searchInput = document.querySelector('.searchbar input[type="text"]');
-        searchInput.addEventListener('input', handleSearch);
 
         const filterSelect = document.querySelector('.search-container select');
         filterSelect.addEventListener('change', handleFilter);
