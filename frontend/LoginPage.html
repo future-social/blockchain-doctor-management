@@ -149,10 +149,10 @@
                 .then(data => {
                     if (data.success) {
                         localStorage.setItem('user', data.username);
-                        if (data.username.includes("adm")) {
+                        if (data.username.toLowerCase().includes("adm")) {
                             window.location.href = 'Admin_DoctorPersonalInformation01.html?id=' + data.username;
                         }
-                        else if (data.username.includes("doc")){
+                        else if (data.username.toLowerCase().includes("doc")){
                             window.location.href = '/Doctor_PersonalInformation02.html?id=' + data.username;
                         }
                     } else {
