@@ -1,3 +1,4 @@
+// EDIT DMSAdminId and doctor ID to match
 const express = require("express");
 const router = express.Router();
 const doctorController = require("./doctorController");
