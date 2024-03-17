@@ -195,7 +195,7 @@
 }
 
 function fetchDoctorNumber() {
-  fetch(`/countDoctor/${doctorId}`) 
+  fetch(`/countDoctor`) 
     .then(response => response.json())
     .then(data => {
       const totalDoctors = data.totalDoctors;
