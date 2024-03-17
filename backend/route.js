@@ -100,6 +100,16 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
   }
 });
 
+// Route to retrieve doctor count
+router.get('/countDoctor', async (req, res) => {
+  try {
+      const count = await doctorController.countDoctor(DMSAdminId);
+      res.json(count);
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Route to create a new appointment
 // router.post('/createAppointment', async (req, res) => {
 //     try {
