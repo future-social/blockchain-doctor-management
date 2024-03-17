@@ -102,7 +102,7 @@ async function retrieveAppointment(doctorId) {
         const contract = network.getContract("basic");
     
         // Submit the transaction
-        const result = await contract.evaluateTransaction("GetTotalAppointment", doctorId);
+        const result = await contract.evaluateTransaction("GetTotalAppointments", doctorId);
         console.log(`Appointment retrieved: ${result.toString()}`);
     
         // Disconnect from the gateway
