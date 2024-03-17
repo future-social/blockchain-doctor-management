@@ -198,7 +198,7 @@ function fetchDoctorNumber() {
   fetch(`/countDoctor`) 
     .then(response => response.json())
     .then(data => {
-      const totalDoctors = data.totalDoctors;
+      const totalDoctors = data;
       const upperRow = document.getElementById('doctordataUpperRow');
       upperRow.textContent = `${totalDoctors}`;
     })
