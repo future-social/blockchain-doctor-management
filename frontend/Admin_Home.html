@@ -192,7 +192,7 @@
             const transactionLogTable = document.getElementById('transactionLogTable');
             data.forEach(entry => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.person}</td><td>${entry.actions}</td><td>${entry.dateTime}</td>`;
+                row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.caller}</td><td>${entry.action_item}</td><td>${entry.timestamp}</td>`;
                 transactionLogTable.appendChild(row);
             });
         })
