@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const doctorController = require("./doctorController");
 const registerDoctor = require("./registerDoctor");
+const loggingController = require("./loggingController");
 var DMSAdminId = " "; // TEST : TO BE PASSED FROM LOGIN
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -25,7 +26,6 @@ router.post("/createDoctor", async (req, res) => {
 
 // Route to retrieve all doctor data
 router.get("/retrieveAllDoctor", async (req, res) => {
-  /*
   try {
     const result = await doctorController.retrieveAllDoctor(DMSAdminId);
     // const result = [{
@@ -50,7 +50,7 @@ router.get("/retrieveAllDoctor", async (req, res) => {
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
-  } */
+  }
 });
 
 // Route to retrieve doctor data by id
@@ -146,72 +146,82 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
 // });
 
 // Route to retrieve logs
-router.get('/retrieveLogs', async (req, res) => {
-    try {
-        const logs = await loggingController.retrieveLogs(DMSAdminId);
-        res.json(logs);
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+router.get("/retrieveLogs", async (req, res) => {
+  try {
+    const logs = await loggingController.retrieveLogs(DMSAdminId);
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
-
 
 // REG & LOGIN
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://meisuenn:password%40123@cluster0.krxkuxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://meisuenn:password%40123@cluster0.krxkuxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 // Create a User model
-const User = mongoose.model('users', {
+const User = mongoose.model("users", {
   username: String,
   password: String,
 });
 
 // Handle registration
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { username, password } = req.body;
 
     // Hash the password before saving to the database
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const user = new User({ username, password: hashedPassword });
-    
+
     // Log user information
-    console.log('User attempting to register:', user);
+    console.log("User attempting to register:", user);
 
     await user.save();
 
     // Log successful registration
-    console.log('User registered successfully:', user);
+    console.log("User registered successfully:", user);
   } catch (error) {
     // Log registration error
-    console.error('Error during registration:', error);
+    console.error("Error during registration:", error);
     console.log(res.statusCode);
-    res.status(500).send('Error during registration.');
+    res.status(500).send("Error during registration.");
   }
 });
 
 //Handle login with session
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    if(!user){
-      return res.status(200).json({ success: false, message: "Invalid Username."});
+    if (!user) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Invalid Username." });
     }
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       //req.session.user = user;
       DMSAdminId = username;
-      return res.status(200).json({ success: true, message: "Login successful.", username: username});
+      return res.status(200).json({
+        success: true,
+        message: "Login successful.",
+        username: username,
+      });
     } else {
-      return res.status(200).json({ success: false, message: "Invalid Password."});
+      return res
+        .status(200)
+        .json({ success: false, message: "Invalid Password." });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error during login.');
+    res.status(500).send("Error during login.");
   }
 });
 
@@ -221,20 +231,27 @@ router.post("/changePassword", async (req, res) => {
     // Retrieve currentPassword and newPassword from the request body
     const { currentPassword, newPassword } = req.body;
     console.log("Received Form Data:", req.body);
-    
+
     // Fetch the user from the database based on the logged-in user's ID
     const user = await User.findOne({ username: DMSAdminId });
 
     // Verify if the provided current password matches the stored password
     if (!user || !user.password) {
-      return res.status(200).json({ success: false, message: "User or password not found." });
+      return res
+        .status(200)
+        .json({ success: false, message: "User or password not found." });
     }
 
     // Compare the provided current password with the stored password
-    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+    const isPasswordMatch = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
 
     if (!isPasswordMatch) {
-      return res.status(200).json({ success: false, message: "Incorrect current password." });
+      return res
+        .status(200)
+        .json({ success: false, message: "Incorrect current password." });
     }
 
     // Hash the new password before saving it to the database
