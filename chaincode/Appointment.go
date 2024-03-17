@@ -236,3 +236,22 @@ func (ac *AppointmentContract) UpdateDoctorAvailability(ctx contractapi.Transact
 
 	return nil
 }
+
+// GetPatientNameByID retrieves patient's name by patient ID
+func (ac *AppointmentContract) GetPatientNameByID(ctx contractapi.TransactionContextInterface, patientID string) (string, error) {
+	patientJSON, err := ctx.GetStub().GetState(patientID)
+	if err != nil {
+		return "", fmt.Errorf("failed to read patient information from ledger: %v", err)
+	}
+	if patientJSON == nil {
+		return "", fmt.Errorf("patient information not found for patient ID %s", patientID)
+	}
+
+	var patient Patient
+	err = json.Unmarshal(patientJSON, &patient)
+	if err != nil {
+		return "", fmt.Errorf("failed to unmarshal patient information: %v", err)
+	}
+
+	return patient.Name, nil
+}
