@@ -168,7 +168,7 @@
           document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        function fetchUserInfo() {
+        function fetchUserInfo() { //hello username
         fetch('endpoint')
        .then(response => response.json())
        .then(data => {
@@ -179,7 +179,7 @@
        .catch(error => console.error('Error fetching user info:', error));
   }
 
-  function fetchTransactionLog() {
+  function fetchTransactionLog() { //transactionlog table 
     fetch('transaction_log_endpoint')
         .then(response => response.json())
         .then(data => {
@@ -193,15 +193,15 @@
         .catch(error => console.error('Error fetching transaction log:', error));
 }
 
-  function fetchDoctorNumber() {
-    fetch('total_doctor_endpoint')
-        .then(response => response.json())
-        .then(data => {
-            const totalDoctors = data.totalDoctors; 
-            const upperRow = document.getElementById('dataUpperRow');
-            upperRow.textContent = `${totalDoctors}`;
-        })
-        .catch(error => console.error('Error fetching total doctors:', error));
+function fetchDoctorNumber() {
+  fetch(`/countDoctor/${doctorId}`) 
+    .then(response => response.json())
+    .then(data => {
+      const totalDoctors = data.totalDoctors;
+      const upperRow = document.getElementById('doctordataUpperRow');
+      upperRow.textContent = `${totalDoctors}`;
+    })
+    .catch(error => console.error('Error fetching total doctors:', error));
 }
 
   // Display today's date
