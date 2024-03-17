@@ -87,7 +87,6 @@
         }
     </style>
 </head>
-<script src="logout.js"></script>
 <body>
     <div id="headerContainer"></div>
 
@@ -96,60 +95,23 @@
     <div class="appointment-container">
         <form id="appointmentForm">
             <div class="row">
-                <div class="column">
+              <div class="column">
+                <label for="patientID">Patient ID:</label>
+                <input type="text" id="patientID" name="patientID" disabled>
+            </div>  
+              <div class="column">
                     <label for="patientName">Patient Name:</label>
-                    <input type="text" id="patientName" name="patientName" required disabled>
-                </div>
-                <div class="column">
-                    <label>Gender:</label>
-                    <div>
-                        <input type="radio" id="male" name="gender" value="male" required disabled>
-                        <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required disabled>
-                        <label for="female">Female</label>
-                    </div>
+                    <input type="text" id="patientName" name="patientName" disabled>
                 </div>
             </div>
             <div class="row">
-                <div class="column">
-                    <label for="icno">IC No./ Passport Number:</label>
-                    <input type="text" id="icno" name="icno" required disabled>
-                </div>
-                <div class="column">
-                    <label for="mobileNumber">Mobile Number:</label>
-                    <input type="tel" id="mobileNumber" name="mobileNumber" required disabled pattern="[0-9]*">
-                </div>                
-            </div>
-            <div class="row">
-                <div class="column">
-                    <label for="date">Date:</label>
-                    <select id="date" name="date" required disabled>
-                        <!-- JavaScript will populate options here -->
-                    </select>
-                </div>
-                <div class="column">
-                    <label for="time">Time:</label>
-                    <select id="time" name="time" required disabled>
-                        <!-- Options for time -->
-                        <option value="" disabled selected>Select time</option>
-                        <option value="09:00">9:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                        <option value="12:00">12:00 PM</option>
-                        <option value="13:00">1:00 PM</option>
-                        <option value="14:00">2:00 PM</option>
-                        <option value="15:00">3:00 PM</option>
-                        <option value="16:00">4:00 PM</option>
-                        <option value="17:00">5:00 PM</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <label for="remarks">Remarks</label>
-                    <input type="text" id="remarks" name="remarks" required disabled>
-                </div>
-                <div class="column">
+              <div class="column">
+                <label for="date">Booked Date:</label>
+                <input type="text" id="date" name="date" disabled>
+            </div>  
+              <div class="column">
+                    <label for="time">Booked Time:</label>
+                    <input type="text" id="time" name="time" disabled>
                 </div>
             </div>
             <div class="button-container">
@@ -205,44 +167,18 @@
         }
 
         function populateForm(data) {
-          const bufferData = data;
+    // Convert buffer data to string
+    const jsonString = new TextDecoder().decode(new Uint8Array(data));
 
-          // convert Buffer to Uint8Array
-          const uint8Array = new Uint8Array(bufferData.data);
+    // Parse JSON string to JavaScript object
+    const jsonData = JSON.parse(jsonString);
 
-          // convert Uint8Array to string
-          const jsonString = String.fromCharCode.apply(null, uint8Array);
-
-          // parse JSON to JavaScript object
-          const jsonData = JSON.parse(jsonString);
-
-          // Populate form fields with the retrieved data
-          const formFields = [
-            "patientName",
-            "gender",
-            "icno",
-            "mobileNumber",
-            "date",
-            "time",
-            "remarks",
-          ];
-          formFields.forEach((field) => {
-            document.getElementById(field).value = jsonData[field];
-          });
-
-          const gender = jsonData.gender; // Retrieve gender from jsonData
-            // Enable gender radio buttons based on retrieved gender
-            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
-            genderRadioButtons.forEach((radio) => {
-              if (radio.value === gender) {
-                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
-              }
-              //radio.disabled = false; // Enable the radio button
-            });
-          }
-
-       
-      });
+    // Populate form fields with the retrieved data
+    const formFields = ["patientID", "patientName", "date", "time"];
+    formFields.forEach((field) => {
+        document.getElementById(field).value = jsonData[field];
+    });
+}})
     </script>
   </body>
 </html>
