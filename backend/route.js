@@ -111,7 +111,7 @@ router.get('/countDoctor', async (req, res) => {
   }
 });
 
-Route to create a new appointment
+// Route to create a new appointment
 router.post('/createAppointment', async (req, res) => {
     try {
         const appointmentData = req.body;
