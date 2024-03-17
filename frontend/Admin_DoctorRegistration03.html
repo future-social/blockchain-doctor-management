@@ -63,7 +63,7 @@
             <input type="text" name="username" placeholder="Username" required><br>
             <label for="password">Password:</label>
             <input type="password" name="password" placeholder="Password" required><br><br>
-            <button type="submit">Submit</button>
+            <button type="submit" onclick="submitForm()">Submit</button>
         </div>
     </form>
     <br><br>
@@ -85,7 +85,24 @@
         function submitForm() {
             // Get data from all pages
             const page01Data = JSON.parse(sessionStorage.getItem('page01Data'));
-            //const page02Data = JSON.parse(sessionStorage.getItem('page02Data'));
+            // const page01Values = page01Data.map(item => item.value);
+            const page01Values = {
+                first_name : page01Data['0']['value'],
+                last_name : page01Data['1']['value'],
+                ic_no : page01Data['2']['value'],
+                gender : page01Data['3']['value'],
+                doctor_id : page01Data['4']['value'],
+                birth_date : page01Data['5']['value'],
+                mobile_number : page01Data['6']['value'],
+                email : page01Data['7']['value'],
+                address : page01Data['8']['value'],
+                specialisation : page01Data['9']['value'],
+                degree : page01Data['10']['value'],
+                recognize_date : page01Data['11']['value'],
+                country : page01Data['12']['value'],
+                institution : page01Data['13']['value'],
+                body_granting_qualifications : page01Data['14']['value'],
+            };
             const page03Data = {
                 username: document.querySelector('[name="username"]').value,
                 password: document.querySelector('[name="password"]').value
@@ -93,7 +110,7 @@
 
             // Combine all data
             const formData = {
-                ...page01Data,
+                ...page01Values,
                 //...page02Data,
                 ...page03Data
             };
@@ -129,3 +146,5 @@
     </script>
 </body>
 </html>
+
+
