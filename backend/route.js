@@ -6,19 +6,9 @@ var DMSAdminId = "DMSadmin10"; // TEST : TO BE PASSED FROM LOGIN
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
-//const session = require('express-session');
 
-
-//const app = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-/*
-router.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));*/
 
 // Route to create a new doctor
 router.post("/createDoctor", async (req, res) => {
@@ -155,15 +145,15 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
 //     }
 // });
 
-// // Route to retrieve logs
-// router.get('/retrieveLogs', async (req, res) => {
-//     try {
-//         const logs = await loggingController.retrieveLogs();
-//         res.json(logs);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+// Route to retrieve logs
+router.get('/retrieveLogs', async (req, res) => {
+    try {
+        const logs = await loggingController.retrieveLogs(DMSAdminId);
+        res.json(logs);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 
 // REG & LOGIN
@@ -204,35 +194,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-/*
-//Handle login
-router.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-
-    if (user && await bcrypt.compare(password, user.password)) {
-      let redirectUrl;
-      if (username.includes("adm")) {
-        req.loggedInUser = username; // Set loggedInUser here
-        redirectUrl = '/Admin_DoctorPersonalInformation01.html?id=' + username;
-      } else if (username.includes("doc")) {
-        req.loggedInUser = username; // Set loggedInUser here
-        redirectUrl = '/Doctor_PersonalInformation02.html?id=' + username;
-      } else {
-        return res.status(401).send('Invalid credentials.');
-      }
-      
-      res.json({ redirectUrl }); // Send the redirect URL as JSON response
-    } else {
-      res.status(401).send('Invalid credentials.'); // Authentication failed
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error during login.');
-  }
-}); */
-
 //Handle login with session
 router.post('/login', async (req, res) => {
   try {
@@ -253,39 +214,6 @@ router.post('/login', async (req, res) => {
     res.status(500).send('Error during login.');
   }
 });
-/*
-router.get("/requireAuth", async (req, res) => {
-  console.log(req.session.user);
-  if (req.session.user) {
-    res.json({ authenticated: true });
-  } else {
-    res.json({ authenticated: false });
-  }
-});*/
-/*
-const requireAuth = (req, res, next) => {
-  console.log(req.session.user);
-  if (req.session.user) {
-    next(); // User is authenticated, continue to next middleware
-  } else {
-    res.redirect('/LoginPage.html'); // User is not authenticated, redirect to login page
-  }
-} */
-/*
-// Handle logout
-router.post('/logout', (req, res) => {
-  console.log("Logout route invoked");
-  req.session.destroy((err) => {
-      if (err) {
-          console.error("Error destroying session:", err);
-          res.status(500).send('Error during logout.');
-      } else {
-          res.redirect('/LoginPage.html');
-          console.log("Session end");
-      }
-  });
-});*/
-
 
 // Handle change password
 router.post("/changePassword", async (req, res) => {
