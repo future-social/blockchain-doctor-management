@@ -157,7 +157,7 @@
         });
 
         // Fetch doctor data from backend and populate table
-        fetch("/retrieveAllTransaction")
+        fetch("/retrieveLogs")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to retrieve transaction data");
