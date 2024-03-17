@@ -155,6 +155,17 @@ router.get('/countDoctor', async (req, res) => {
 //     }
 // });
 
+// Route to retrieve patient name by id
+router.get("/retrievePatientName/:patientId", async (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const result = await appointmentController.retrievePatientName(patientId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Route to retrieve logs
 router.get("/retrieveLogs", async (req, res) => {
   try {
