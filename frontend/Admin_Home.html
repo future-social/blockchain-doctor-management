@@ -181,9 +181,14 @@
   }
 
   function fetchTransactionLog() { //transactionlog table 
-    fetch('transaction_log_endpoint')
-        .then(response => response.json())
-        .then(data => {
+      fetch("/retrieveLogs")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to retrieve transaction data");
+          }
+          return response.json();
+        })
+        .then((data) => {
             const transactionLogTable = document.getElementById('transactionLogTable');
             data.forEach(entry => {
                 const row = document.createElement('tr');
