@@ -159,7 +159,7 @@ router.get('/retrieveAppointment', async (req, res) => {
 router.get("/retrievePatientName/:patientId", async (req, res) => {
   try {
     const patientId = req.params.patientId;
-    const result = await appointmentController.retrievePatientName(patientId);
+    const result = await appointmentController.retrievePatientName(patientId, doctorId);
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
