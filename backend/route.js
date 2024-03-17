@@ -238,10 +238,15 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-
+    if(!user){
+      return res.status(200).json({ success: false, message: "Invalid Username."});
+    }
     if (user && await bcrypt.compare(password, user.password)) {
       //req.session.user = user;
+      DMSAdminId = username;
       return res.status(200).json({ success: true, message: "Login successful.", username: username});
+    } else {
+      return res.status(200).json({ success: false, message: "Invalid Password."});
     }
   } catch (error) {
     console.error(error);
@@ -287,24 +292,21 @@ router.post("/changePassword", async (req, res) => {
   try {
     // Retrieve currentPassword and newPassword from the request body
     const { currentPassword, newPassword } = req.body;
-    
     console.log("Received Form Data:", req.body);
-    console.log("Current Password:", currentPassword);
-    console.log("New Password:", newPassword);
     
     // Fetch the user from the database based on the logged-in user's ID
-    const user = await User.findOne({ username: req.session.user.username });
+    const user = await User.findOne({ username: DMSAdminId });
 
     // Verify if the provided current password matches the stored password
     if (!user || !user.password) {
-      return res.status(400).json({ success: false, message: "User or password not found." });
+      return res.status(200).json({ success: false, message: "User or password not found." });
     }
 
     // Compare the provided current password with the stored password
     const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!isPasswordMatch) {
-      return res.status(400).json({ success: false, message: "Incorrect current password." });
+      return res.status(200).json({ success: false, message: "Incorrect current password." });
     }
 
     // Hash the new password before saving it to the database

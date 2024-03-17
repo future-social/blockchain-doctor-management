@@ -156,11 +156,13 @@
                             window.location.href = '/Doctor_PersonalInformation02.html?id=' + data.username;
                         }
                     } else {
-                        console.error(data.message);
+                        alert("Failed to login!");
+                        console.log(data.message);
                     }
                 }) 
                 .catch(error => {
-                    alert(error.message);
+                    alert("Page Not Responding!");
+                    console.log(error.message);
                 });
             });
         });
