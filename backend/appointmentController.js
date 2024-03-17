@@ -44,23 +44,22 @@ async function createAppointment(appointmentData, doctorId) {
         const contract = network.getContract("basic");
     
         // Format Date Parameters
-        const formattedAppDate = moment(appointmentData['time'], 'YYYY-MM-DD').format(); // TODO
+        const formattedAppDate = moment(appointmentData['appointmentDate'], 'YYYY-MM-DD').format(); 
     
         // Submit the transaction to create a new doctor
         await contract.submitTransaction(
-          "CreateAppointment",
+          "BookAppointment",
           doctorId,
-          formattedAppDate,
-          appointmentData['name'],
-          appointmentData['gender'],
-          appointmentData['consulting_department'],
+          appointmentData['patientID']
+          formattedAppDate, // TODO
+          appointmentData['AppointmentTime'],
         );
         console.log("Appointment created successfully");
     
         // Disconnect from the gateway
         await gateway.disconnect();
     } catch (error) {
-        console.error(`Failed to create appointment: ${error}`);
+        console.error(`Failed to make appointment: ${error}`);
         throw error;
     }
 }
