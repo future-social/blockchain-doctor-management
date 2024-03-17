@@ -111,26 +111,26 @@ router.get('/countDoctor', async (req, res) => {
   }
 });
 
-// Route to create a new appointment
-// router.post('/createAppointment', async (req, res) => {
-//     try {
-//         const appointmentData = req.body;
-//         const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
-//         res.json(result);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+Route to create a new appointment
+router.post('/createAppointment', async (req, res) => {
+    try {
+        const appointmentData = req.body;
+        const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
-// // Route to retrieve appointment data
-// router.get('/retrieveAppointment', async (req, res) => {
-//     try {
-//         const result = await appointmentController.retrieveAppointment(DMSAdminId);
-//         res.json(result);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+// Route to retrieve appointment data
+router.get('/retrieveAppointment', async (req, res) => {
+    try {
+        const result = await appointmentController.retrieveAppointment(DMSAdminId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 // // Route to update appointment data
 // router.put('/updateAppointment/:appointmentId', async (req, res) => {
