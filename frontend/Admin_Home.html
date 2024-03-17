@@ -203,10 +203,13 @@ function fetchDoctorNumber() {
   fetch(`/countDoctor`) 
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      const totalDoctors = 1;
-      const upperRow = document.getElementById('doctordataUpperRow');
-      upperRow.textContent = `${totalDoctors}`;
+          const bufferData = data;
+          const uint8Array = new Uint8Array(bufferData.data);
+          const jsonString = String.fromCharCode.apply(null, uint8Array);
+          const jsonData = JSON.parse(jsonString);
+          const totalDoctors = jsonData;
+          const upperRow = document.getElementById('doctordataUpperRow');
+          upperRow.textContent = `${totalDoctors}`;
     })
     .catch(error => console.error('Error fetching total doctors:', error));
 }
