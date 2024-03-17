@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
 	"time"
@@ -448,16 +447,4 @@ func (dc *DoctorContract) CountDoctors(ctx contractapi.TransactionContextInterfa
 	}
 
 	return count, nil
-}
-
-func main() {
-	doctorContract := new(DoctorContract)
-	doctorChaincode, err := contractapi.NewChaincode(doctorContract)
-	if err != nil {
-		log.Panicf("Error creating doctor chaincode %v", err)
-	}
-
-	if err := doctorChaincode.Start(); err != nil {
-		log.Panicf("Error starting doctor chaincode: %v", err)
-	}
 }
