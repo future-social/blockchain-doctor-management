@@ -123,10 +123,9 @@ router.get('/countDoctor', async (req, res) => {
 // });
 
 // // Route to retrieve appointment data
-// router.get('/retrieveAppointment/:appointmentId', async (req, res) => {
+// router.get('/retrieveAppointment', async (req, res) => {
 //     try {
-//         const appointmentId = req.params.appointmentId;
-//         const result = await appointmentController.retrieveAppointment(appointmentId, DMSAdminId);
+//         const result = await appointmentController.retrieveAppointment(DMSAdminId);
 //         res.json(result);
 //     } catch (error) {
 //         res.status(500).json({ success: false, message: error.message });
