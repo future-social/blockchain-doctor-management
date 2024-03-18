@@ -283,7 +283,6 @@
       document.addEventListener("DOMContentLoaded", function() {
         fetchUserInfo();
         fetchTodaysAppointment();
-        fetchAppointmentNumber();
       });
 
         fetch("Doctor_Header.html")
@@ -306,30 +305,30 @@
          userInfoElement.textContent = `Hello ${username}`;
        }
 
-  function fetchTodaysAppointment() { //appointment table 
-    fetch('/retrieveTodaysAppointment')
-        .then(response => response.json())
-        .then(data => {
-            const appointmentTable = document.getElementById('appointmentTable');
-            data.forEach(entry => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${entry.name}</td><td>${entry.gender}</td><td>${entry.time}</td>`;
-                appointmentTable.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching todays appointment:', error));
-}
+       function fetchTodaysAppointment() {
+        // Get today's date in the format YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
 
-function fetchAppointmentNumber() {
-  fetch(`/countTodaysAppointment/${doctorId}`) 
-    .then(response => response.json())
-    .then(data => {
-      const totalAppointment = data.totalAppointment;
-      const upperRow = document.getElementById('appointmentdataUpperRow');
-      upperRow.textContent = `${totalAppointment}`;
-    })
-    .catch(error => console.error('Error fetching total appointment for today:', error));
-}
+        // Fetch appointments for today's date
+        fetch(`/retrieveAppointment?date=${today}`)
+            .then(response => response.json())
+            .then(data => {
+                const appointmentTable = document.getElementById('appointmentTable');
+                let appointmentCount = 0; // Variable to count appointments
+
+                data.forEach(entry => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${entry.name}</td><td>${entry.gender}</td><td>${entry.time}</td>`;
+                    appointmentTable.appendChild(row);
+                    appointmentCount++; // Increment appointment count for each entry
+                });
+
+                // Update the upper row with the todays appointment count
+                const upperRow = document.getElementById('appointmentdataUpperRow');
+                upperRow.textContent = appointmentCount;
+            })
+            .catch(error => console.error('Error fetching today\'s appointment:', error));
+    }
 
   // Display today's date
   const dateInfoElement = document.getElementById('dateInfo');
@@ -374,9 +373,9 @@ function fetchAppointmentNumber() {
 
         // Call the function to generate table headers
         generateTableHeaders();
-        // Function to fetch doctor availability data from the backend
+        // Function to fetch doctor availability data from the backend (all appointment)
         function fetchDoctorAvailability() {
-            fetch('/retrieveDoctorAvailability')
+            fetch('/retrieveAllAppointment')
                 .then(response => response.json())
                 .then(data => {
                     // Process the availability data and update table cells
