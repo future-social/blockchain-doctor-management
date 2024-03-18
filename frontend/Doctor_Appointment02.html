@@ -390,8 +390,13 @@
                     if (availability === 'available') {
                         row.cells[2].classList.add('available'); // Green background
                         row.cells[2].addEventListener('click', () => {
-                            // Implement appointment booking logic here
-                            console.log('Selected time slot:', timeSlot);
+                            // Capture the selected day and time slot here
+                            const selectedDay = row.cells[0].textContent.trim(); // Get the day
+                            const selectedTimeSlot = row.cells[1].textContent.trim(); // Get the time slot
+
+                            // Do something with the selected day and time slot
+                            console.log('Selected day:', selectedDay);
+                            console.log('Selected time slot:', selectedTimeSlot);
                         });
                     } else if (availability === 'unavailable') {
                         row.cells[2].classList.add('unavailable'); // Red background
