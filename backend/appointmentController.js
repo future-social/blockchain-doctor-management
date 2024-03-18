@@ -64,7 +64,7 @@ async function createAppointment(appointmentData, doctorId) {
     }
 }
 
-async function retrieveAppointment(doctorId) {
+async function retrieveAllAppointments(doctorId) {
     try {
         // Load connection profile
         const ccpPath = path.resolve(
