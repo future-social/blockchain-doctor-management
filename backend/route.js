@@ -50,8 +50,7 @@ router.get("/retrieveAllDoctor", async (req, res) => {
     // }];
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to retrieve data: No identity identifier associated with " + DMSAdminId + " found on the client side for the blockchain network." });
-    console.log("Failed to retrieve data: No identity identifier associated with " + DMSAdminId + " found on the client side for the blockchain network.");
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
@@ -179,6 +178,16 @@ router.get("/retrieveDoctorAvailability/:doctorId", async (req, res) => {
   }
 });
 
+// Route to retrieve logs
+router.get("/retrieveLogs", async (req, res) => {
+  try {
+    const logs = await loggingController.retrieveLogs(DMSAdminId);
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Route to retrieve patient name by id
 router.get("/retrievePatientName/:patientId", async (req, res) => {
   try {
@@ -199,8 +208,7 @@ router.get("/retrieveLogs", async (req, res) => {
     const logs = await loggingController.retrieveLogs(DMSAdminId);
     res.json(logs);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to retrieve data: No identity identifier associated with " + DMSAdminId + " found on the client side for the blockchain network." });
-    console.log("Failed to retrieve data: No identity identifier associated with " + DMSAdminId + " found on the client side for the blockchain network.");
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
