@@ -1,21 +1,3 @@
-/*
-function logout() {
-console.log("Logout button clicked");
-fetch("/logout", {
-method: "POST"
-})
-.then(response => {
-if (response.redirected) {
-    // Redirect to login page after logout
-    window.location.href = "/LoginPage.html";
-} else {
-    console.error("Logout failed:", response.statusText);
-}
-})
-.catch(error => {
-console.error("Logout failed:", error);
-});
-} */
 function logout() {
     console.log("Logout button clicked");
     try {
@@ -26,7 +8,10 @@ function logout() {
     }
   };
 
+  function authentication(){
+    console.log("TEST");
   if(!localStorage.getItem('user')){
     alert("Please login");
     window.location.href = "LoginPage.html";
+  }
 }
