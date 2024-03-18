@@ -159,7 +159,7 @@ router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
 router.get("/getDoctorAvailability/:doctorId", async (req, res) => {
   try {
     const doctorId = req.params.doctorId;
-    const result = await appointmentController.retrievePatientName(doctorId);
+    const result = await appointmentController.getDoctorAvailability(doctorId);
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
