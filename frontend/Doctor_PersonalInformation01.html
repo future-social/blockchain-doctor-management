@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -121,7 +121,9 @@
     </style>
   </head>
   <script src="logout.js"></script>
-<script>authentication();</script>
+  <script>
+    authentication();
+  </script>
   <body>
     <div id="headerContainer"></div>
 
@@ -328,7 +330,7 @@
 
         function fetchDoctorInformation() {
           const urlParams = new URLSearchParams(window.location.search);
-          const doctorId = urlParams.get("doctorId");
+          const doctorId = urlParams.get("id");
 
           // Update edit link href
           document.getElementById(
@@ -390,15 +392,17 @@
           });*/
 
           const gender = jsonData.gender; // Retrieve gender from jsonData
-            // Enable gender radio buttons based on retrieved gender
-            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
-            genderRadioButtons.forEach((radio) => {
-              if (radio.value === gender) {
-                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
-              }
-              //radio.disabled = false; // Enable the radio button
-            });
-          }
+          // Enable gender radio buttons based on retrieved gender
+          const genderRadioButtons = document.querySelectorAll(
+            'input[type="radio"][name="gender"]'
+          );
+          genderRadioButtons.forEach((radio) => {
+            if (radio.value === gender) {
+              radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+            }
+            //radio.disabled = false; // Enable the radio button
+          });
+        }
 
         /*function populateQualifications(qualifications) {
             const qualificationContainer = document.getElementById("qualificationContainer");
