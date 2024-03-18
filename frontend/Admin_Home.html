@@ -168,7 +168,7 @@
           document.getElementById("footerContainer").innerHTML = html;
           document.getElementById("year").textContent = new Date().getFullYear();
         });
-
+        // POTENTIAL ERROR
         function fetchUserInfo() { //hello username
         fetch('endpoint')
        .then(response => response.json())

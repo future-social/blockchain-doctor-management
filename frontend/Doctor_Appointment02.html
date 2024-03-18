@@ -85,9 +85,40 @@
         .appointment-container button.submit:hover, .appointment-container button.clear:hover, .appointment-container button.back:hover {
             background-color: #8E004A; 
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        caption {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .available {
+            background-color: #4e9ea7;
+            cursor: pointer;
+        }
+        .available:hover {
+            background-color: #027382;
+        }
+        .unavailable {
+            background-color: #8E004A;
+        }
+        
+        tr{
+            height:15px;
+        }
     </style>
 </head>
-<script src="logout.js"></script>
 <body>
     <div id="headerContainer"></div>
 
@@ -97,61 +128,122 @@
         <form id="appointmentForm">
             <div class="row">
                 <div class="column">
+                    <label for="patientID">Patient ID:</label>
+                    <input type="text" id="patientID" name="patientID" required>
+                </div>
+                <div class="column">
                     <label for="patientName">Patient Name:</label>
-                    <input type="text" id="patientName" name="patientName" required>
-                </div>
-                <div class="column">
-                    <label>Gender:</label>
-                    <div>
-                        <input type="radio" id="male" name="gender" value="male" required>
-                        <label for="male">Male</label>
-                        <input type="radio" id="female" name="gender" value="female" required>
-                        <label for="female">Female</label>
-                    </div>
+                    <input type="text" id="patientName" name="patientName" disabled>
                 </div>
             </div>
-            <div class="row">
-                <div class="column">
-                    <label for="icno">IC No./ Passport Number:</label>
-                    <input type="text" id="icno" name="icno" required>
-                </div>
-                <div class="column">
-                    <label for="mobileNumber">Mobile Number:</label>
-                    <input type="tel" id="mobileNumber" name="mobileNumber" required pattern="[0-9]*">
-                </div>                
-            </div>
-            <div class="row">
-                <div class="column">
-                    <label for="date">Date:</label>
-                    <select id="date" name="date" required>
-                        <!-- JavaScript will populate options here -->
-                    </select>
-                </div>
-                <div class="column">
-                    <label for="time">Time:</label>
-                    <select id="time" name="time" required>
-                        <!-- Options for time -->
-                        <option value="" disabled selected>Select time</option>
-                        <option value="09:00">9:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                        <option value="12:00">12:00 PM</option>
-                        <option value="13:00">1:00 PM</option>
-                        <option value="14:00">2:00 PM</option>
-                        <option value="15:00">3:00 PM</option>
-                        <option value="16:00">4:00 PM</option>
-                        <option value="17:00">5:00 PM</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <label for="remarks">Remarks</label>
-                    <input type="text" id="remarks" name="remarks">
-                </div>
-                <div class="column">
-                </div>
-            </div>
+            <br>
+            <table id="availabilityTable">
+                <caption>Doctor's Availability</caption>
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Time Slot</th>
+                    <!-- Weekday columns will be dynamically generated -->
+                </tr>
+                <!-- Time slots from 8am to 11am -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">8am</th>
+                    <td>8:00-8:20</td>
+                    <!-- Morning session availability will be dynamically generated -->
+                </tr>
+                <tr>
+                    <td>8:20-8:40</td>
+                    <!-- Morning session availability will be dynamically generated -->
+                </tr>
+                <tr>
+                    <td>8:40-9:00</td>
+                    <!-- Morning session availability will be dynamically generated -->
+                </tr>
+                <!-- Additional time slots for the morning session -->
+                <!-- Dynamically generated time slots for the morning session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">9am</th>
+                    <td>9:00-9:20</td>
+                </tr>
+                <tr>
+                    <td>9:20-9:40</td>
+                </tr>
+                <tr>
+                    <td>9:40-10:00</td>
+                </tr>
+                <!-- Dynamically generated time slots for the morning session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">10am</th>
+                    <td>10:00-10:20</td>
+                </tr>
+                <tr>
+                    <td>10:20-10:40</td>
+                </tr>
+                <tr>
+                    <td>10:40-11:00</td>
+                </tr>
+                <!-- Dynamically generated time slots for the morning session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">11am</th>
+                    <td>11:00-11:20</td>
+                </tr>
+                <tr>
+                    <td>11:20-11:40</td>
+                </tr>
+                <tr>
+                    <td>11:40-12:00</td>
+                </tr>
+                <!-- Time slots from 2pm to 5pm -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">2pm</th>
+                    <td>14:00-14:20</td>
+                    <!-- Afternoon session availability will be dynamically generated -->
+                </tr>
+                <tr>
+                    <td>14:20-14:40</td>
+                    <!-- Afternoon session availability will be dynamically generated -->
+                </tr>
+                <tr>
+                    <td>14:40-15:00</td>
+                    <!-- Afternoon session availability will be dynamically generated -->
+                </tr>
+                <!-- Additional time slots for the afternoon session -->
+                <!-- Dynamically generated time slots for the afternoon session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">3pm</th>
+                    <td>15:00-15:20</td>
+                </tr>
+                <tr>
+                    <td>15:20-15:40</td>
+                </tr>
+                <tr>
+                    <td>15:40-16:00</td>
+                </tr>
+                <!-- Dynamically generated time slots for the afternoon session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">4pm</th>
+                    <td>16:00-16:20</td>
+                </tr>
+                <tr>
+                    <td>16:20-16:40</td>
+                </tr>
+                <tr>
+                    <td>16:40-17:00</td>
+                </tr>
+                <!-- Dynamically generated time slots for the afternoon session -->
+                <tr>
+                    <th rowspan="3" scope="rowgroup">5pm</th>
+                    <td>17:00-17:20</td>
+                </tr>
+                <tr>
+                    <td>17:20-17:40</td>
+                </tr>
+                <tr>
+                    <td>17:40-18:00</td>
+                </tr>
+            </table>
+        
+
+
             <div class="button-container"> 
                 <button type="button" class="clear">Clear</button>
                 <button type="submit" class="submit">Submit</button>
@@ -175,84 +267,145 @@
           document.getElementById("year").textContent = new Date().getFullYear();
         });
 
-        // JavaScript to populate date options
-        var dateSelect = document.getElementById("date");
-        var currentDate = new Date();
-        var defaultDateOption = document.createElement("option");
-        defaultDateOption.value = "";
-        defaultDateOption.text = "Select date";
-        dateSelect.add(defaultDateOption);
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("appointmentForm");
 
-        for (var i = 0; i < 7; i++) {
-            var option = document.createElement("option");
-            option.value = currentDate.toISOString().split('T')[0]; // Get YYYY-MM-DD format
-            option.text = currentDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            dateSelect.add(option);
-            currentDate.setDate(currentDate.getDate() + 1); // Increment date by 1 day
+            // Clear Button functionality
+            const clearButton = document.querySelector(".clear");
+            clearButton.addEventListener("click", function() {
+                // Clear selected cells
+                const selectedCells = document.querySelectorAll('.selected');
+                selectedCells.forEach(cell => {
+                    cell.classList.remove('selected');
+                });
+            });
+
+            // Submit Button functionality
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Collect selected date and time (time slot)
+                const selectedSlot = document.querySelector('.selected');
+                if (!selectedSlot) {
+                    alert("Please select a time slot.");
+                    return;
+                }
+                const timeSlot = selectedSlot.textContent.trim();
+
+                // Collect other form data
+                const formData = {
+                    patientID: document.getElementById("patientID").value,
+                    patientName: document.getElementById("patientName").value,
+                    timeSlot: timeSlot
+                };
+
+                // Send formData to the server using AJAX or fetch API
+                fetch('/createAppointment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        alert('Appointment created successfully.');
+                        // Redirect to Doctor_Appointment01.html after successful submission
+                        window.location.href = 'Doctor_Appointment01.html';
+                    } else {
+                        throw new Error('Failed to submit appointment data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors here if necessary
+                });
+            });
+        });
+    // Function to generate dates for this week and next week (excluding weekends)
+    function generateDates() {
+            const today = new Date();
+            const dates = [];
+            let dayIncrement = 0;
+
+            while (dates.length < 10) {
+                const date = new Date(today.getTime() + dayIncrement * 24 * 60 * 60 * 1000);
+                const dayOfWeek = date.getDay();
+
+                // Skip Saturday (6) and Sunday (0)
+                if (dayOfWeek !== 6 && dayOfWeek !== 0) {
+                    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+                    const day = date.getDate();
+                    const month = date.toLocaleDateString('en-US', { month: 'short' });
+                    dates.push(`${weekday}, ${day} ${month}`);
+                }
+
+                dayIncrement++;
+            }
+
+            return dates;
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("appointmentForm");
+        // Function to dynamically generate table headers
+        function generateTableHeaders() {
+            const table = document.getElementById('availabilityTable');
+            const dates = generateDates();
 
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            // Collect data from form fields
-            const formData = {
-                patientName: document.getElementById("patientName").value,
-                gender: document.querySelector('input[name="gender"]:checked').value,
-                icno: document.getElementById("icno").value,
-                mobileNumber: document.getElementById("mobileNumber").value,
-                date: document.getElementById("date").value,
-                time: document.getElementById("time").value,
-                remarks: document.getElementById("remarks").value
-            };
-            
-            // Generate the appointment ID using IC number, date, and time
-            const appointmentID = formData.icno + '_' + formData.date + '_' + formData.time;
+            for (let i = 0; i < dates.length; i++) {
+                const th = document.createElement('th');
+                th.textContent = dates[i];
+                table.querySelector('tr').appendChild(th);
+            }
+        }
 
-            // Add appointmentID to formData
-            formData.appointmentId = appointmentID;
+        // Function to fetch doctor availability data from the backend
+        function fetchDoctorAvailability() {
+            fetch('/retrieveDoctorAvailability')
+                .then(response => response.json())
+                .then(data => {
+                    // Process the availability data and update table cells
+                    updateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching doctor availability:', error);
+                });
+        }
 
-            // Send formData to the server using AJAX or fetch API
-            fetch('/createAppointment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Show pop-up message
-                    alert('Create Successfully.');
-                    // Redirect to Doctor_Appointment01.html after successful submission
-                    window.location.href = 'Doctor_Appointment01.html';
-                } else {
-                    throw new Error('Failed to submit appointment data.');
+        // Function to update table cells based on availability data
+        function updateTable(availabilityData) {
+            const table = document.getElementById('availabilityTable');
+            const rows = table.getElementsByTagName('tr');
+            const timeCells = Array.from(rows).slice(1); // Exclude header row
+
+            timeCells.forEach(row => {
+                const timeSlot = row.cells[1].textContent.trim(); // Get the time slot
+                const availability = availabilityData[timeSlot];
+                if (availability === 'available') {
+                    row.cells[2].classList.add('available'); // Green background
+                } else if (availability === 'unavailable') {
+                    row.cells[2].classList.add('unavailable'); // Red background
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle errors here if necessary
-            });
-        });
-
-        // JavaScript to handle clear button click
-        const clearButton = document.querySelector(".clear");
-        clearButton.addEventListener("click", function() {
-            const inputFields = form.querySelectorAll("input, select");
-            inputFields.forEach(function(input) {
-                if (input.tagName === "SELECT") {
-                    input.value = ""; // Clear the select option
-                } else if (input.type === "radio") {
-                    input.checked = false; // Uncheck the radio button
-                } else {
-                    input.value = ""; // Clear the input field
+                // Add event listener for selecting green time slots
+                if (availability === 'available') {
+                    row.cells[2].classList.add('available'); // Green background
+                    row.cells[2].addEventListener('click', () => {
+                        // Implement appointment booking logic here
+                        console.log('Selected time slot:', timeSlot);
+                    });
+                } else if (availability === 'unavailable') {
+                    row.cells[2].classList.add('unavailable'); // Red background
+                    row.cells[2].style.cursor = 'not-allowed'; // Change cursor to not-allowed
+                    row.cells[2].removeAttribute('onclick'); // Remove click event listener
                 }
             });
+        }
+
+        // Call the function to fetch doctor availability when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDoctorAvailability();
+            generateTableHeaders();
         });
-    });
 </script>
 
 

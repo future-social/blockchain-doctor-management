@@ -112,26 +112,25 @@ router.get('/countDoctor', async (req, res) => {
 });
 
 // Route to create a new appointment
-// router.post('/createAppointment', async (req, res) => {
-//     try {
-//         const appointmentData = req.body;
-//         const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
-//         res.json(result);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+router.post('/createAppointment', async (req, res) => {
+    try {
+        const appointmentData = req.body;
+        const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
-// // Route to retrieve appointment data
-// router.get('/retrieveAppointment/:appointmentId', async (req, res) => {
-//     try {
-//         const appointmentId = req.params.appointmentId;
-//         const result = await appointmentController.retrieveAppointment(appointmentId, DMSAdminId);
-//         res.json(result);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+// Route to retrieve appointment data
+router.get('/retrieveAppointment', async (req, res) => {
+    try {
+        const result = await appointmentController.retrieveAppointment(DMSAdminId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 // // Route to update appointment data
 // router.put('/updateAppointment/:appointmentId', async (req, res) => {
@@ -155,6 +154,17 @@ router.get('/countDoctor', async (req, res) => {
 //         res.status(500).json({ success: false, message: error.message });
 //     }
 // });
+
+// Route to retrieve patient name by id
+router.get("/retrievePatientName/:patientId", async (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const result = await appointmentController.retrievePatientName(patientId, doctorId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 // Route to retrieve logs
 router.get("/retrieveLogs", async (req, res) => {
