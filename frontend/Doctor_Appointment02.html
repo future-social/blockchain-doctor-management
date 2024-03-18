@@ -281,39 +281,39 @@
     const appointmentTable = document.getElementById('availabilityTable');
 
     function fetchAllAppointments() {
-        fetch(`/retrieveDoctorAvailability/?id=${doctorId}`)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach((timeSlot, index) => {
-                    const row = appointmentTable.insertRow(index + 1);
-                    const time = row.insertCell(0);
-                    time.textContent = timeSlot.time;
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorId = urlParams.get("doctorId");
+    fetch(`/retrieveDoctorAvailability/${doctorId}`)
+    .then(response => response.json())
+    .then(data => {
+        data.forEach((timeSlot, rowIndex) => {
+            const row = appointmentTable.insertRow(rowIndex + 1); // Insert a new row into the appointment table
 
-                    timeSlot.availability.forEach(availability => {
-                    const formattedDate = date.format("YYYY-MM-DD");  // Date formatted as YYYY-MM-DD
-                    const startTime = timeSlot.time.split('-')[0];; // Extracted start time from the time slot
-                    const timeParts = startTime.split(':'); // Split the start time into hours and minutes
-                    const formattedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1]}`; // Format time as HH:mm (14:40)
-                    const cellId = `${formattedDate}:${formattedTime}`; // Concatenate formattedDate and formattedTime with ":" separator (2024-03-21:14:40)
-                    const cell = document.getElementById(cellId); // Get the cell element with the ID as format: YYYY-MM-DD:HH:mm
-                    if (cell) {
+            // Check if the row has an ID, then start inserting cells from the second column onwards
+            if (row.id) {
+                timeSlot.availability.forEach((availability, columnIndex) => {
+                    const cell = row.insertCell(columnIndex + 1); // Insert a new cell into the row at the specified column index
+                    const formattedDate = date.format("YYYY-MM-DD");
+                    const startTime = timeSlot.time.split('-')[0];
+                    const timeParts = startTime.split(':');
+                    const formattedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1]}`;
+                    const cellId = `${formattedDate}:${formattedTime}`;
+                    const cellElement = document.getElementById(cellId);
+                    if (cellElement) {
                         if (availability.available) {
-                            cell.classList.add('available');
+                            cellElement.classList.add('available');
                         } else {
-                            cell.classList.add('unavailable');
+                            cellElement.classList.add('unavailable');
                         }
                     }
                 });
+            }
+        });
+    })
+    .catch(error => console.error('Error fetching appointments:', error));
+}
 
-
-                
-            })})
-            .catch(error => console.error('Error fetching appointments:', error));
-    }
-
-    fetchAllAppointments();
-
-
+fetchAllAppointments()
 
     // Add event listeners for slot selection
     appointmentTable.addEventListener('click', handleSlotSelection);
