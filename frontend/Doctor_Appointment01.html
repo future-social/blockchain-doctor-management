@@ -157,7 +157,7 @@
 
     <script>
         // Fetch header and footer
-        include("Doctor_Header.html")
+        fetch("Doctor_Header.html")
             .then(response => response.text())
             .then(html => {
                 document.getElementById("headerContainer").innerHTML = html;
