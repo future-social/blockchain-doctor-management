@@ -157,8 +157,7 @@
         })
         .then(response => {
             if (!response.ok) {
-                // throw new Error('Network response was not ok'); // TEST
-                throw new Error('Failed to create doctor data: No identity identifier associated with adm78 found on the client side for the blockchain network.'); // TEST
+                throw new Error('Network response was not ok');
             }
             return response.json();
         })
