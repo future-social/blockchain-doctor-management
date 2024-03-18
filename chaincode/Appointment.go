@@ -35,6 +35,34 @@ type AppointmentContract struct {
 	contractapi.Contract
 }
 
+// InitPatients initiates a few patients information
+func (ac *AppointmentContract) InitPatients(ctx contractapi.TransactionContextInterface) error {
+	// Create some patient information
+	patients := []Patient{
+		{PatientID: "patient1", Name: "John Doe", Age: 30, Gender: "Male", ICNo: "123456789", MobileNumber: "1234567890"},
+		{PatientID: "patient2", Name: "Jane Smith", Age: 35, Gender: "Female", ICNo: "987654321", MobileNumber: "9876543210"},
+		{PatientID: "patient3", Name: "David Johnson", Age: 40, Gender: "Male", ICNo: "543216789", MobileNumber: "5432167890"},
+		{PatientID: "patient4", Name: "Emily Brown", Age: 25, Gender: "Female", ICNo: "789456123", MobileNumber: "7894561230"},
+		{PatientID: "patient5", Name: "Michael Wilson", Age: 45, Gender: "Male", ICNo: "654789321", MobileNumber: "6547893210"},
+		{PatientID: "patient6", Name: "Sarah Taylor", Age: 50, Gender: "Female", ICNo: "456123789", MobileNumber: "4561237890"},
+	}
+
+	// Store patient information on the blockchain
+	for _, patient := range patients {
+		patientJSON, err := json.Marshal(patient)
+		if err != nil {
+			return fmt.Errorf("failed to marshal patient JSON: %v", err)
+		}
+
+		err = ctx.GetStub().PutState(patient.PatientID, patientJSON)
+		if err != nil {
+			return fmt.Errorf("failed to put patient to ledger: %v", err)
+		}
+	}
+
+	return nil
+}
+
 // SetDoctorAvailability set doctor availability time
 func (ac *AppointmentContract) SetDoctorAvailability(ctx contractapi.TransactionContextInterface, doctorID string) error {
 
