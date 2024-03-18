@@ -116,7 +116,7 @@
         </button>
         
         <button class="headercolumn">
-            <a id="appointment" href="Doctor_Appointment01.html">
+            <a id="appointment" href="dropdown_Appointment01.html">
             <img src="appointment.png" alt="Appointment Logo">
             <span>Appointment</span>
         </a>
@@ -145,7 +145,7 @@
     const user = localStorage.getItem('user');
 
     const appointmentLink = document.getElementById('appointment');
-    let url = `Doctor_Appointment01.html?doctorId=${user}`;
+    let url = `dropdown_Appointment01.html?doctorId=${user}`;
     appointmentLink.href = url;
 
     const infoLink = document.getElementById('info');
