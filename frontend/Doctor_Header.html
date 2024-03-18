@@ -116,14 +116,14 @@
         </button>
         
         <button class="headercolumn">
-            <a href="Doctor_Appointment01.html">
+            <a id="appointment" href="Doctor_Appointment01.html">
             <img src="appointment.png" alt="Appointment Logo">
             <span>Appointment</span>
         </a>
         </button>
 	    
         <button class="headercolumn">
-            <a href="Doctor_PersonalInformation01.html">
+            <a id="info" href="Doctor_PersonalInformation01.html">
             <img src="resume.png" alt="Personal Info Logo">
             <span>Doctor Personal Information</span>
             </a>
@@ -141,4 +141,15 @@
         </div>
     </header>
 </body>
+<script>
+    const user = localStorage.getItem('user');
+
+    const appointmentLink = document.getElementById('appointment');
+    let url = `Doctor_Appointment01.html?doctorId=${user}`;
+    appointmentLink.href = url;
+
+    const infoLink = document.getElementById('info');
+    url = `Doctor_PersonalInformation01.html?doctorId=${user}`;
+    infoLink.href = url;
+</script>	
 </html>
