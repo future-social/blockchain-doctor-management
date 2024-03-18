@@ -200,9 +200,7 @@
               transactionLogTable.appendChild(row);
             });
           })
-          .catch((error) =>
-            alert("Error: "error);
-          );
+          .catch((error) => alert("Error fetching transaction log:", error));
       }
 
       function fetchDoctorNumber() {

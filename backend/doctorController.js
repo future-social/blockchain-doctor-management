@@ -101,9 +101,9 @@ async function retrieveAllDoctor(DMSAdminId) {
     const identity = await wallet.get(DMSAdminId);
     if (!identity) {
       throw new Error(
-        "An identity for the user " +
+        "No identity identifier associated with " +
           DMSAdminId +
-          " does not exist in the wallet"
+          " found on the client side for the blockchain network."
       );
     }
     const gateway = new Gateway();
@@ -348,5 +348,5 @@ module.exports = {
   retrieveDoctor,
   updateDoctor,
   deleteDoctor,
-  countDoctor
+  countDoctor,
 };
