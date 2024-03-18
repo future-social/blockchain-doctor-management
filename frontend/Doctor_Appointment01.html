@@ -148,14 +148,23 @@
         </div>
         <br>
         <div class="button-container">
-            <a href="Doctor_Appointment02.html?doctorId=${doctorId}">
+            <a id="newappointmentLink" href="#">
+                <!-- Set href to "#" initially -->
                 <button type="button" class="create">Create New Appointment</button>
-            </a>
+              </a>
         </div>
     </div>
     <div id="footerContainer"></div>
 
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+          const doctorId = urlParams.get("doctorId");
+
+          // Update new appointment link href
+          document.getElementById(
+            "newappointmentLink"
+          ).href = `Doctor_Appointment02.html?doctorId=${doctorId}`;
+          
         // Fetch header and footer
         fetch("Doctor_Header.html")
             .then(response => response.text())
