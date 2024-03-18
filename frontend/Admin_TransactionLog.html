@@ -101,6 +101,9 @@
     </style>
   </head>
   <script src="logout.js"></script>
+  <script>
+    authentication();
+  </script>
   <body>
     <div id="headerContainer"></div>
     <h1>Transaction Log</h1>
@@ -109,7 +112,7 @@
         <div class="dropdown">
           <img class="filter-button" src="filter.png" alt="Filter" />
           <select>
-            <option value="" >Filter by...</option>
+            <option value="">Filter by...</option>
             <option value="user">User</option>
             <option value="DateTime">Time Stamp</option>
             <!-- Add more options as needed -->
@@ -121,8 +124,9 @@
           <tr>
             <th style="width: 5%;">NO.</th>
             <th style="width: 20%;">Transaction ID</th>
+            <th style="width: 10%">User Identity</th>
             <th style="width: 10%;">User</th>
-            <th style="width: 30%;">Action Performed</th>
+            <th style="width: 20%;">Action Performed</th>
             <th style="width: 15%;">Time Stamp</th>
           </tr>
         </thead>
@@ -169,7 +173,8 @@
               row.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${transaction.transactionID}</td>
-                            <td>${transaction.caller}</td>
+                            <td>${transaction.userIdentity}</td>
+                            <td>${transaction.commonName}</td>
                             <td>${transaction.action_item}</td>
                             <td>${transaction.timestamp}</td>
                         `;
