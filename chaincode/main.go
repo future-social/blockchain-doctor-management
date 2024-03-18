@@ -12,7 +12,17 @@ func main() {
 		log.Panicf("Error creating doctor chaincode %v", err)
 	}
 
+	appointmentContract := new(AppointmentContract)
+	appointmentChaincode, err := contractapi.NewChaincode(appointmentContract)
+	if err != nil {
+		log.Panicf("Error creating appointment chaincode %v", err)
+	}
+
 	if err := doctorChaincode.Start(); err != nil {
 		log.Panicf("Error starting doctor chaincode: %v", err)
+	}
+
+	if err := appointmentChaincode.Start(); err != nil {
+		log.Panicf("Error starting appointment chaincode: %v", err)
 	}
 }
