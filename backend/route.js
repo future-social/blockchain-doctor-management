@@ -254,7 +254,7 @@ router.post("/register", async (req, res) => {
     // Log registration error
     console.error("Error during registration:", error);
     console.log(res.statusCode);
-    res.status(500).send("Error during registration.");
+    res.status(500).send("Error: error");
   }
 });
 
