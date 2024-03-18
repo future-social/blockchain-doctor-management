@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Appointment</title>
+    <title>Edit Appointment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -433,6 +433,36 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetchDoctorAvailability();
         });
+        document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("appointmentForm");
+
+    // Function to retrieve patient name from backend
+    function retrievePatientName(patientID) {
+        fetch('/retrievePatientName', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ patientID: patientID })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the patient name input field with the retrieved name
+            document.getElementById("patientName").value = data.patientName;
+        })
+        .catch(error => {
+            console.error('Error retrieving patient name:', error);
+        });
+    }
+
+    // Event listener for patient ID input field
+    const patientIDInput = document.getElementById("patientID");
+    patientIDInput.addEventListener("input", function() {
+        const patientID = this.value;
+        // Call retrievePatientName function with the entered patient ID
+        retrievePatientName(patientID);
+    });
+})
     </script>
   </body>
 </html>
