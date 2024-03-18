@@ -214,7 +214,7 @@ async function deleteAppointment(appointmentId, doctorId) {
         const contract = network.getContract("basic");
     
         // Submit the transaction to update doctor data
-        await contract.submitTransaction("DeleteAppointment", appointmentId);
+        await contract.submitTransaction("CancelAppointment", appointmentId);
         console.log("Appointment deleted successfully");
     
         // Disconnect from the gateway
