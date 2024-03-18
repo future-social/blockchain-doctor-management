@@ -132,7 +132,6 @@
         }
     </style>
 </head>
-    <script src="logout.js"></script>
 <body>
     <div id="headerContainer"></div>
 
@@ -301,15 +300,11 @@
         });
 
         function fetchUserInfo() { //hello username
-        fetch('endpoint')
-       .then(response => response.json())
-       .then(data => {
-         const username = data.username;
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get("doctorId");
          const userInfoElement = document.getElementById('userInfo');
          userInfoElement.textContent = `Hello ${username}`;
-       })
-       .catch(error => console.error('Error fetching user info:', error));
-  }
+       }
 
   function fetchTodaysAppointment() { //appointment table 
     fetch('/retrieveTodaysAppointment')
