@@ -132,17 +132,17 @@ router.get('/retrieveAllAppointments', async (req, res) => {
     }
 });
 
-// // Route to update appointment data
-// router.put('/updateAppointment/:appointmentId', async (req, res) => {
-//     try {
-//         const appointmentId = req.params.appointmentId;
-//         const updatedData = req.body;
-//         const result = await appointmentController.updateAppointment(appointmentId, updatedData, DMSAdminId);
-//         res.json(result);
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+// Route to update appointment data
+router.put('/updateAppointment/:appointmentId', async (req, res) => {
+    try {
+        const appointmentId = req.params.appointmentId;
+        const updatedData = req.body;
+        const result = await appointmentController.updateAppointment(appointmentId, updatedData, DMSAdminId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 // Route to delete appointment data
 router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
@@ -154,6 +154,28 @@ router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+
+// Route to retrieve doctor availability
+router.get("/getDoctorAvailability/:doctorId", async (req, res) => {
+  try {
+    const doctorId = req.params.doctorId;
+    const result = await appointmentController.retrievePatientName(doctorId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Route to retrieve logs
+router.get("/retrieveLogs", async (req, res) => {
+  try {
+    const logs = await loggingController.retrieveLogs(DMSAdminId);
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 
 // Route to retrieve patient name by id
 router.get("/retrievePatientName/:patientId", async (req, res) => {
