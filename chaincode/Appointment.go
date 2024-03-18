@@ -228,6 +228,57 @@ func generateAppointmentID(doctorID string, appointmentDate string, totalAppoint
 	return fmt.Sprintf("%s-%s-%d", doctorID, appointmentDate, totalAppointments+1)
 }
 
+// CancelAppointment cancels an existing appointment
+
+func (ac *AppointmentContract) CancelAppointment(ctx contractapi.TransactionContextInterface, appointmentID string) error {
+
+	// Retrieve appointment information from the ledger
+	appointmentJSON, err := ctx.GetStub().GetState(appointmentID)
+	if err != nil {
+		return fmt.Errorf("failed to read appointment information from ledger: %v", err)
+	}
+	if appointmentJSON == nil {
+		return fmt.Errorf("appointment not found for appointment ID %s", appointmentID)
+	}
+
+	// Unmarshal appointment information
+	var appointment Appointment
+	err = json.Unmarshal(appointmentJSON, &appointment)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal appointment information: %v", err)
+	}
+
+	// Retrieve doctor availability from the ledger
+	availability, err := ac.GetDoctorAvailability(ctx, appointment.DoctorID)
+	if err != nil {
+		return fmt.Errorf("failed to get doctor availability: %v", err)
+	}
+
+	// Add the appointment time slot back to the doctor's availability
+	timeSlots, ok := availability[appointment.AppointmentDate]
+	if !ok {
+		return fmt.Errorf("doctor availability not found for appointment date %s", appointment.AppointmentDate)
+	}
+	availability[appointment.AppointmentDate] = append(timeSlots, appointment.AppointmentTime)
+
+	// Update doctor availability on the ledger
+	err = ac.UpdateDoctorAvailability(ctx, appointment.DoctorID, availability)
+	if err != nil {
+		return fmt.Errorf("failed to update doctor availability: %v", err)
+	}
+
+	// Delete the appointment from the ledger
+	err = ctx.GetStub().DelState(appointmentID)
+	if err != nil {
+		return fmt.Errorf("failed to delete appointment from ledger: %v", err)
+	}
+
+	return nil
+}
+
+//
+func (ac *AppointmentContract)
+
 func (ac *AppointmentContract) GetTotalAppointments(ctx contractapi.TransactionContextInterface, doctorID string) (int, error) {
 	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
 	if err != nil {
