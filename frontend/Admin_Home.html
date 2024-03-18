@@ -111,6 +111,9 @@
       }
     </style>
   </head>
+<script src="logout.js"></script>
+<script>authentication();</script>
+
   <body>
     <div id="headerContainer"></div>
 
@@ -163,6 +166,7 @@
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("headerContainer").innerHTML = html;
+          appendAdmin();
         });
 
       fetch("Footer.html")
