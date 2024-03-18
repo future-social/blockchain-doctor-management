@@ -144,16 +144,16 @@ router.get('/retrieveAppointment', async (req, res) => {
 //     }
 // });
 
-// // Route to delete appointment data
-// router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
-//     try {
-//         const appointmentId = req.params.appointmentId;
-//         await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
-//         res.json({ success: true, message: 'Appointment data deleted successfully' });
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// });
+// Route to delete appointment data
+router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
+    try {
+        const appointmentId = req.params.appointmentId;
+        await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
+        res.json({ success: true, message: 'Appointment data deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 
 // Route to retrieve patient name by id
 router.get("/retrievePatientName/:patientId", async (req, res) => {
