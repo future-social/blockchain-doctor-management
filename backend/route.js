@@ -156,7 +156,7 @@ router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
 });
 
 // Route to retrieve doctor availability
-router.get("/getDoctorAvailability/:doctorId", async (req, res) => {
+router.get("/retrieveDoctorAvailability/:doctorId", async (req, res) => {
   try {
     const doctorId = req.params.doctorId;
     const result = await appointmentController.getDoctorAvailability(doctorId);
