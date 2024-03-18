@@ -267,17 +267,43 @@ func (ac *AppointmentContract) CancelAppointment(ctx contractapi.TransactionCont
 		return fmt.Errorf("failed to update doctor availability: %v", err)
 	}
 
-	// Delete the appointment from the ledger
-	err = ctx.GetStub().DelState(appointmentID)
+	return nil
+}
+
+// ChangeAppointment modifies the appointment time
+func (ac *AppointmentContract) ChangeAppointment(ctx contractapi.TransactionContextInterface, appointmentID string,
+	newAppointmentDate string, newAppointmentTime string) error {
+
+	// Get the existing appointment information
+	appointmentJSON, err := ctx.GetStub().GetState(appointmentID)
 	if err != nil {
-		return fmt.Errorf("failed to delete appointment from ledger: %v", err)
+		return fmt.Errorf("failed to read appointment information from ledger: %v", err)
+	}
+	if appointmentJSON == nil {
+		return fmt.Errorf("appointment not found for appointment ID %s", appointmentID)
+	}
+
+	// Unmarshal the existing appointment information
+	var oldAppointment Appointment
+	err = json.Unmarshal(appointmentJSON, &oldAppointment)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal appointment information: %v", err)
+	}
+
+	// Cancel the old appointment
+	err = ac.CancelAppointment(ctx, appointmentID)
+	if err != nil {
+		return fmt.Errorf("failed to cancel old appointment: %v", err)
+	}
+
+	// Book the new appointment using the old doctor ID
+	err = ac.BookAppointment(ctx, oldAppointment.DoctorID, oldAppointment.PatientID, newAppointmentDate, newAppointmentTime)
+	if err != nil {
+		return fmt.Errorf("failed to book new appointment: %v", err)
 	}
 
 	return nil
 }
-
-//
-func (ac *AppointmentContract)
 
 func (ac *AppointmentContract) GetTotalAppointments(ctx contractapi.TransactionContextInterface, doctorID string) (int, error) {
 	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
