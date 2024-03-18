@@ -217,7 +217,7 @@ const User = mongoose.model("users", {
 // Handle registration
 router.post("/register", async (req, res) => {
   try {
-    if(DMSAdminId == "") { throw new Error("You have no permission to register doctor! Please login as admin."); }
+    if(!DMSAdminId.includes("adm")) { throw new Error("You have no permission to register doctor! Please login as admin."); }
     const { username, password } = req.body;
 
     // Hash the password before saving to the database
