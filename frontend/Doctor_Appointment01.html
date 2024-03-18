@@ -226,25 +226,25 @@
                 const appointmentId = image.getAttribute('data-id');
                 const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
                 if (confirmation) {
-                    deleteDoctor(appointmentId);
+                    deleteAppointment(appointmentId);
                 }
             });
         });
 
-        // Function to delete doctor data
-        function deleteDoctor(appointmentId) {
-            fetch(`/deleteDoctor/${appointmentId}`, {
+        // Function to delete appointment data
+        function deleteAppointment(appointmentId) {
+            fetch(`/deleteAppointment/${appointmentId}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    throw new Error('Failed to delete doctor data');
+                    throw new Error('Failed to delete appointment data');
                 }
             })
             .catch(error => {
-                console.error('Error deleting doctor data:', error);
+                console.error('Error deleting appointment data:', error);
                 // Display an error message to the user or handle the error appropriately
             });
         }
