@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+type AppointmentContract struct {
+	contractapi.Contract
+	AppointmentCount int
+}
+
 type DoctorAvailability struct {
 	DoctorID       string              `json:"doctorID"`
 	Availability   map[string][]string `json:"availability"`
@@ -30,10 +35,6 @@ type Patient struct {
 	Gender       string `json:"gender"`
 	ICNo         string `json:"ic_no"`
 	MobileNumber string `json:"mobile_number"`
-}
-
-type AppointmentContract struct {
-	contractapi.Contract
 }
 
 // InitPatients initiates a few patients information
@@ -195,14 +196,8 @@ func (ac *AppointmentContract) BookAppointment(ctx contractapi.TransactionContex
 		return fmt.Errorf("failed to update doctor availability: %v", err)
 	}
 
-	//retrieve total appointments
-	totalAppointments, err := ac.GetTotalAppointments(ctx, doctorID)
-	if err != nil {
-		return fmt.Errorf("failed to get total appointments: %v", err)
-	}
-
 	//Create appointment object
-	appointmentID := generateAppointmentID(doctorID, totalAppointments, appointmentDate)
+	appointmentID := ac.generateAppointmentID()
 
 	appointment := &Appointment{
 		AppointmentID:   appointmentID,
@@ -226,12 +221,16 @@ func (ac *AppointmentContract) BookAppointment(ctx contractapi.TransactionContex
 	return nil
 }
 
-func generateAppointmentID(doctorID string, totalAppointments int, appointmentDate string) string {
-	return fmt.Sprintf("%s-%d-%s", doctorID, totalAppointments+1, appointmentDate)
+func (ac *AppointmentContract) generateAppointmentID() string {
+	// Increment appointment count
+	ac.AppointmentCount++
+
+	// Generate AppointmentID
+	return fmt.Sprintf("apt_%d", ac.AppointmentCount)
+
 }
 
 // CancelAppointment cancels an existing appointment
-
 func (ac *AppointmentContract) CancelAppointment(ctx contractapi.TransactionContextInterface, appointmentID string) error {
 
 	// Retrieve appointment information from the ledger
@@ -350,67 +349,76 @@ func (ac *AppointmentContract) ChangeAppointment(ctx contractapi.TransactionCont
 	return nil
 }
 
-/*
-// GetAllAppointment retrieves appointment details along with patient information
-func (ac *AppointmentContract) GetAllAppointment(ctx contractapi.TransactionContextInterface, appointmentID string) (map[string]interface{}, error) {
-
-	// Get iterator for all keys in the state
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+// GetAllAppointment retrieves all appointments with patient information
+func (ac *AppointmentContract) GetAllAppointment(ctx contractapi.TransactionContextInterface) ([]map[string]interface{}, error) {
+	// Get all keys by range to get all appointments
+	appointmentIterator, err := ctx.GetStub().GetStateByRange("apt_0", "apt_999999")
 	if err != nil {
-		return nil, fmt.Errorf("failed to read from world state: %v", err)
+		return nil, fmt.Errorf("failed to read appointments from ledger: %v", err)
 	}
-	defer resultsIterator.Close()
+	defer appointmentIterator.Close()
 
-	// Unmarshal appointment information
-	var appointment Appointment
-	err = json.Unmarshal(appointmentJSON, &appointment)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal appointment information: %v", err)
+	appointments := make([]map[string]interface{}, 0)
+
+	for appointmentIterator.HasNext() {
+		// Get the next appointment key and value
+		appointmentKeyValue, err := appointmentIterator.Next()
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate through appointments: %v", err)
+		}
+
+		// Unmarshal appointment information
+		var appointment Appointment
+		err = json.Unmarshal(appointmentKeyValue.Value, &appointment)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal appointment information: %v", err)
+		}
+
+		// Retrieve patient information from ledger
+		patientJSON, err := ctx.GetStub().GetState(appointment.PatientID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read patient information from ledger: %v", err)
+		}
+		if patientJSON == nil {
+			return nil, fmt.Errorf("patient information not found for patient ID %s", appointment.PatientID)
+		}
+
+		// Unmarshal patient information
+		var patient Patient
+		err = json.Unmarshal(patientJSON, &patient)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal patient information: %v", err)
+		}
+
+		// Construct appointment details
+		appointmentDetails := map[string]interface{}{
+			"appointmentID":   appointmentKeyValue.Key,
+			"patientID":       appointment.PatientID,
+			"appointmentDate": appointment.AppointmentDate,
+			"appointmentTime": appointment.AppointmentTime,
+			"patientName":     patient.Name,
+			"patientAge":      patient.Age,
+			"patientGender":   patient.Gender,
+		}
+
+		appointments = append(appointments, appointmentDetails)
 	}
 
-	// Retrieve patient information
-	patientID := appointment.PatientID
-	patientJSON, err := ctx.GetStub().GetState(patientID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read patient information from ledger: %v", err)
-	}
-	if patientJSON == nil {
-		return nil, fmt.Errorf("patient information not found for patient ID %s", patientID)
-	}
-
-	// Unmarshal patient information
-	var patient Patient
-	err = json.Unmarshal(patientJSON, &patient)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal patient information: %v", err)
-	}
-
-	// Construct map with appointment and patient details
-	appointmentDetails := map[string]interface{}{
-		"appointmentID":   appointment.AppointmentID,
-		"patientID":       appointment.PatientID,
-		"appointmentDate": appointment.AppointmentDate,
-		"appointmentTime": appointment.AppointmentTime,
-		"patientName":     patient.Name,
-		"patientAge":      patient.Age,
-		"patientGender":   patient.Gender,
-	}
-
-	return appointmentDetails, nil
+	return appointments, nil
 }
-*/
 
-func (ac *AppointmentContract) GetTotalAppointments(ctx contractapi.TransactionContextInterface, doctorID string) (int, error) {
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+/*
+func (ac *AppointmentContract) CountAppointments(ctx contractapi.TransactionContextInterface) (int, error) {
+	AppointmentIterator, err := ctx.GetStub().GetStateByRange("apt_0", "apt_999999")
 	if err != nil {
 		return 0, fmt.Errorf("failed to read from world state: %v", err)
 	}
-	defer resultsIterator.Close()
+	defer AppointmentIterator.Close()
 
 	totalAppointments := 0
 
-	for resultsIterator.HasNext() {
-		_, err := resultsIterator.Next()
+	for AppointmentIterator.HasNext() {
+		_, err := AppointmentIterator.Next()
 		if err != nil {
 			return 0, fmt.Errorf("failed to iterate appointment: %v", err)
 		}
@@ -419,6 +427,7 @@ func (ac *AppointmentContract) GetTotalAppointments(ctx contractapi.TransactionC
 
 	return totalAppointments, nil
 }
+*/
 
 // UpdateDoctorAvailability updates the availability of a doctor in the ledger
 func (ac *AppointmentContract) UpdateDoctorAvailability(ctx contractapi.TransactionContextInterface, doctorID string, availability map[string][]string) error {
