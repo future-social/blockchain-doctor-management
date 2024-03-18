@@ -108,7 +108,7 @@
         }
     </style>
 </head>
-    <script src="logout.js"></script>
+<script src="logout.js"></script>
 <script>authentication();</script>
 <body>
     <div id="headerContainer"></div>
@@ -134,11 +134,11 @@
             <table id="appointmentTable">
                 <thead>
                     <tr>
-                        <th>NO.</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Patient ID</th>
-                        <th>Action</th>
+                        <th style="width: 5%">NO.</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 15%">Time</th>
+                        <th style="width: 20%">Patient ID</th>
+                        <th style="width: 10%">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -171,7 +171,7 @@
         });
 
         // Fetch appointment data from backend and populate table
-        fetch("/retrieveAllAppointment")
+        fetch("/retrieveAllAppointments")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to retrieve appointment data");
