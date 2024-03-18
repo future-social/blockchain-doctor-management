@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"reflect"
@@ -37,7 +38,7 @@ type Doctor struct {
 
 type TransactionLog struct {
 	TransactionID string    `json:"transactionID"`
-	Caller        string    `json:"caller"`
+	CommonName    string    `json:"commonName"`
 	ActionItem    string    `json:"action_item"`
 	Timestamp     time.Time `json:"timestamp"`
 }
@@ -66,6 +67,24 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	caller, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
 		return fmt.Errorf("failed to get caller ID: %v", err)
+	}
+
+	//Decoding ID
+	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	if err != nil {
+		return fmt.Errorf("decoding error: %v", err)
+	}
+
+	decodeString := string(decodeID)
+
+	//Extract CN
+	var commonName string
+	parts := strings.Split(decodeString, ",")
+	for _, part := range parts {
+		if strings.HasPrefix(part, "CN=") {
+			commonName = strings.TrimPrefix(part, "CN=")
+			break
+		}
 	}
 
 	//get timestamp
@@ -99,9 +118,35 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		BodyGrantingQualifications: bodyGrantingQualification,
 	}
 
+	// Convert doctor information to JSON format
+	doctorJSON, err := json.Marshal(newDoctor)
+	if err != nil {
+
+		return fmt.Errorf("failed to marshal doctor JSON: %v", err)
+	}
+
+	// Storing doctor information into the blockchain
+	err = ctx.GetStub().PutState(doctorID, doctorJSON)
+	if err != nil {
+		return fmt.Errorf("failed to create doctor: %v", err)
+	}
+
+	//Update transaction log
+	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	if err != nil {
+		return fmt.Errorf("failed to update transaction log: %v", err)
+	}
+
+	return nil
+}
+
+// UpdateTransactionLog updates the transaction log in the world state
+func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContextInterface, transactionID string, commonName string,
+	actionItem string, timestamp time.Time) error {
+
 	transactionLog := TransactionLog{
 		TransactionID: transactionID,
-		Caller:        caller,
+		CommonName:    commonName,
 		ActionItem:    actionItem,
 		Timestamp:     timestamp,
 	}
@@ -116,19 +161,6 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
 	if err != nil {
 		return fmt.Errorf("failed to store transaction log: %v", err)
-	}
-
-	// Convert doctor information to JSON format
-	doctorJSON, err := json.Marshal(newDoctor)
-	if err != nil {
-
-		return fmt.Errorf("failed to marshal doctor JSON: %v", err)
-	}
-
-	// Storing doctor information into the blockchain
-	err = ctx.GetStub().PutState(doctorID, doctorJSON)
-	if err != nil {
-		return fmt.Errorf("failed to create doctor: %v", err)
 	}
 
 	return nil
@@ -172,6 +204,24 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	caller, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
 		return fmt.Errorf("failed to get caller ID: %v", err)
+	}
+
+	//Decoding ID
+	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	if err != nil {
+		return fmt.Errorf("decoding error: %v", err)
+	}
+
+	decodeString := string(decodeID)
+
+	//Extract CN
+	var commonName string
+	parts := strings.Split(decodeString, ",")
+	for _, part := range parts {
+		if strings.HasPrefix(part, "CN=") {
+			commonName = strings.TrimPrefix(part, "CN=")
+			break
+		}
 	}
 
 	//get timestamp
@@ -227,37 +277,12 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		}
 	}
 
-	// Marshal updated fields
-	// updatedFieldsJSON, err := json.Marshal(updatedFields)
-	//if err != nil {
-	// return fmt.Errorf("failed to marshal updated fields JSON: %v", err)
-	// }
-
 	// get update fileds
 	var actionItem string
 	for _, val := range updatedFields {
 		actionItem += fmt.Sprintf("%v; ", val)
 	}
 	actionItem = strings.TrimSuffix(actionItem, "; ")
-
-	transactionLog := TransactionLog{
-		TransactionID: transactionID,
-		Caller:        caller,
-		ActionItem:    actionItem,
-		Timestamp:     timestamp,
-	}
-
-	// Marshal transaction log
-	transactionLogJSON, err := json.Marshal(transactionLog)
-	if err != nil {
-		return fmt.Errorf("failed to marshal transaction log: %v", err)
-	}
-
-	// Put transaction log to world state
-	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
-	if err != nil {
-		return fmt.Errorf("failed to put transaction log: %v", err)
-	}
 
 	updatedDoctorJSON, err := json.Marshal(updateDoctor)
 	if err != nil {
@@ -267,6 +292,11 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 	err = ctx.GetStub().PutState(doctorID, updatedDoctorJSON)
 	if err != nil {
 		return fmt.Errorf("failed to update doctor: %v", err)
+	}
+
+	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	if err != nil {
+		return fmt.Errorf("failed to update transaction log: %v", err)
 	}
 
 	return nil
@@ -295,6 +325,24 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
 
+	//Decoding ID
+	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	if err != nil {
+		return fmt.Errorf("decoding error: %v", err)
+	}
+
+	decodeString := string(decodeID)
+
+	//Extract CN
+	var commonName string
+	parts := strings.Split(decodeString, ",")
+	for _, part := range parts {
+		if strings.HasPrefix(part, "CN=") {
+			commonName = strings.TrimPrefix(part, "CN=")
+			break
+		}
+	}
+
 	//get timestamp
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
 	if err != nil {
@@ -308,29 +356,16 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 	//get action about delete a doctor
 	actionItem := fmt.Sprintf("Delete Doctor : %s", doctorID)
 
-	transactionLog := TransactionLog{
-		TransactionID: transactionID,
-		Caller:        caller,
-		ActionItem:    actionItem,
-		Timestamp:     timestamp,
-	}
-
-	// Marshal transaction log
-	transactionLogJSON, err := json.Marshal(transactionLog)
-	if err != nil {
-		return fmt.Errorf("failed to marshal transaction log: %v", err)
-	}
-
-	// Put transaction log to world state
-	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
-	if err != nil {
-		return fmt.Errorf("failed to store transaction log: %v", err)
-	}
-
 	// Delete doctor for the world state
 	err = ctx.GetStub().DelState(doctorID)
 	if err != nil {
 		return fmt.Errorf("failed to delete doctor: %v", err)
+	}
+
+	//Update transaction log
+	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	if err != nil {
+		return fmt.Errorf("failed to update transaction log: %v", err)
 	}
 
 	return nil
