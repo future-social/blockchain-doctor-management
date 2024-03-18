@@ -14,6 +14,7 @@ import (
 // DoctorContract to define the smart contract
 type DoctorContract struct {
 	contractapi.Contract
+	LogCount int
 }
 
 // Doctor struct to store doctor psersonal information
@@ -37,6 +38,7 @@ type Doctor struct {
 }
 
 type TransactionLog struct {
+	LogID         string    `json:"logID"`
 	TransactionID string    `json:"transactionID"`
 	CommonName    string    `json:"commonName"`
 	ActionItem    string    `json:"action_item"`
@@ -144,7 +146,14 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContextInterface, transactionID string, commonName string,
 	actionItem string, timestamp time.Time) error {
 
+	// Increment log count
+	dc.LogCount++
+
+	// Generate LogID
+	logID := fmt.Sprintf("log_%d", dc.LogCount)
+
 	transactionLog := TransactionLog{
+		LogID:         logID,
 		TransactionID: transactionID,
 		CommonName:    commonName,
 		ActionItem:    actionItem,
@@ -390,7 +399,7 @@ func (dc *DoctorContract) GetTransactionLogs(ctx contractapi.TransactionContextI
 	}
 
 	// Get iterator for all keys in the state
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+	resultsIterator, err := ctx.GetStub().GetStateByRange("log_0", "log_9999999")
 	if err != nil {
 		return nil, fmt.Errorf("failed to get transaction log: %v", err)
 	}
@@ -430,7 +439,7 @@ func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterf
 	}
 
 	// Get iterator for all keys in the state
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+	resultsIterator, err := ctx.GetStub().GetStateByRange("doc0", "doc99999")
 	if err != nil {
 		return nil, fmt.Errorf("failed to get all doctors: %v", err)
 	}
@@ -464,7 +473,7 @@ func (dc *DoctorContract) GetAllDoctors(ctx contractapi.TransactionContextInterf
 // CountDoctors returns the total number of doctors
 func (dc *DoctorContract) CountDoctors(ctx contractapi.TransactionContextInterface) (int, error) {
 	// Get all doctor records
-	doctorIterator, err := ctx.GetStub().GetStateByRange("", "")
+	doctorIterator, err := ctx.GetStub().GetStateByRange("doc0", "doc99999")
 	if err != nil {
 		return 0, fmt.Errorf("failed to read from world state: %v", err)
 	}
