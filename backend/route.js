@@ -102,57 +102,69 @@ router.delete("/deleteDoctor/:doctorId", async (req, res) => {
 });
 
 // Route to retrieve doctor count
-router.get('/countDoctor', async (req, res) => {
+router.get("/countDoctor", async (req, res) => {
   try {
-      const count = await doctorController.countDoctor(DMSAdminId);
-      res.json(count);
+    const count = await doctorController.countDoctor(DMSAdminId);
+    res.json(count);
   } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
 // Route to create a new appointment
-router.post('/createAppointment', async (req, res) => {
-    try {
-        const appointmentData = req.body;
-        const result = await appointmentController.createAppointment(appointmentData, DMSAdminId);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+router.post("/createAppointment", async (req, res) => {
+  try {
+    const appointmentData = req.body;
+    const result = await appointmentController.createAppointment(
+      appointmentData,
+      DMSAdminId
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Route to retrieve appointment data
-router.get('/retrieveAllAppointments', async (req, res) => {
-    try {
-        const result = await appointmentController.retrieveAllAppointments(DMSAdminId);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+router.get("/retrieveAllAppointments", async (req, res) => {
+  try {
+    const result = await appointmentController.retrieveAllAppointments(
+      DMSAdminId
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Route to update appointment data
-router.put('/updateAppointment/:appointmentId', async (req, res) => {
-    try {
-        const appointmentId = req.params.appointmentId;
-        const updatedData = req.body;
-        const result = await appointmentController.updateAppointment(appointmentId, updatedData, DMSAdminId);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+router.put("/updateAppointment/:appointmentId", async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;
+    const updatedData = req.body;
+    const result = await appointmentController.updateAppointment(
+      appointmentId,
+      updatedData,
+      DMSAdminId
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Route to delete appointment data
-router.delete('/deleteAppointment/:appointmentId', async (req, res) => {
-    try {
-        const appointmentId = req.params.appointmentId;
-        await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
-        res.json({ success: true, message: 'Appointment data deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+router.delete("/deleteAppointment/:appointmentId", async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;
+    await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
+    res.json({
+      success: true,
+      message: "Appointment data deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Route to retrieve doctor availability
@@ -176,12 +188,14 @@ router.get("/retrieveLogs", async (req, res) => {
   }
 });
 
-
 // Route to retrieve patient name by id
 router.get("/retrievePatientName/:patientId", async (req, res) => {
   try {
     const patientId = req.params.patientId;
-    const result = await appointmentController.retrievePatientName(patientId, doctorId);
+    const result = await appointmentController.retrievePatientName(
+      patientId,
+      doctorId
+    );
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -217,7 +231,11 @@ const User = mongoose.model("users", {
 // Handle registration
 router.post("/register", async (req, res) => {
   try {
-    if(!DMSAdminId.includes("adm")) { throw new Error("You have no permission to register doctor! Please login as admin."); }
+    if (!DMSAdminId.includes("DMSadmin")) {
+      throw new Error(
+        "You have no permission to register doctor! Please login as admin."
+      );
+    }
     const { username, password } = req.body;
 
     // Hash the password before saving to the database
