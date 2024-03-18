@@ -50,7 +50,7 @@ router.get("/retrieveAllDoctor", async (req, res) => {
     // }];
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: "Failed to retrieve data: No identity identifier associated with "+ DMSAdminId +" found on the client side for the blockchain network." });
   }
 });
 
