@@ -144,8 +144,7 @@
                 alert("Error:", error);
                 // Optionally, display an error message to the user
             });
-		
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            document.getElementById('registrationForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the form from submitting normally
 
         // Serialize form data
@@ -168,9 +167,9 @@
         })
         .catch(error => {
             // Handle errors
-            alert('Error: ' + error.message);
+            alert('Error: ' + error.innerText);
         });
-		
+        });
         }
     </script>
 </body>
