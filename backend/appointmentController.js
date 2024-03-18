@@ -152,17 +152,14 @@ async function updateAppointment(appointmentId, updatedData, doctorId) {
         const contract = network.getContract("basic");
     
         // Format Date Parameters
-        const formattedAppDate = moment(updatedData['time'], 'YYYY-MM-DD').format(); // TODO
+        const formattedAppDate = moment(updatedData['date'], 'YYYY-MM-DD').format(); // TODO
 
         // Submit the transaction
         await contract.submitTransaction(
-          "UpdateAppointment",
+          "ChangeAppointment",
           appointmentId,
-          doctorId,
           formattedAppDate,
-          updatedData['name'],
-          updatedData['gender'],
-          updatedData['consulting_department'],
+          updatedData['time'], //POTENTIAL ERROR: TIME FORMAT
         );
         console.log("Appointment updated successfully");
     
