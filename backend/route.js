@@ -123,9 +123,9 @@ router.post('/createAppointment', async (req, res) => {
 });
 
 // Route to retrieve appointment data
-router.get('/retrieveAppointment', async (req, res) => {
+router.get('/retrieveAllAppointments', async (req, res) => {
     try {
-        const result = await appointmentController.retrieveAppointment(DMSAdminId);
+        const result = await appointmentController.retrieveAllAppointments(DMSAdminId);
         res.json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
