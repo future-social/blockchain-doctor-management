@@ -141,28 +141,28 @@
             })
             .catch(error => {
                 // Handle error
-                console.error("Error:", error);
+                alert("Error:", error);
                 // Optionally, display an error message to the user
             });
 		
-        fetch('/register', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle successful response
-            alert('Registration successful!');
-        })
-        .catch(error => {
-            // Handle errors
-            alert('Error: ' + error);
-        });
+        // fetch('/register', {
+        //     method: 'POST',
+        //     body: formData
+        // })
+        // .then(response => {
+        //     if (!response.ok) {
+        //         throw new Error('Network response was not ok');
+        //     }
+        //     return response.json();
+        // })
+        // .then(data => {
+        //     // Handle successful response
+        //     alert('Registration successful!');
+        // })
+        // .catch(error => {
+        //     // Handle errors
+        //     alert('Error: ' + error);
+        // });
 		
         }
     </script>
