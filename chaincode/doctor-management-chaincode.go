@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"regexp"
 	"strings"
 	"time"
 
@@ -39,6 +40,7 @@ type Doctor struct {
 
 type TransactionLog struct {
 	LogID         string    `json:"logID"`
+	UserIdentity  string    `json:"userIdentity"`
 	TransactionID string    `json:"transactionID"`
 	CommonName    string    `json:"commonName"`
 	ActionItem    string    `json:"action_item"`
@@ -65,29 +67,34 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("the doctor with ID %s already exists", doctorID)
 	}
 
-	// Get createBy (caller)
-	caller, err := ctx.GetClientIdentity().GetID()
+	// Get createBy (userIdentity)
+	userIdentity, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
 		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
 
-	//Decoding ID
-	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	// Decode ID
+	decodeID, err := base64.StdEncoding.DecodeString(userIdentity)
 	if err != nil {
-		return fmt.Errorf("decoding error: %v", err)
+		fmt.Printf("Decoding error: %v\n", err)
 	}
 
+	// Convert decoded bytes to string
 	decodeString := string(decodeID)
 
-	//Extract CN
-	var commonName string
-	parts := strings.Split(decodeString, ",")
-	for _, part := range parts {
-		if strings.HasPrefix(part, "CN=") {
-			commonName = strings.TrimPrefix(part, "CN=")
-			break
-		}
+	// Define a regular expression to match "CN=<common name>"
+	re := regexp.MustCompile(`CN=([^,]+)`)
+
+	// Find the first match of the regular expression in the decoded string
+	match := re.FindStringSubmatch(decodeString)
+
+	// Check if a match was found
+	if len(match) < 2 {
+		fmt.Println("Common Name not found")
 	}
+
+	// Extract the Common Name from the match
+	commonName := match[1]
 
 	//get timestamp
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
@@ -134,7 +141,7 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	//Update transaction log
-	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	err = dc.UpdateTransactionLog(ctx, transactionID, userIdentity, commonName, actionItem, timestamp)
 	if err != nil {
 		return fmt.Errorf("failed to update transaction log: %v", err)
 	}
@@ -143,7 +150,8 @@ func (dc *DoctorContract) CreateDoctor(ctx contractapi.TransactionContextInterfa
 }
 
 // UpdateTransactionLog updates the transaction log in the world state
-func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContextInterface, transactionID string, commonName string,
+func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContextInterface, transactionID string,
+	userIdentity string, commonName string,
 	actionItem string, timestamp time.Time) error {
 
 	// Increment log count
@@ -155,6 +163,7 @@ func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContex
 	transactionLog := TransactionLog{
 		LogID:         logID,
 		TransactionID: transactionID,
+		UserIdentity:  userIdentity,
 		CommonName:    commonName,
 		ActionItem:    actionItem,
 		Timestamp:     timestamp,
@@ -167,7 +176,7 @@ func (dc *DoctorContract) UpdateTransactionLog(ctx contractapi.TransactionContex
 	}
 
 	// Put transaction log to world state
-	err = ctx.GetStub().PutState(transactionID, transactionLogJSON)
+	err = ctx.GetStub().PutState(logID, transactionLogJSON)
 	if err != nil {
 		return fmt.Errorf("failed to store transaction log: %v", err)
 	}
@@ -209,29 +218,34 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
 	}
 
-	// Get updatedBy (caller)
-	caller, err := ctx.GetClientIdentity().GetID()
+	// Get updatedBy (userIdentity)
+	userIdentity, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
 		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
 
-	//Decoding ID
-	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	// Decode ID
+	decodeID, err := base64.StdEncoding.DecodeString(userIdentity)
 	if err != nil {
-		return fmt.Errorf("decoding error: %v", err)
+		fmt.Printf("Decoding error: %v\n", err)
 	}
 
+	// Convert decoded bytes to string
 	decodeString := string(decodeID)
 
-	//Extract CN
-	var commonName string
-	parts := strings.Split(decodeString, ",")
-	for _, part := range parts {
-		if strings.HasPrefix(part, "CN=") {
-			commonName = strings.TrimPrefix(part, "CN=")
-			break
-		}
+	// Define a regular expression to match "CN=<common name>"
+	re := regexp.MustCompile(`CN=([^,]+)`)
+
+	// Find the first match of the regular expression in the decoded string
+	match := re.FindStringSubmatch(decodeString)
+
+	// Check if a match was found
+	if len(match) < 2 {
+		fmt.Println("Common Name not found")
 	}
+
+	// Extract the Common Name from the match
+	commonName := match[1]
 
 	//get timestamp
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
@@ -303,7 +317,7 @@ func (dc *DoctorContract) UpdateDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("failed to update doctor: %v", err)
 	}
 
-	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	err = dc.UpdateTransactionLog(ctx, transactionID, userIdentity, commonName, actionItem, timestamp)
 	if err != nil {
 		return fmt.Errorf("failed to update transaction log: %v", err)
 	}
@@ -328,29 +342,34 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 		return fmt.Errorf("the doctor with ID %s does not exist", doctorID)
 	}
 
-	// Get deleteBy (caller)
-	caller, err := ctx.GetClientIdentity().GetID()
+	// Get deleteBy (userIdentity)
+	userIdentity, err := ctx.GetClientIdentity().GetID()
 	if err != nil {
 		return fmt.Errorf("failed to get caller ID: %v", err)
 	}
 
-	//Decoding ID
-	decodeID, err := base64.StdEncoding.DecodeString(caller)
+	// Decode ID
+	decodeID, err := base64.StdEncoding.DecodeString(userIdentity)
 	if err != nil {
-		return fmt.Errorf("decoding error: %v", err)
+		fmt.Printf("Decoding error: %v\n", err)
 	}
 
+	// Convert decoded bytes to string
 	decodeString := string(decodeID)
 
-	//Extract CN
-	var commonName string
-	parts := strings.Split(decodeString, ",")
-	for _, part := range parts {
-		if strings.HasPrefix(part, "CN=") {
-			commonName = strings.TrimPrefix(part, "CN=")
-			break
-		}
+	// Define a regular expression to match "CN=<common name>"
+	re := regexp.MustCompile(`CN=([^,]+)`)
+
+	// Find the first match of the regular expression in the decoded string
+	match := re.FindStringSubmatch(decodeString)
+
+	// Check if a match was found
+	if len(match) < 2 {
+		fmt.Println("Common Name not found")
 	}
+
+	// Extract the Common Name from the match
+	commonName := match[1]
 
 	//get timestamp
 	txTimestamp, err := ctx.GetStub().GetTxTimestamp()
@@ -372,7 +391,7 @@ func (dc *DoctorContract) DeleteDoctor(ctx contractapi.TransactionContextInterfa
 	}
 
 	//Update transaction log
-	err = dc.UpdateTransactionLog(ctx, transactionID, commonName, actionItem, timestamp)
+	err = dc.UpdateTransactionLog(ctx, transactionID, userIdentity, commonName, actionItem, timestamp)
 	if err != nil {
 		return fmt.Errorf("failed to update transaction log: %v", err)
 	}
