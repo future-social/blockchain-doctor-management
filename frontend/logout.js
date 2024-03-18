@@ -28,3 +28,11 @@ function append(){
     infoLink.href = infoUrl;
 }
 
+function appendAdmin(){
+    const user = localStorage.getItem('user');
+    const link = document.getElementById('appointment');
+    const url = `Admin_Home.html?id=${user}`;
+    link.href = url;
+}
+
+
