@@ -132,7 +132,7 @@
         }
     </style>
 </head>
-    <script src="logout.js"></script>
+<script src="logout.js"></script>
 <script>authentication();</script>
 <body>
     <div id="headerContainer"></div>
@@ -176,6 +176,7 @@
     </div>
     </div>
     <table id="availabilityTable">
+      this table need to modify again
         <caption>Doctor's Availability</caption>
         <tr>
             <th scope="col">Time</th>
@@ -281,10 +282,12 @@
     </table>
     <br><br>
     <div id="footerContainer"></div>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         fetchUserInfo();
         fetchTodaysAppointment();
+        fetchAppointmentNumber()
       });
 
         fetch("Doctor_Header.html")
@@ -308,29 +311,29 @@
        }
 
        function fetchTodaysAppointment() {
-        // Get today's date in the format YYYY-MM-DD
-        const today = new Date().toISOString().split('T')[0];
-
-        // Fetch appointments for today's date
-        fetch(`/retrieveAppointment?date=${today}`)
-            .then(response => response.json())
-            .then(data => {
-                const appointmentTable = document.getElementById('appointmentTable');
-                let appointmentCount = 0; // Variable to count appointments
-
-                data.forEach(entry => {
+        fetch('/retrieveAllAppointments')
+        .then(response => response.json())
+        .then(data => {
+            const appointmentTable = document.getElementById('appointmentTable');
+            const today = moment().format('YYYY-MM-DD');
+            data.forEach(entry => {
+                if (entry.appointmentDate === today) {
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${entry.name}</td><td>${entry.gender}</td><td>${entry.time}</td>`;
                     appointmentTable.appendChild(row);
-                    appointmentCount++; // Increment appointment count for each entry
-                });
+                    appointmentNo++;
+                }
+            });
+            fetchAppointmentNumber();
+        })
+        .catch(error => console.error('Error fetching todays appointment:', error));
+}
 
-                // Update the upper row with the todays appointment count
-                const upperRow = document.getElementById('appointmentdataUpperRow');
-                upperRow.textContent = appointmentCount;
-            })
-            .catch(error => console.error('Error fetching today\'s appointment:', error));
-    }
+
+function fetchAppointmentNumber() {
+      const upperRow = document.getElementById('appointmentdataUpperRow');
+      upperRow.textContent = appointmentNo;
+}
 
   // Display today's date
   const dateInfoElement = document.getElementById('dateInfo');
