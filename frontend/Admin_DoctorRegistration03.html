@@ -144,32 +144,6 @@
                 // alert("Error:", error); //TEST
                 // Optionally, display an error message to the user
             });
-            document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting normally
-
-        // Serialize form data
-        const formData = new FormData(this);
-
-        // Send a POST request using fetch
-        fetch('/register', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle successful response
-            alert('Registration successful!');
-        })
-        .catch(error => {
-            // Handle errors
-            alert('Error: ' + error);
-        });
-        });
         }
     </script>
 </body>
