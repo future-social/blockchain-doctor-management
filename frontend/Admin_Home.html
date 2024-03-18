@@ -26,7 +26,7 @@
         box-sizing: border-box;
       }
 
-      .totalappointmentcontainer {
+      .totaldoctorcontainer {
         display: flex;
         background-color: #4e9ea7;
         width: 80%;
@@ -45,12 +45,12 @@
         overflow: auto;
       }
 
-      .table1 {
+      table {
         width: 100%;
         border-collapse: collapse;
       }
 
-      .table1 th {
+      th {
         background-color: #e7e7e7;
         padding: 10px;
         text-align: left;
@@ -59,7 +59,7 @@
         padding:10px 20px;
       }
 
-      .table1 td {
+      td {
         padding: 10px 20px;
         border:none;
         background-color: #fff;
@@ -85,7 +85,7 @@
       .bottom-row {
         margin-top: 10px;
         color: #fff;
-        font-size: 15px;
+        font-size: 20px;
         text-align: center;
       }
       #userInfo {
@@ -103,54 +103,28 @@
         padding-top: 0;
         margin-right: 5px;
       }
-      #availabilityTable {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        #availabilityTable th, #availabilityTable td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        #availabilityTable th {
-            background-color: #f2f2f2;
-        }
-        #availabilityTable caption {
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        .available {
-            display: none;
-        }
-        .unavailable {
-            background-color: #8E004A;
-        }
-        
-        tr{
-            height:15px;
-        }
+      #transactionLogTable tr:nth-child(n + 6) {
+        visibility: hidden;
+      }
     </style>
 </head>
-<script src="logout.js"></script>
-<script>authentication();</script>
 <body>
     <div id="headerContainer"></div>
 
     <div class="container">
       <div class="kiri">
-        <h3>View Appointment (Today)</h3>
+        <h3>Transaction Log</h3>
         <div class="table-container">
-          <table class="table1">
+          <table>
             <thead>
               <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Time</th>
+                <th>Transaction ID</th>
+                <th>Person</th>
+                <th>Actions Performed</th>
+                <th>Date & Time</th>
               </tr>
             </thead>
-            <tbody id="appointmentTable">
+            <tbody id="transactionLogTable">
               <!-- Table content will be inserted here dynamically -->
             </tbody>
           </table>
@@ -160,138 +134,31 @@
         <div id="userInfo">Hello Username</div>
         <div id="dateInfo"></div>
         <br>
-    <div class="totalappointmentcontainer">
+    <div class="totaldoctorcontainer">
       <div class="image-box">
-        <img src="appointment.png" alt="appointment_icon">
+        <img src="homedoctor.png" alt="doctor_icon">
       </div>
       <div class="data-box">
-        <div class="upper-row" id="appointmentdataUpperRow">
+        <div class="upper-row" id="doctordataUpperRow">
           <!-- Data from backend will be inserted here -->
         </div>
         <div class="bottom-row">
-            Total Appointment (Today)
+          Total Doctor
         </div>
       </div>
     </div>
     </div>
     </div>
-    <table id="availabilityTable">
-      this table need to modify again
-        <caption>Doctor's Availability</caption>
-        <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Time Slot</th>
-            <!-- Weekday columns will be dynamically generated -->
-        </tr>
-        <!-- Time slots from 8am to 11am -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">8am</th>
-            <td>8:00-8:20</td>
-            <!-- Morning session availability will be dynamically generated -->
-        </tr>
-        <tr>
-            <td>8:20-8:40</td>
-            <!-- Morning session availability will be dynamically generated -->
-        </tr>
-        <tr>
-            <td>8:40-9:00</td>
-            <!-- Morning session availability will be dynamically generated -->
-        </tr>
-        <!-- Additional time slots for the morning session -->
-        <!-- Dynamically generated time slots for the morning session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">9am</th>
-            <td>9:00-9:20</td>
-        </tr>
-        <tr>
-            <td>9:20-9:40</td>
-        </tr>
-        <tr>
-            <td>9:40-10:00</td>
-        </tr>
-        <!-- Dynamically generated time slots for the morning session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">10am</th>
-            <td>10:00-10:20</td>
-        </tr>
-        <tr>
-            <td>10:20-10:40</td>
-        </tr>
-        <tr>
-            <td>10:40-11:00</td>
-        </tr>
-        <!-- Dynamically generated time slots for the morning session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">11am</th>
-            <td>11:00-11:20</td>
-        </tr>
-        <tr>
-            <td>11:20-11:40</td>
-        </tr>
-        <tr>
-            <td>11:40-12:00</td>
-        </tr>
-        <!-- Time slots from 2pm to 5pm -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">2pm</th>
-            <td>14:00-14:20</td>
-            <!-- Afternoon session availability will be dynamically generated -->
-        </tr>
-        <tr>
-            <td>14:20-14:40</td>
-            <!-- Afternoon session availability will be dynamically generated -->
-        </tr>
-        <tr>
-            <td>14:40-15:00</td>
-            <!-- Afternoon session availability will be dynamically generated -->
-        </tr>
-        <!-- Additional time slots for the afternoon session -->
-        <!-- Dynamically generated time slots for the afternoon session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">3pm</th>
-            <td>15:00-15:20</td>
-        </tr>
-        <tr>
-            <td>15:20-15:40</td>
-        </tr>
-        <tr>
-            <td>15:40-16:00</td>
-        </tr>
-        <!-- Dynamically generated time slots for the afternoon session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">4pm</th>
-            <td>16:00-16:20</td>
-        </tr>
-        <tr>
-            <td>16:20-16:40</td>
-        </tr>
-        <tr>
-            <td>16:40-17:00</td>
-        </tr>
-        <!-- Dynamically generated time slots for the afternoon session -->
-        <tr>
-            <th rowspan="3" scope="rowgroup">5pm</th>
-            <td>17:00-17:20</td>
-        </tr>
-        <tr>
-            <td>17:20-17:40</td>
-        </tr>
-        <tr>
-            <td>17:40-18:00</td>
-        </tr>
-    </table>
     <br><br>
     <div id="footerContainer"></div>
-    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script>
-      let appointmentNo = 0;
       document.addEventListener("DOMContentLoaded", function() {
         fetchUserInfo();
-        fetchTodaysAppointment();
-        fetchAppointmentNumber()
+        fetchTransactionLog();
+        fetchDoctorNumber();
       });
 
-        fetch("Doctor_Header.html")
+        fetch("Admin_Header.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("headerContainer").innerHTML = html;
@@ -303,7 +170,7 @@
           document.getElementById("footerContainer").innerHTML = html;
           document.getElementById("year").textContent = new Date().getFullYear();
         });
-
+        // POTENTIAL ERROR
         function fetchUserInfo() { //hello username
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get("doctorId");
@@ -311,29 +178,38 @@
          userInfoElement.textContent = `Hello ${username}`;
        }
 
-       function fetchTodaysAppointment() {
-        fetch('/retrieveAllAppointments')
-        .then(response => response.json())
-        .then(data => {
-            const appointmentTable = document.getElementById('appointmentTable');
-            const today = moment().format('YYYY-MM-DD');
-            data.forEach(entry => {
-                if (entry.appointmentDate === today) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${entry.name}</td><td>${entry.gender}</td><td>${entry.time}</td>`;
-                    appointmentTable.appendChild(row);
-                    appointmentNo++;
-                }
-            });
-            fetchAppointmentNumber();
+  function fetchTransactionLog() { //transactionlog table 
+      fetch("/retrieveLogs")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to retrieve transaction data");
+          }
+          return response.json();
         })
-        .catch(error => console.error('Error fetching todays appointment:', error));
+        .then((data) => {
+            const transactionLogTable = document.getElementById('transactionLogTable');
+            data.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.caller}</td><td>${entry.action_item}</td><td>${entry.timestamp}</td>`;
+                transactionLogTable.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching transaction log:', error));
 }
 
-
-function fetchAppointmentNumber() {
-      const upperRow = document.getElementById('appointmentdataUpperRow');
-      upperRow.textContent = appointmentNo;
+function fetchDoctorNumber() {
+  fetch(`/countDoctor`) 
+    .then(response => response.json())
+    .then(data => {
+          const bufferData = data;
+          const uint8Array = new Uint8Array(bufferData.data);
+          const jsonString = String.fromCharCode.apply(null, uint8Array);
+          const jsonData = JSON.parse(jsonString);
+          const totalDoctors = jsonData;
+          const upperRow = document.getElementById('doctordataUpperRow');
+          upperRow.textContent = `${totalDoctors}`;
+    })
+    .catch(error => console.error('Error fetching total doctors:', error));
 }
 
   // Display today's date
@@ -341,79 +217,6 @@ function fetchAppointmentNumber() {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   dateInfoElement.textContent = today;
 
-  // Function to generate dates for this week and next week (excluding weekends)
-  function generateDates() {
-            const today = new Date();
-            const dates = [];
-            let dayIncrement = 0;
-
-            while (dates.length < 10) {
-                const date = new Date(today.getTime() + dayIncrement * 24 * 60 * 60 * 1000);
-                const dayOfWeek = date.getDay();
-
-                // Skip Saturday (6) and Sunday (0)
-                if (dayOfWeek !== 6 && dayOfWeek !== 0) {
-                    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
-                    const day = date.getDate();
-                    const month = date.toLocaleDateString('en-US', { month: 'short' });
-                    dates.push(`${weekday}, ${day} ${month}`);
-                }
-
-                dayIncrement++;
-            }
-
-            return dates;
-        }
-
-        // Function to dynamically generate table headers
-        function generateTableHeaders() {
-            const table = document.getElementById('availabilityTable');
-            const dates = generateDates();
-
-            for (let i = 0; i < dates.length; i++) {
-                const th = document.createElement('th');
-                th.textContent = dates[i];
-                table.querySelector('tr').appendChild(th);
-            }
-        }
-
-        // Call the function to generate table headers
-        generateTableHeaders();
-        // Function to fetch doctor availability data from the backend (all appointment)
-        function fetchDoctorAvailability() {
-            fetch('/retrieveAllAppointment')
-                .then(response => response.json())
-                .then(data => {
-                    // Process the availability data and update table cells
-                    updateTable(data);
-                })
-                .catch(error => {
-                    console.error('Error fetching doctor availability:', error);
-                });
-        }
-
-        // Function to update table cells based on availability data
-        function updateTable(availabilityData) {
-            const table = document.getElementById('availabilityTable');
-            const rows = table.getElementsByTagName('tr');
-            const timeCells = Array.from(rows).slice(1); // Exclude header row
-
-            timeCells.forEach(row => {
-                const timeSlot = row.cells[1].textContent.trim(); // Get the time slot
-                const availability = availabilityData[timeSlot];
-                if (availability === 'available') {
-                    row.cells[2].classList.add('available'); // Green background
-                } else if (availability === 'unavailable') {
-                    row.cells[2].classList.add('unavailable'); // Red background
-                }
-                }
-            );
-        }
-
-        // Call the function to fetch doctor availability when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchDoctorAvailability();
-        });
     </script>
 </body>
 </html>
