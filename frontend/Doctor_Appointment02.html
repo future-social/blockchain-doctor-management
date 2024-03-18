@@ -85,46 +85,6 @@
         .appointment-container button.submit:hover, .appointment-container button.clear:hover, .appointment-container button.back:hover {
             background-color: #8E004A; 
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        caption {
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        .available {
-            background-color: white;
-            cursor: pointer;
-        }
-        .available:hover {
-            background-color: #4e9ea7;
-        }
-        .unavailable {
-            background-color: #8E004A;
-        }
-        .selected {
-            background-color: #027382 !important;
-        }
-        .date-column {
-            width: 100px;
-        }
-        tr{
-            height:15px;
-        }
-        #availabilityTable th:nth-child(2) {
-            width: 90px;
-        }
     </style>
 </head>
 <script src="logout.js"></script>
@@ -142,330 +102,173 @@
                     <input type="text" id="patientID" name="patientID" required>
                 </div>
                 <div class="column">
-                    <label for="patientName">Patient Name:</label>
-                    <input type="text" id="patientName" name="patientName" disabled>
+                    <label for="patient_name">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" disabled>
                 </div>
             </div>
-            <br>
-            <table id="availabilityTable">
-                <caption>Doctor's Availability</caption>
-                <tr>
-                    <th scope="col">Time</th>
-                    <th scope="col">Time Slot</th>
-                    <!-- Weekday columns will be dynamically generated -->
-                </tr>
-                <tr id="8:00-8:20">
-                    <th rowspan="3" scope="rowgroup">8am</th>
-                    <td >8:00-8:20</td>
-                </tr>
-                <tr id="8:20-8:40">
-                    <th style="display: none;"></th>
-                    <td >8:20-8:40</td>
-                </tr>
-                <tr id="8:40-9:00">
-                    <th style="display: none;"></th>
-                    <td >8:40-9:00</td>
-                </tr>
-                <tr id="9:00-9:20">
-                    <th rowspan="3" scope="rowgroup">9am</th>
-                    <td >9:00-9:20</td>
-                </tr>
-                <tr id="9:20-9:40">
-                    <th style="display: none;"></th>
-                    <td >9:20-9:40</td>
-                </tr>
-                <tr id="9:40-10:00">
-                    <th style="display: none;"></th>
-                    <td >9:40-10:00</td>
-                </tr>
-                <tr id="10:00-10:20">
-                    <th rowspan="3" scope="rowgroup">10am</th>
-                    <td>10:00-10:20</td>
-                </tr>
-                <tr id="10:20-10:40">
-                    <th style="display: none;"></th>
-                    <td>10:20-10:40</td>
-                </tr>
-                <tr id="10:40-11:00">
-                    <th style="display: none;"></th>
-                    <td>10:40-11:00</td>
-                </tr>
-                <tr id="11:00-11:20">
-                    <th rowspan="3" scope="rowgroup">11am</th>
-                    <td>11:00-11:20</td>
-                </tr>
-                <tr id="11:20-11:40">
-                    <th style="display: none;"></th>
-                    <td>11:20-11:40</td>
-                </tr>
-                <tr id="11:40-12:00">
-                    <th style="display: none;"></th>
-                    <td>11:40-12:00</td>
-                </tr>
-                <!-- Time slots from 2pm to 5pm -->
-                <tr id="14:00-14:20">
-                    <th rowspan="3" scope="rowgroup">2pm</th>
-                    <td>14:00-14:20</td>
-                </tr>
-                <tr id="14:20-14:40">
-                    <th style="display: none;"></th>
-                    <td>14:20-14:40</td>
-                </tr>
-                <tr id="14:40-15:00"> 
-                    <th style="display: none;"></th>
-                    <td>14:40-15:00</td>
-                </tr>
-                <tr id="15:00-15:20">
-                    <th rowspan="3" scope="rowgroup">3pm</th>
-                    <td>15:00-15:20</td>
-                </tr>
-                <tr id="15:20-15:40">
-                    <th style="display: none;"></th>
-                    <td>15:20-15:40</td>
-                </tr>
-                <tr id="15:40-16:00">
-                    <th style="display: none;"></th>
-                    <td>15:40-16:00</td>
-                </tr>
-                <tr id="16:00-16:20">
-                    <th rowspan="3" scope="rowgroup">4pm</th>
-                    <td>16:00-16:20</td>
-                </tr>
-                <tr id="16:20-16:40">
-                    <th style="display: none;"></th>
-                    <td>16:20-16:40</td>
-                </tr>
-                <tr id="16:40-17:00">
-                    <th style="display: none;"></th>
-                    <td>16:40-17:00</td>
-                </tr>
-                <tr id="17:00-17:20">
-                    <th rowspan="3" scope="rowgroup">5pm</th>
-                    <td>17:00-17:20</td>
-                </tr>
-                <tr id="17:20-17:40">
-                    <th style="display: none;"></th>
-                    <td>17:20-17:40</td>
-                </tr>
-                <tr id="17:40-18:00">
-                    <th style="display: none;"></th>
-                    <td>17:40-18:00</td>
-                </tr>
-            </table>
-        
-            <div class="button-container"> 
-                <button type="button" class="clear">Clear</button>
-                <button type="submit" class="submit">Submit</button>
+            
+            <div class="row">
+                <div class="column">
+                    <label for="appointment_date">Date:</label>
+                    <select id="appointment_date" name="appointment_date" required>
+                        <!-- JavaScript will populate options here -->
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="appointment_time">Time:</label>
+                    <select id="appointment_time" name="appointment_time" required>
+                        
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                    <button type="button" class="clear">Clear</button>
+                    <button type="submit" class="submit">Submit</button>
             </div>
         </form>
     </div>
     </div>
     <div id="footerContainer"></div>
-    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
     <script>
         fetch("Doctor_Header.html")
-            .then((response) => response.text())
-            .then((html) => {
-                document.getElementById("headerContainer").innerHTML = html;
-                append();
-            });
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("headerContainer").innerHTML = html;
+            append();
+          });
     
         fetch("Footer.html")
-            .then((response) => response.text())
-            .then((html) => {
-                document.getElementById("footerContainer").innerHTML = html;
-                document.getElementById("year").textContent = new Date().getFullYear();
-            });
-
-            document.addEventListener("DOMContentLoaded", function () {
-    const appointmentTable = document.getElementById('availabilityTable');
-
-    function fetchAllAppointments() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const doctorId = urlParams.get("doctorId");
-    fetch(`/retrieveDoctorAvailability/${doctorId}`)
-    .then(response => response.json())
-    .then(data => {
-        data.forEach((timeSlot, rowIndex) => {
-            const row = appointmentTable.insertRow(rowIndex + 1); // Insert a new row into the appointment table
-
-            // Check if the row has an ID, then start inserting cells from the second column onwards
-            if (row.id) {
-                timeSlot.availability.forEach((availability, columnIndex) => {
-                    const cell = row.insertCell(columnIndex + 1); // Insert a new cell into the row at the specified column index
-                    const formattedDate = date.format("YYYY-MM-DD");
-                    const startTime = timeSlot.time.split('-')[0];
-                    const timeParts = startTime.split(':');
-                    const formattedTime = `${timeParts[0].padStart(2, '0')}:${timeParts[1]}`;
-                    const cellId = `${formattedDate}:${formattedTime}`;
-                    const cellElement = document.getElementById(cellId);
-                    if (cellElement) {
-                        if (availability.available) {
-                            cellElement.classList.add('available');
-                        } else {
-                            cellElement.classList.add('unavailable');
-                        }
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("footerContainer").innerHTML = html;
+        });
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("appointmentForm");
+            const dateSelect = document.getElementById("appointment_date");
+            const timeSelect = document.getElementById("appointment_time");
+            const patientIdInput = document.getElementById("patientID");
+            const patientNameInput = document.getElementById("patient_name");
+            const submitButton = document.querySelector(".submit");
+            const urlParams = new URLSearchParams(window.location.search);
+            const doctorId = urlParams.get("doctorId");
+    
+            // Fetch available dates and times from the server
+            fetch(`/retrieveDoctorAvailability?${doctorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate date options
+                    data.forEach(date => {
+                        const option = document.createElement("option");
+                        option.value = date.date;
+                        option.text = date.date;
+                        dateSelect.add(option);
+                    });
+    
+                    // Populate time options based on the selected date
+                    dateSelect.addEventListener("change", function() {
+                        const selectedDate = this.value;
+                        const availableTimes = data.find(date => date.date === selectedDate)?.times || [];
+                        
+                        // Clear previous time options
+                        timeSelect.innerHTML = "";
+                        
+                        // Populate time options
+                        availableTimes.forEach(time => {
+                            const option = document.createElement("option");
+                            option.value = time;
+                            option.text = time;
+                            timeSelect.add(option);
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching available dates and times:', error));
+    
+            // Function to handle clearing all input fields and selections
+            const clearForm = () => {
+                const inputFields = form.querySelectorAll("input, select");
+                inputFields.forEach(input => {
+                    if (input.tagName === "SELECT") {
+                        input.selectedIndex = 0; // Reset select dropdown
+                    } else {
+                        input.value = ""; // Clear input fields
                     }
                 });
-            }
-        });
-    })
-    .catch(error => console.error('Error fetching appointments:', error));
-}
-
-fetchAllAppointments()
-
-    // Add event listeners for slot selection
-    appointmentTable.addEventListener('click', handleSlotSelection);
-
-    // Clear Button functionality
-    const clearButton = document.querySelector(".clear");
-    clearButton.addEventListener("click", function () {
-        const selectedCells = document.querySelectorAll('.selected');
-        selectedCells.forEach(cell => {
-            cell.classList.remove('selected');
-        });
-        const inputFields = form.querySelectorAll("input");
-                inputFields.forEach(function(input) {
-                    input.value = ""; // Clear the input field
-                })
-    });
-
-
-    // Submit Button functionality
-const form = document.getElementById("appointmentForm");
-form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const selectedSlot = document.querySelector('.selected');
-    if (!selectedSlot) {
-        alert("Please select a time slot.");
-        return;
-    }
+            };
     
-    // Extract date and time components from the selected slot's ID
-    const slotId = selectedSlot.id;
-    const [datePart, timePart] = slotId.split(':');
-    const [year, month, day] = datePart.split('-');
-    const [hours, minutes] = timePart.split(':');
+            // Function to retrieve patient name and fill it into the patient name input field
+            const retrievePatientName = () => {
+                const patientId = patientIdInput.value;
+                fetch(`/retrievePatientName?patientId=${patientId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Patient name not found');
+                        }
+                        return response.text();
+                    })
+                    .then(name => {
+                        patientNameInput.value = name;
+                    })
+                    .catch(error => {
+                        // Display error message in the patient name input field
+                        patientNameInput.value = 'Error retrieving patient name';
+                        console.error('Error retrieving patient name:', error);
+                    });
+            };
+
+            // Function to handle form submission
+            const handleSubmit = (event) => {
+                event.preventDefault(); // Prevent default form submission
+                
+                // Validate form inputs
+                if (patientIdInput.value.trim() === '' || patientNameInput.value.trim() === '' || dateSelect.value === '' || timeSelect.value === '') {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+                
+                // Collect data from form fields
+                const formData = {
+                    patientID: patientIdInput.value,
+                    patient_name: patientNameInput.value,
+                    appointment_date: dateSelect.value,
+                    appointment_time: timeSelect.value
+                };
     
-    // Construct the date and time strings in the desired format
-    const formattedDate = `${year}-${month}-${day}`;
-    const formattedTime = `${hours}:${minutes}`;
-
-    // Prepare the formData object with patient details and formatted date/time
-    const formData = {
-        patientID: document.getElementById("patientID").value,
-        patientName: document.getElementById("patientName").value,
-        date: formattedDate,
-        time: formattedTime
-    };
-    
-    // Submit the formData to the backend
-    fetch('/createAppointment', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Appointment created successfully.');
-            window.location.href = 'Doctor_Appointment01.html';
-        } else {
-            throw new Error('Failed to submit appointment data.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-
-function handleSlotSelection(event) {
-    const selectedCells = document.querySelectorAll('.selected');
-    selectedCells.forEach(cell => {
-        cell.classList.remove('selected');
-    });
-    const targetCell = event.target;
-    if (!targetCell.classList.contains('unavailable')) {
-        targetCell.classList.add('selected');
-    }
-}
-
-function generateDates() {
-    const today = new Date();
-    const dates = [];
-    let dayIncrement = 0;
-
-    while (dates.length < 10) { // Adjust the number of days here
-        const date = new Date(today.getTime() + dayIncrement * 24 * 60 * 60 * 1000);
-        const dayOfWeek = date.getDay();
-
-        // Skip Saturday (6) and Sunday (0)
-        if (dayOfWeek !== 6 && dayOfWeek !== 0) {
-            const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
-            const day = date.getDate();
-            const month = date.toLocaleDateString('en-US', { month: 'short' });
-            const formattedDate = `${weekday} , ${day} ${month}`; // Construct the formatted date
-            dates.push(formattedDate);
-    
-            // Add the dates to the table and set their IDs
-            const table = document.getElementById('availabilityTable');
-            const headerRow = table.querySelector('tr');
-
-            const th = document.createElement('th');
-            th.textContent = formattedDate;
-            headerRow.appendChild(th);
-
-            // Set the IDs for the cells in the corresponding column as format: YYYY-MM-DD:HH:mm
-            const cells = table.querySelectorAll('tr td:nth-child(' + (dates.indexOf(formattedDate) + 3) + ')');
-            cells.forEach(cell => {
-                const time = moment(cell.parentElement.id.trim(), "HH:mm"); // Convert the time string to a Moment.js object
-                const momentdate = moment(date, "YYYY-MM-DD").format("YYYY-MM-DD"); // Format the current date
-                const formattedTime = time.format("HH:mm"); // Format the time
-                const cellId = `${momentdate}:${formattedTime}`; // Construct the cell ID with the desired format
-                cell.id = cellId; // Set the ID of the cell
-            });
-
-        }
-
-        dayIncrement++;
-    }
-
-    return dates;
-}
-
-generateDates(); // Call the function to generate table headers and cell IDs
-
-        // Function to retrieve patient name from backend
-        function retrievePatientName(patientID) {
-                fetch('/retrievePatientName', {
+                // Send formData to the server using fetch API
+                fetch('/createAppointment', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ patientID: patientID })
+                    body: JSON.stringify(formData)
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update the patient name input field with the retrieved name
-                        document.getElementById("patientName").value = data.patientName;
-                    })
-                    .catch(error => {
-                        console.error('Error retrieving patient name:', error);
-                    });
-            }
+                .then(response => {
+                    if (response.ok) {
+                        // Show pop-up message
+                        alert('Appointment created successfully.');
+                        // Redirect to dropdown_Appointment01.html after successful submission
+                        window.location.href = `Doctor_Appointment01.html?${doctorId}`;
+                    } else {
+                        throw new Error('Failed to create appointment.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors here if necessary
+                });
+            };
     
-            // Event listener for patient ID input field
-            const patientIDInput = document.getElementById("patientID");
-            patientIDInput.addEventListener("input", function () {
-                const patientID = this.value;
-                // Call retrievePatientName function with the entered patient ID
-                retrievePatientName(patientID);
-            });
-        ;
-            })
+            // Event listener for the Submit button
+            submitButton.addEventListener("click", handleSubmit);
+    
+            // Event listener for patient ID input change
+            patientIdInput.addEventListener("input", retrievePatientName);
+    
+            // Event listener for the Clear button
+            const clearButton = document.querySelector(".clear");
+            clearButton.addEventListener("click", clearForm);
+        });
     </script>
-</body>
-</html>
+    
