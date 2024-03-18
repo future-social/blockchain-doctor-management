@@ -9,7 +9,6 @@ function logout() {
   };
 
   function authentication(){
-    console.log("TEST");
   if(!localStorage.getItem('user')){
     alert("Please login");
     window.location.href = "LoginPage.html";
@@ -30,7 +29,7 @@ function append(){
 
 function appendAdmin(){
     const user = localStorage.getItem('user');
-    const link = document.getElementById('appointment');
+    const link = document.getElementById('home');
     const url = `Admin_Home.html?id=${user}`;
     link.href = url;
 }
