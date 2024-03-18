@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <style>
       body {
@@ -34,7 +34,7 @@
         margin: 20px;
         padding: 15px;
       }
-      h3{
+      h3 {
         margin-bottom: 3px;
         font-size: 20px;
         font-weight: bold;
@@ -56,14 +56,14 @@
         text-align: left;
         color: #929091;
         font-weight: bold;
-        padding:10px 20px;
+        padding: 10px 20px;
       }
 
       td {
         padding: 10px 20px;
-        border:none;
+        border: none;
         background-color: #fff;
-        border-radius:15px;
+        border-radius: 15px;
         margin: 5px;
       }
 
@@ -106,12 +106,12 @@
       #transactionLogTable tr:nth-child(n + 6) {
         visibility: hidden;
       }
-      #doctordataUpperRow{
+      #doctordataUpperRow {
         text-align: center;
       }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="headerContainer"></div>
 
     <div class="container">
@@ -136,90 +136,101 @@
       <div class="kanan">
         <div id="userInfo">Hello Username</div>
         <div id="dateInfo"></div>
-        <br>
-    <div class="totaldoctorcontainer">
-      <div class="image-box">
-        <img src="homedoctor.png" alt="doctor_icon">
-      </div>
-      <div class="data-box">
-        <div class="upper-row" id="doctordataUpperRow">
-          <!-- Data from backend will be inserted here -->
+        <br />
+        <div class="totaldoctorcontainer">
+          <div class="image-box">
+            <img src="homedoctor.png" alt="doctor_icon" />
+          </div>
+          <div class="data-box">
+            <div class="upper-row" id="doctordataUpperRow">
+              <!-- Data from backend will be inserted here -->
+            </div>
+            <div class="bottom-row">Total Doctor</div>
+          </div>
         </div>
-        <div class="bottom-row">
-          Total Doctor
-        </div>
       </div>
     </div>
-    </div>
-    </div>
-    <br><br>
+    <br /><br />
     <div id="footerContainer"></div>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("DOMContentLoaded", function () {
         fetchUserInfo();
         fetchTransactionLog();
         fetchDoctorNumber();
       });
 
-        fetch("Admin_Header.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("headerContainer").innerHTML = html;
-          });
-        
-          fetch("Footer.html")
+      fetch("Admin_Header.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("headerContainer").innerHTML = html;
+        });
+
+      fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
-          document.getElementById("year").textContent = new Date().getFullYear();
+          document.getElementById("year").textContent =
+            new Date().getFullYear();
         });
-        // POTENTIAL ERROR
-        function fetchUserInfo() { //hello username
+      // POTENTIAL ERROR
+      function fetchUserInfo() {
+        //hello username
         const urlParams = new URLSearchParams(window.location.search);
         const username = urlParams.get("id");
-         const userInfoElement = document.getElementById('userInfo');
-         userInfoElement.textContent = `Hello ${username}`;
-       }
+        const userInfoElement = document.getElementById("userInfo");
+        userInfoElement.textContent = `Hello ${username}`;
+      }
 
-  function fetchTransactionLog() { //transactionlog table 
-      fetch("/retrieveLogs")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to retrieve transaction data");
-          }
-          return response.json();
-        })
-        .then((data) => {
-            const transactionLogTable = document.getElementById('transactionLogTable');
-            data.forEach(entry => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.caller}</td><td>${entry.action_item}</td><td>${entry.timestamp}</td>`;
-                transactionLogTable.appendChild(row);
+      function fetchTransactionLog() {
+        //transactionlog table
+        fetch("/retrieveLogs")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to retrieve transaction data");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const transactionLogTable = document.getElementById(
+              "transactionLogTable"
+            );
+            data.forEach((entry) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `<td>${entry.transactionID}</td><td>${entry.commonName}</td><td>${entry.action_item}</td><td>${entry.timestamp}</td>`;
+              transactionLogTable.appendChild(row);
             });
-        })
-        .catch(error => console.error('Error fetching transaction log:', error));
-}
+          })
+          .catch((error) =>
+            console.error("Error fetching transaction log:", error)
+          );
+      }
 
-function fetchDoctorNumber() {
-  fetch(`/countDoctor`) 
-    .then(response => response.json())
-    .then(data => {
-          const bufferData = data;
-          const uint8Array = new Uint8Array(bufferData.data);
-          const jsonString = String.fromCharCode.apply(null, uint8Array);
-          const jsonData = JSON.parse(jsonString);
-          const totalDoctors = jsonData;
-          const upperRow = document.getElementById('doctordataUpperRow');
-          upperRow.textContent = `${totalDoctors}`;
-    })
-    .catch(error => console.error('Error fetching total doctors:', error));
-}
+      function fetchDoctorNumber() {
+        fetch(`/countDoctor`)
+          .then((response) => response.json())
+          .then((data) => {
+            const bufferData = data;
+            const uint8Array = new Uint8Array(bufferData.data);
+            const jsonString = String.fromCharCode.apply(null, uint8Array);
+            const jsonData = JSON.parse(jsonString);
+            const totalDoctors = jsonData;
+            const upperRow = document.getElementById("doctordataUpperRow");
+            upperRow.textContent = `${totalDoctors}`;
+          })
+          .catch((error) =>
+            console.error("Error fetching total doctors:", error)
+          );
+      }
 
-  // Display today's date
-  const dateInfoElement = document.getElementById('dateInfo');
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  dateInfoElement.textContent = today;
-
+      // Display today's date
+      const dateInfoElement = document.getElementById("dateInfo");
+      const today = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      dateInfoElement.textContent = today;
     </script>
-</body>
+  </body>
 </html>
