@@ -176,7 +176,7 @@
         // POTENTIAL ERROR
         function fetchUserInfo() { //hello username
         const urlParams = new URLSearchParams(window.location.search);
-        const username = urlParams.get("doctorId");
+        const username = urlParams.get("id");
          const userInfoElement = document.getElementById('userInfo');
          userInfoElement.textContent = `Hello ${username}`;
        }
