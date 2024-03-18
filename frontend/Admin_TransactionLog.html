@@ -100,8 +100,10 @@
       }
     </style>
   </head>
- <script src="logout.js"></script>
-<script>authentication();</script>
+  <script src="logout.js"></script>
+  <script>
+    authentication();
+  </script>
   <body>
     <div id="headerContainer"></div>
     <h1>Transaction Log</h1>
@@ -122,6 +124,7 @@
           <tr>
             <th>NO.</th>
             <th>Transaction ID</th>
+            <th>User Identity</th>
             <th>User</th>
             <th>Action Performed</th>
             <th>Time Stamp</th>
@@ -170,7 +173,8 @@
               row.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${transaction.transactionID}</td>
-                            <td>${transaction.caller}</td>
+                            <td>${transaction.userIdentity}</td>
+                            <td>${transaction.commonName}</td>
                             <td>${transaction.action_item}</td>
                             <td>${transaction.timestamp}</td>
                         `;
