@@ -280,7 +280,7 @@
     const appointmentTable = document.getElementById('availabilityTable');
 
     function fetchAllAppointments() {
-        fetch('/retrieveDoctorAvailability')
+        fetch(`/retrieveDoctorAvailability/?id=${doctorId}`)
             .then(response => response.json())
             .then(data => {
                 data.forEach((timeSlot, index) => {
