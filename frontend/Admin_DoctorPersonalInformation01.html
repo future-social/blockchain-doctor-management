@@ -164,7 +164,7 @@
                     tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
                 } else {
                     data.forEach((doctor, index) => {
-                        if(${doctor.doctor_id}){
+                        if(doctor['doctor_id']){
                             const row = tableBody.insertRow();
                             row.innerHTML = `
                                 <td>${index + 1}</td>
