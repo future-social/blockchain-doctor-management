@@ -214,7 +214,6 @@
                     .then(data => {
                         const bufferData = data;
                         const uint8Array = new Uint8Array(bufferData.data);
-                        const jsonString = String.fromCharCode.apply(null, uint8Array);
                         data = Buffer.from(uint8Array).toString('ascii')
                         patientNameInput.value = data;
                     })
