@@ -202,7 +202,7 @@ router.get("/retrievePatientName/:patientId", async (req, res) => {
     const patientId = req.params.patientId;
     const result = await appointmentController.retrievePatientName(
       patientId,
-      doctorId
+      DMSAdminId
     );
     res.json(result);
   } catch (error) {
