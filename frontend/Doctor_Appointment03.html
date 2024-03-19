@@ -155,7 +155,7 @@
             "editLink"
           ).href = `Doctor_Appointment04.html?appointmentId=${appointmentId}`;
 
-          fetch(`/retrieveAppointment/${appointmentId}`)
+          fetch(`/retrieveAllAppointments`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -163,7 +163,8 @@
               return response.json();
             })
             .then((data) => {
-              populateForm(data);
+              const appointment = data.find(item => item.appointmentID === appointmentId);  
+              populateForm(appointment);
             })
             .catch((error) => {
               console.error("Error fetching appointment information:", error);
