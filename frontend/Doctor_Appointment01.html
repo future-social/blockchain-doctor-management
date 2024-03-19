@@ -194,23 +194,28 @@
                         return response.json();
                     })
                     .then(data => {
+                        const bufferData = data;
+                        const uint8Array = new Uint8Array(bufferData.data);
+                        const jsonString = String.fromCharCode.apply(null, uint8Array);
+                        data = JSON.parse(jsonString);
                         const tableBody = document.querySelector("#appointmentTable tbody");
                         if (!data || data.length === 0) {
                             tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
                         } else {
-                            // Filter appointments for dates on or after today
-                            const upcomingAppointments = data.filter(appointment => appointment.date >= today);
-                            // Sort appointments by date in ascending order
-                            upcomingAppointments.sort((a, b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
-                            // Render upcoming appointments
-                            renderAppointments(upcomingAppointments, tableBody);
+                            // // Filter appointments for dates on or after today
+                            // const upcomingAppointments = data.filter(appointment => appointment.date >= today);
+                            // // Sort appointments by date in ascending order
+                            // upcomingAppointments.sort((a, b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
+                            // // Render upcoming appointments
+                            // renderAppointments(upcomingAppointments, tableBody);
     
-                            // Filter appointments for dates before today
-                            const pastAppointments = data.filter(appointment => appointment.date < today);
-                            // Sort past appointments by date in ascending order
-                            pastAppointments.sort((a, b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
-                            // Render past appointments
-                            renderAppointments(pastAppointments, tableBody);
+                            // // Filter appointments for dates before today
+                            // const pastAppointments = data.filter(appointment => appointment.date < today);
+                            // // Sort past appointments by date in ascending order
+                            // pastAppointments.sort((a, b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
+                            // // Render past appointments
+                            // renderAppointments(pastAppointments, tableBody);
+                            renderAppointments(data, tableBody);
                         }
                     })
                     .catch(error => {
@@ -224,14 +229,14 @@
                     const row = tableBody.insertRow();
                     row.innerHTML = `
                         <td>${index + 1}</td>
-                        <td>${appointment.appointmentId}</td>
-                        <td>${appointment.date}</td>
-                        <td>${appointment.time}</td>
-                        <td>${appointment.id}</td>
+                        <td>${appointment.appointmentID}</td>
+                        <td>${appointment.appointmentDate}</td>
+                        <td>${appointment.AppointmentTime}</td>
+                        <td>${appointment.patientID}</td>
                         <td class="action-images">
-                            <img class="view-image" src="view.png" alt="View" data-id="${appointment.appointmentId}">
-                            <img class="edit-image" src="edit.png" alt="Edit" data-id="${appointment.appointmentId}">
-                            <img class="delete-image" src="delete.png" alt="Delete" data-id="${appointment.appointmentId}">
+                            <img class="view-image" src="view.png" alt="View" data-id="${appointment.appointmentID}">
+                            <img class="edit-image" src="edit.png" alt="Edit" data-id="${appointment.appointmentID}">
+                            <img class="delete-image" src="delete.png" alt="Delete" data-id="${appointment.appointmentID}">
                         </td>
                     `;
                 });
