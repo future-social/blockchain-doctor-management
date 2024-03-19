@@ -407,28 +407,6 @@ func (ac *AppointmentContract) GetAllAppointment(ctx contractapi.TransactionCont
 	return appointments, nil
 }
 
-/*
-func (ac *AppointmentContract) CountAppointments(ctx contractapi.TransactionContextInterface) (int, error) {
-	AppointmentIterator, err := ctx.GetStub().GetStateByRange("apt_0", "apt_999999")
-	if err != nil {
-		return 0, fmt.Errorf("failed to read from world state: %v", err)
-	}
-	defer AppointmentIterator.Close()
-
-	totalAppointments := 0
-
-	for AppointmentIterator.HasNext() {
-		_, err := AppointmentIterator.Next()
-		if err != nil {
-			return 0, fmt.Errorf("failed to iterate appointment: %v", err)
-		}
-		totalAppointments++
-	}
-
-	return totalAppointments, nil
-}
-*/
-
 // UpdateDoctorAvailability updates the availability of a doctor in the ledger
 func (ac *AppointmentContract) UpdateDoctorAvailability(ctx contractapi.TransactionContextInterface, doctorID string, availability map[string][]string) error {
 	// Marshal the updated availability to JSON
@@ -464,3 +442,25 @@ func (ac *AppointmentContract) GetPatientNameByID(ctx contractapi.TransactionCon
 
 	return patient.Name, nil
 }
+
+/*
+func (ac *AppointmentContract) CountAppointments(ctx contractapi.TransactionContextInterface) (int, error) {
+	AppointmentIterator, err := ctx.GetStub().GetStateByRange("apt_0", "apt_999999")
+	if err != nil {
+		return 0, fmt.Errorf("failed to read from world state: %v", err)
+	}
+	defer AppointmentIterator.Close()
+
+	totalAppointments := 0
+
+	for AppointmentIterator.HasNext() {
+		_, err := AppointmentIterator.Next()
+		if err != nil {
+			return 0, fmt.Errorf("failed to iterate appointment: %v", err)
+		}
+		totalAppointments++
+	}
+
+	return totalAppointments, nil
+}
+*/
