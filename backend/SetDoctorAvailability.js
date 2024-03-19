@@ -55,4 +55,4 @@ async function setDoctorAvailability(id) {
   }
 }
 
-setDoctorAvailability();
+setDoctorAvailability(id);
