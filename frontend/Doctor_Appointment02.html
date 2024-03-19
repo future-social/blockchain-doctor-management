@@ -216,7 +216,7 @@
                         const uint8Array = new Uint8Array(bufferData.data);
                         const jsonString = String.fromCharCode.apply(null, uint8Array);
                         data = JSON.parse(jsonString);
-                        patientNameInput.value = name;
+                        patientNameInput.value = data;
                     })
                     .catch(error => {
                         // Display error message in the patient name input field
