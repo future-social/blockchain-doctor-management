@@ -169,7 +169,7 @@
             .catch(error => console.error('Error fetching appointment information:', error));
 
             // Fetch available dates and times from the server
-            fetch(`/retrieveDoctorAvailability?${doctorId}`)
+            fetch(`/retrieveDoctorAvailability/${doctorId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Populate date options
@@ -268,8 +268,8 @@
                 if (response.ok) {
                     // Show pop-up message
                     alert('Appointment updated successfully.');
-                    // Redirect to dropdown_Appointment03.html after successful submission
-                    window.location.href = `Doctor_Appointment03.html?${appointmentId}`;
+                    // Redirect to dropdown_Appointment01.html after successful submission
+                    window.location.href = `Doctor_Appointment01.html?doctorId=${doctorId}`;
                 } else {
                     throw new Error('Failed to update appointment.');
                 }
