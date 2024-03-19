@@ -44,7 +44,7 @@ async function setDoctorAvailability(id) {
 
     await contract.submitTransaction(
         "setDoctorAvailability",
-        DMSAdminId
+        id
     );
       console.log("Doctor availability set successfully!");
   
