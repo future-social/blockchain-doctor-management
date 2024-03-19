@@ -159,8 +159,12 @@
             fetch(`/retrieveDoctorAvailability/${doctorId}`)
                 .then(response => response.json())
                 .then(data => {
+                    const bufferData = data;
+                      const uint8Array = new Uint8Array(bufferData.data);
+                      const jsonString = String.fromCharCode.apply(null, uint8Array);
+                      const jsonData = JSON.parse(jsonString);
                     // Populate date options
-                    data.forEach(date => {
+                    jsonData.forEach(date => {
                         const option = document.createElement("option");
                         option.value = date.date;
                         option.text = date.date;
