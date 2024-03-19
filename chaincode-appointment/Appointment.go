@@ -183,11 +183,15 @@ func (ac *AppointmentContract) BookAppointment(ctx contractapi.TransactionContex
 	}
 
 	// Remove appointment slot from availability time slot
+	var matchIndex int = -1
 	for i, slot := range timeSlots {
 		if slot == appointmentTime {
-			availability[appointmentDate] = append(timeSlots[:i], timeSlots[i+1:]...)
+			matchIndex = i
 			break
 		}
+	}
+	if matchIndex != -1 {
+		availability[appointmentDate] = append(timeSlots[:matchIndex], timeSlots[matchIndex+1:]...)
 	}
 
 	//update doctor availability to ledger
