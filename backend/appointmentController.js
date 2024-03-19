@@ -47,13 +47,18 @@ async function createAppointment(appointmentData, doctorId) {
       "YYYY-MM-DD"
     ).format();
 
+    const formattedAppTime =  moment(
+      appointmentData["AppointmentTime"],
+      "HH:mm"
+    ).format();
+
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
       "BookAppointment",
       doctorId,
       appointmentData["patientID"],
       formattedAppDate, // TODO
-      appointmentData["AppointmentTime"]
+      formattedAppTime
     );
     console.log("Appointment created successfully");
 
