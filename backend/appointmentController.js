@@ -109,7 +109,7 @@ async function retrieveAllAppointments(doctorId) {
 
     // Submit the transaction
     const result = await contract.evaluateTransaction(
-      "GetTotalAppointments",
+      "GetAllAppointments",
       doctorId
     );
     console.log(`Appointment retrieved: ${result.toString()}`);
