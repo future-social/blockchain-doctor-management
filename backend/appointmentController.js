@@ -45,7 +45,7 @@ async function createAppointment(appointmentData, doctorId) {
     const formattedAppDate = moment(
       appointmentData["appointmentDate"],
       "YYYY-MM-DD"
-    ).format();
+    ).format("YYYY-MM-DD");
 
     const formattedAppTime =  moment(
       appointmentData["AppointmentTime"],
@@ -57,7 +57,7 @@ async function createAppointment(appointmentData, doctorId) {
       "BookAppointment",
       doctorId,
       appointmentData["patientID"],
-      formattedAppDate, // TODO
+      formattedAppDate, 
       formattedAppTime
     );
     console.log("Appointment created successfully");
@@ -161,14 +161,23 @@ async function updateAppointment(appointmentId, updatedData, doctorId) {
     const contract = network.getContract("appointment");
 
     // Format Date Parameters
-    const formattedAppDate = moment(updatedData["date"], "YYYY-MM-DD").format(); // TODO
+    const formattedAppDate = moment(
+      appointmentData["appointmentDate"],
+      "YYYY-MM-DD"
+    ).format("YYYY-MM-DD");
+
+    const formattedAppTime =  moment(
+      appointmentData["AppointmentTime"],
+      "HH:mm"
+    ).format("HH:mm");
+
 
     // Submit the transaction
     await contract.submitTransaction(
       "ChangeAppointment",
       appointmentId,
       formattedAppDate,
-      updatedData["time"] //POTENTIAL ERROR: TIME FORMAT
+      formattedAppTime 
     );
     console.log("Appointment updated successfully");
 
