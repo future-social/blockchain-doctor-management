@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log"
 	"reflect"
 	"regexp"
 	"strings"
@@ -510,4 +511,18 @@ func (dc *DoctorContract) CountDoctors(ctx contractapi.TransactionContextInterfa
 	}
 
 	return count, nil
+}
+
+
+func main() {
+	doctorContract := new(DoctorContract)
+	
+	Chaincode, err := contractapi.NewChaincode(doctorContract)
+	if err != nil {
+		log.Panicf("Error creating doctor and appointment chaincode %v", err)
+	}
+
+	if err := Chaincode.Start(); err != nil {
+		log.Panicf("Error starting  chaincode: %v", err)
+	}
 }

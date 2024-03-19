@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"log"
 	"time"
 )
 
@@ -464,3 +464,15 @@ func (ac *AppointmentContract) CountAppointments(ctx contractapi.TransactionCont
 	return totalAppointments, nil
 }
 */
+
+func main() {
+	appointmentContract := new(AppointmentContract)
+	Chaincode, err := contractapi.NewChaincode(appointmentContract)
+	if err != nil {
+		log.Panicf("Error creating appointment chaincode %v", err)
+	}
+
+	if err := Chaincode.Start(); err != nil {
+		log.Panicf("Error starting chaincode: %v", err)
+	}
+}
