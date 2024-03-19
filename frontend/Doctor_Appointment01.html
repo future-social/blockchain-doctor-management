@@ -270,23 +270,27 @@
                     });
                 });
     
-                // Function to delete appointment data
+                // Method to delete appointment data
                 function deleteAppointment(appointmentId) {
-                    fetch(`/deleteAppointment/${appointmentId}`, {
-                        method: 'DELETE'
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                window.location.reload();
-                            } else {
-                                throw new Error('Failed to delete appointment data');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error deleting appointment data:', error);
-                            // Display an error message to the user or handle the error appropriately
-                        });
-                }
+                fetch(`/deleteAppointment/${appointmentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ appointmentId: appointmentId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        throw new Error('Failed to delete appointment data');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting appointment data:', error);
+                    // Display an error message to the user or handle the error appropriately
+                });
+            }
             }
     
             // Function to handle search
