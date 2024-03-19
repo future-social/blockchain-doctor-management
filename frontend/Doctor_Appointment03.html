@@ -86,6 +86,7 @@
             background-color: #8E004A; 
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 </head>
 
 <script src="logout.js"></script>
@@ -176,6 +177,8 @@
         }
 
         function populateForm(data) {
+        data["appointmentDate"] = moment(data["appointmentDate"],"YYYY-MM-DD").format("YYYY-MM-DD");
+        data["appointmentTime"] = moment(data["appointmentTime"],"HH:mm").format("HH:mm");
     // Populate form fields with the retrieved data
     const formFields = ["patientID", "patientName", "appointmentDate", "appointmentTime"];
     formFields.forEach((field) => {
