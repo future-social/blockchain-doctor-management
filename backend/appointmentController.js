@@ -50,7 +50,7 @@ async function createAppointment(appointmentData, doctorId) {
     const formattedAppTime =  moment(
       appointmentData["AppointmentTime"],
       "HH:mm"
-    ).format();
+    ).format("HH:mm");
 
     // Submit the transaction to create a new doctor
     await contract.submitTransaction(
