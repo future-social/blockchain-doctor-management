@@ -204,7 +204,7 @@
             // Function to retrieve patient name and fill it into the patient name input field
             const retrievePatientName = () => {
                 const patientId = patientIdInput.value;
-                fetch(`/retrievePatientName/patientId=${patientId}`)
+                fetch(`/retrievePatientName/${patientId}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Patient name not found');
