@@ -163,13 +163,19 @@
                       const uint8Array = new Uint8Array(bufferData.data);
                       const jsonString = String.fromCharCode.apply(null, uint8Array);
                       const jsonData = JSON.parse(jsonString);
-                    // Populate date options
-                    jsonData.forEach(date => {
+                      Object.keys(jsonData).forEach(function(date) {
                         const option = document.createElement("option");
-                        option.value = date.date;
-                        option.text = date.date;
+                        option.value = date;
+                        option.text = date;
                         dateSelect.add(option);
-                    });
+                      })
+                    // Populate date options
+                    // jsonData.forEach(date => {
+                    //     const option = document.createElement("option");
+                    //     option.value = date.date;
+                    //     option.text = date.date;
+                    //     dateSelect.add(option);
+                    // });
     
                     // Populate time options based on the selected date
                     dateSelect.addEventListener("change", function() {
