@@ -14,6 +14,7 @@
         max-width: 1000px;
         margin: 20px auto;
         padding: 20px;
+        overflow-x: auto; /* Enable horizontal scrolling */
       }
       h1 {
         margin-left: 50px;
@@ -23,6 +24,9 @@
         align-items: center;
         margin-bottom: 20px;
         justify-content: space-between;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
       }
       .searchbar {
         display: flex;
@@ -81,7 +85,6 @@
         border: 1px solid black;
         padding: 8px;
         text-align: left;
-        white-space: normal;
       }
       th {
         background-color: #f2f2f2;
@@ -107,18 +110,18 @@
   <body>
     <div id="headerContainer"></div>
     <h1>Transaction Log</h1>
-    <div class="container">
+    
       <div class="search-container">
         <div class="dropdown">
           <img class="filter-button" src="filter.png" alt="Filter" />
           <select>
-            <option value="">Filter by...</option>
+            <option value="" disabled selected>Filter by...</option>
             <option value="user">User</option>
             <option value="DateTime">Time Stamp</option>
             <!-- Add more options as needed -->
           </select>
         </div>
-      </div>
+      </div><div class="container">
       <table id="transactionTable">
         <thead>
           <tr>
@@ -126,7 +129,7 @@
             <th style="width: 200px;">Transaction ID</th>
             <th style="width: 200px">User Identity</th>
             <th style="width: 100px;">User</th>
-            <th style="width: 120px;">Action Performed</th>
+            <th style="width: 100px;">Action Performed</th>
             <th style="width: 80px;">Time Stamp</th>
           </tr>
         </thead>
