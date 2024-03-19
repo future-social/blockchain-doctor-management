@@ -176,16 +176,10 @@
         }
 
         function populateForm(data) {
-    // Convert buffer data to string
-    const jsonString = new TextDecoder().decode(new Uint8Array(data));
-
-    // Parse JSON string to JavaScript object
-    const jsonData = JSON.parse(jsonString);
-
     // Populate form fields with the retrieved data
-    const formFields = ["patientID", "patientName", "date", "time"];
+    const formFields = ["patientID", "patientName", "appointmentDate", "appointmentTime"];
     formFields.forEach((field) => {
-        document.getElementById(field).value = jsonData[field];
+        document.getElementById(field).value = data[field];
     });
 }})
     </script>
