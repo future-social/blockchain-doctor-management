@@ -163,6 +163,10 @@
               return response.json();
             })
             .then((data) => {
+             const bufferData = data;
+             const uint8Array = new Uint8Array(bufferData.data);
+             const jsonString = String.fromCharCode.apply(null, uint8Array);
+             data = JSON.parse(jsonString);
               const appointment = data.find(item => item.appointmentID === appointmentId);  
               populateForm(appointment);
             })
