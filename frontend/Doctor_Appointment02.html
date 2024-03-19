@@ -249,7 +249,7 @@
                         // Show pop-up message
                         alert('Appointment created successfully.');
                         // Redirect to dropdown_Appointment01.html after successful submission
-                        window.location.href = `Doctor_Appointment01.html?${doctorId}`;
+                        window.location.href = `Doctor_Appointment01.html?doctorId=${doctorId}`;
                     } else {
                         throw new Error('Failed to create appointment.');
                     }
