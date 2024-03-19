@@ -47,7 +47,7 @@ async function createAppointment(appointmentData, doctorId) {
       "YYYY-MM-DD"
     ).format("YYYY-MM-DD");
 
-    const formattedAppTime =  moment(
+    const formattedAppTime = moment(
       appointmentData["AppointmentTime"],
       "HH:mm"
     ).format("HH:mm");
@@ -57,7 +57,7 @@ async function createAppointment(appointmentData, doctorId) {
       "BookAppointment",
       doctorId,
       appointmentData["patientID"],
-      formattedAppDate, 
+      formattedAppDate,
       formattedAppTime
     );
     console.log("Appointment created successfully");
@@ -109,7 +109,7 @@ async function retrieveAllAppointments(doctorId) {
 
     // Submit the transaction
     const result = await contract.evaluateTransaction(
-      "GetAllAppointments",
+      "GetAllAppointment",
       doctorId
     );
     console.log(`Appointment retrieved: ${result.toString()}`);
@@ -166,18 +166,17 @@ async function updateAppointment(appointmentId, updatedData, doctorId) {
       "YYYY-MM-DD"
     ).format("YYYY-MM-DD");
 
-    const formattedAppTime =  moment(
+    const formattedAppTime = moment(
       updatedData["AppointmentTime"],
       "HH:mm"
     ).format("HH:mm");
-
 
     // Submit the transaction
     await contract.submitTransaction(
       "ChangeAppointment",
       appointmentId,
       formattedAppDate,
-      formattedAppTime 
+      formattedAppTime
     );
     console.log("Appointment updated successfully");
 
