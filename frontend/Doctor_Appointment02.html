@@ -169,18 +169,11 @@
                         option.text = date;
                         dateSelect.add(option);
                       })
-                    // Populate date options
-                    // jsonData.forEach(date => {
-                    //     const option = document.createElement("option");
-                    //     option.value = date.date;
-                    //     option.text = date.date;
-                    //     dateSelect.add(option);
-                    // });
     
                     // Populate time options based on the selected date
                     dateSelect.addEventListener("change", function() {
                         const selectedDate = this.value;
-                        const availableTimes = data.find(date => date.date === selectedDate)?.times || [];
+                        const availableTimes = jsonData[selectedDate];
                         
                         // Clear previous time options
                         timeSelect.innerHTML = "";
