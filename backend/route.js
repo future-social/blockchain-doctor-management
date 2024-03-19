@@ -162,7 +162,7 @@ router.put("/updateAppointment/:appointmentId", async (req, res) => {
 });
 
 // Route to delete appointment data
-router.delete("/deleteAppointment/:appointmentId", async (req, res) => {
+router.post("/deleteAppointment/:appointmentId", async (req, res) => {
   try {
     const appointmentId = req.params.appointmentId;
     await appointmentController.deleteAppointment(appointmentId, DMSAdminId);
