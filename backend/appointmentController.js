@@ -162,12 +162,12 @@ async function updateAppointment(appointmentId, updatedData, doctorId) {
 
     // Format Date Parameters
     const formattedAppDate = moment(
-      appointmentData["appointmentDate"],
+      updatedData["appointmentDate"],
       "YYYY-MM-DD"
     ).format("YYYY-MM-DD");
 
     const formattedAppTime =  moment(
-      appointmentData["AppointmentTime"],
+      updatedData["AppointmentTime"],
       "HH:mm"
     ).format("HH:mm");
 
