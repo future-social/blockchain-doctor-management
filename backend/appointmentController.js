@@ -45,7 +45,7 @@ async function createAppointment(appointmentData, doctorId) {
     const formattedAppDate = moment(
       appointmentData["appointmentDate"],
       "YYYY-MM-DD"
-    ).format();
+    ).format("YYYY-MM-DD");
 
     const formattedAppTime =  moment(
       appointmentData["AppointmentTime"],
