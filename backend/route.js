@@ -4,6 +4,7 @@ const router = express.Router();
 const doctorController = require("./doctorController");
 const registerDoctor = require("./registerDoctor");
 const loggingController = require("./loggingController");
+const appointmentController = require("./appointmentController");
 var DMSAdminId = " "; // TEST : TO BE PASSED FROM LOGIN
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -50,7 +51,13 @@ router.get("/retrieveAllDoctor", async (req, res) => {
     // }];
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to retrieve data: No identity identifier associated with "+ DMSAdminId +" found on the client side for the blockchain network." });
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to retrieve data: No identity identifier associated with " +
+        DMSAdminId +
+        " found on the client side for the blockchain network.",
+    });
   }
 });
 
