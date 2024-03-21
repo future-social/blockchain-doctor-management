@@ -289,11 +289,6 @@
             document.getElementById(field).value = jsonData[field];
           });
 
-          /*// Enable form fields for editing
-          formFields.forEach((field) => {
-            document.getElementById(field).disabled = false;
-          });*/
-
           const gender = jsonData.gender; // Retrieve gender from jsonData
           // Enable gender radio buttons based on retrieved gender
           const genderRadioButtons = document.querySelectorAll(
@@ -306,32 +301,6 @@
             //radio.disabled = false; // Enable the radio button
           });
         }
-
-        /*function populateQualifications(qualifications) {
-            const qualificationContainer = document.getElementById("qualificationContainer");
-            qualifications.forEach(qualification => {
-                const qualificationDiv = document.createElement("div");
-                qualificationDiv.classList.add("qualification-header");
-                qualificationDiv.innerHTML = `<h2>${qualification.degree}</h2>
-                    <div class="info-row">
-                        <span class="info-label">Recognized date:</span>
-                        <span>${qualification.recognize_date}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Country:</span>
-                        <span>${qualification.country}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Institution:</span>
-                        <span>${qualification.institution}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Body Granting Qualifications:</span>
-                        <span>${qualification.body_granting_qualifications}</span>
-                    </div>`;
-                qualificationContainer.appendChild(qualificationDiv);
-            });
-        }*/
       });
     </script>
   </body>
