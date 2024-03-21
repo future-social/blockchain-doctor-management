@@ -4,102 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Header</title>
-    <style>
-      .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0px;
-        background-color: #000;
-      }
-      a {
-        text-decoration: none;
-      }
-      .logo {
-        flex: 1;
-        text-align: center;
-        /*border: none;*/
-        height: 80px;
-      }
-      .logo img {
-        width: 60px;
-        height: 60px;
-        display: block;
-        margin: 10px auto;
-      }
-      .headercolumn {
-        flex: 1;
-        text-align: center;
-        border: none;
-        height: 80px;
-        background: none;
-        cursor: pointer;
-      }
-      .headercolumn img {
-        width: 40px;
-        height: 40px;
-        display: block;
-        margin: 0 auto 5px;
-      }
-      .headercolumn span {
-        display: block;
-        font-size: 14px;
-        color: #fff;
-      }
-      .round-button {
-        border-radius: 50%; /* Makes the button round */
-        width: 60px; /* Adjust the width of the button */
-        height: 60px; /* Adjust the height of the button */
-        padding: 0; /* Removes padding */
-        margin: 0 15px;
-        background: #ca1f7b center center; /* Background color of the button */
-        border: none; /* Removes border */
-        cursor: pointer;
-        overflow: hidden; /* Ensures the background is clipped to the border-radius */
-      }
-
-      .round-button img {
-        width: 75%; /* Ensures the image fills the button */
-        height: auto; /* Allows the image to maintain its aspect ratio */
-        display: block; /* Ensures proper alignment */
-        margin: 0 auto;
-      }
-      .headercolumn:hover {
-        background-color: #8e004a;
-      }
-      .round-button:hover {
-        background-color: #8e004a;
-      }
-      .dropdown {
-        position: relative;
-        display: inline-block;
-      }
-
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 180px;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        right: 0;
-      }
-
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-      }
-
-      .dropdown-content a:hover {
-        background-color: #e4b3c9;
-      }
-
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-    </style>
+    <link rel="stylesheet" href="./header.css" />
   </head>
   <script src="logout.js"></script>
   <body>
@@ -109,8 +14,8 @@
       </div>
       <button class="headercolumn">
         <a id="home" href="Admin_Home.html">
-        <img src="home.png" alt="Home logo" />
-        <span>Home</span>
+          <img src="home.png" alt="Home logo" />
+          <span>Home</span>
         </a>
       </button>
       <button class="headercolumn">
@@ -121,8 +26,8 @@
       </button>
       <button class="headercolumn">
         <a href="Admin_TransactionLog.html">
-        <img src="transaction.png" alt="Transaction Logo" />
-        <span>Transaction Log</span>
+          <img src="transaction.png" alt="Transaction Logo" />
+          <span>Transaction Log</span>
         </a>
       </button>
 

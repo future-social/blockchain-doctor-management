@@ -5,123 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Personal Information</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
       h1 {
         padding-left: 50px;
-      }
-      .big-container {
-        width: 80%;
-        margin: 0 auto 25px;
-        border: 2px solid #d3d3d3;
-        border-radius: 10px;
-        padding: 20px;
-      }
-      .circle-image {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        margin: 0 auto 20px;
-        background-color: #ccc; /* Placeholder color */
-      }
-
-      .circle-image img {
-        width: 120px;
-        height: 120px;
-      }
-
-      .register-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .register-container label {
-        font-weight: bold;
-      }
-
-      .register-container .row {
-        display: flex;
-        gap: 10px;
-      }
-
-      .register-container .column {
-        flex: 1;
-        padding: 5px;
-      }
-
-      .register-container input[type="text"],
-      .register-container input[type="tel"],
-      .register-container input[type="email"] {
-        width: 95%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .register-container
-        input[type="text"][name="body_granting_qualifications"] {
-        width: 97.5%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .register-container input[type="radio"] {
-        margin: 5px;
-      }
-
-      .register-container button {
-        padding: 10px 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        width: 100px;
-        margin: auto 10px;
-      }
-      .info-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
-      .info-label {
-        font-weight: bold;
-      }
-      .qualification-container {
-        border: 3px solid #f3f3f3;
-        padding: 10px;
-        margin: 20px auto;
-        width: 90%;
-      }
-      .qualification-header {
-        text-align: center;
-      }
-      .document-link {
-        text-align: left;
-        margin-top: 20px;
       }
       .button-container {
         display: flex;
         justify-content: center;
         margin-top: 20px;
       }
-
-      .register-container button.edit,
-      .register-container button.submit {
-        background-color: #ca1f7b;
-        color: white;
-      }
-
-      .register-container button.edit:hover,
-      .register-container button.submit:hover {
-        background-color: #8e004a;
-      }
     </style>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <script src="logout.js"></script>
-  <script>authentication();</script>
+  <script>
+    authentication();
+  </script>
   <body>
     <div id="headerContainer"></div>
 
@@ -391,15 +289,17 @@
           });*/
 
           const gender = jsonData.gender; // Retrieve gender from jsonData
-            // Enable gender radio buttons based on retrieved gender
-            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
-            genderRadioButtons.forEach((radio) => {
-              if (radio.value === gender) {
-                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
-              }
-              //radio.disabled = false; // Enable the radio button
-            });
-          }
+          // Enable gender radio buttons based on retrieved gender
+          const genderRadioButtons = document.querySelectorAll(
+            'input[type="radio"][name="gender"]'
+          );
+          genderRadioButtons.forEach((radio) => {
+            if (radio.value === gender) {
+              radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+            }
+            //radio.disabled = false; // Enable the radio button
+          });
+        }
 
         /*function populateQualifications(qualifications) {
             const qualificationContainer = document.getElementById("qualificationContainer");

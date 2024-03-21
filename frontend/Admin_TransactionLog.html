@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transaction Log</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
       .container {
         max-width: 1000px;
         margin: 20px auto;
@@ -28,33 +23,13 @@
         margin: 20px auto;
         padding: 20px;
       }
-      .searchbar {
-        display: flex;
-        align-items: center;
-        margin-right: 10px;
-      }
-      .dropdown {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-      }
-      .button-container {
-        display: flex;
-        align-items: center;
-      }
-      .search-container input[type="text"] {
-        padding: 8px;
-        margin-right: 0;
-        width: 200px;
-      }
+
       .search-container select {
         padding: 8px;
         width: 130px;
         margin-left: 0;
       }
-      .search-container select option {
-        color: #999; /* Placeholder color */
-      }
+
       .search-container .search-button {
         cursor: pointer;
         width: 35px;
@@ -64,17 +39,7 @@
         background-image: url("search.png");
         border: none;
       }
-      .search-container .filter-button {
-        width: 35px;
-        height: 35px;
-        background: #ca1f7b center center;
-        background-size: cover;
-        margin-right: -5px;
-        margin-bottom: -13px;
-      }
-      .search-container .search-button:hover {
-        background-color: #8e004a;
-      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -95,16 +60,8 @@
         top: 0; /* Stick to the top */
         z-index: 2; /* Ensure visibility */
       }
-      .action-images {
-        display: flex;
-        justify-content: space-around;
-      }
-      .action-images img {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-      }
     </style>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <script src="logout.js"></script>
   <script>
@@ -113,27 +70,28 @@
   <body>
     <div id="headerContainer"></div>
     <h1>Transaction Log</h1>
-    
-      <div class="search-container">
-        <div class="dropdown">
-          <img class="filter-button" src="filter.png" alt="Filter" />
-          <select>
-            <option value="" disabled selected>Filter by...</option>
-            <option value="user">User</option>
-            <option value="DateTime">Time Stamp</option>
-            <!-- Add more options as needed -->
-          </select>
-        </div>
-      </div><div class="container">
+
+    <div class="search-container">
+      <div class="dropdown">
+        <img class="filter-button" src="filter.png" alt="Filter" />
+        <select>
+          <option value="" disabled selected>Filter by...</option>
+          <option value="user">User</option>
+          <option value="DateTime">Time Stamp</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+    </div>
+    <div class="container">
       <table id="transactionTable">
         <thead>
           <tr>
-            <th style="width: 20px;">NO.</th>
-            <th style="width: 200px;">Transaction ID</th>
+            <th style="width: 20px">NO.</th>
+            <th style="width: 200px">Transaction ID</th>
             <th style="width: 200px">User Identity</th>
-            <th style="width: 100px;">User</th>
-            <th style="width: 100px;">Action Performed</th>
-            <th style="width: 80px;">Time Stamp</th>
+            <th style="width: 100px">User</th>
+            <th style="width: 100px">Action Performed</th>
+            <th style="width: 80px">Time Stamp</th>
           </tr>
         </thead>
         <tbody>

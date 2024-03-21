@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Personal Information</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
@@ -16,106 +19,19 @@
       h1 {
         padding-left: 50px;
       }
-      .big-container {
-        width: 80%;
-        margin: 0 auto 25px;
-        border: 2px solid #d3d3d3;
-        border-radius: 10px;
-        padding: 20px;
-      }
-      .circle-image {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        margin: 0 auto 20px;
-        background-color: #ccc; /* Placeholder color */
-      }
-      .circle-image img {
-        width: 120px;
-        height: 120px;
-      }
-      .register-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .register-container label {
-        font-weight: bold;
-      }
-      .register-container .row {
-        display: flex;
-        gap: 10px;
-      }
-      .register-container .column {
-        flex: 1;
-        padding: 5px;
-      }
-      .register-container input[type="text"],
-      .register-container input[type="tel"],
-      .register-container input[type="email"] {
-        width: 95%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .register-container
-        input[type="text"][name="body_granting_qualifications"] {
-        width: 97.5%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .register-container input[type="radio"] {
-        margin: 5px;
-      }
-      .register-container button {
-        padding: 10px 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        width: 100px;
-        margin: auto 10px;
-      }
-      .info-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
-      .info-label {
-        font-weight: bold;
-      }
-      .qualification-container {
-        border: 3px solid #f3f3f3;
-        padding: 10px;
-        margin: 20px auto;
-        width: 90%;
-      }
-      .qualification-header {
-        text-align: center;
-      }
-      .document-link {
-        text-align: left;
-        margin-top: 20px;
-      }
+
       .button-container {
         display: flex;
         justify-content: center;
         margin-top: 20px;
       }
-      .register-container button.edit,
-      .register-container button.save {
-        background-color: #ca1f7b;
-        color: white;
-      }
-      .register-container button.edit:hover,
-      .register-container button.save:hover {
-        background-color: #8e004a;
-      }
     </style>
+    <link rel="stylesheet" href="./style.css" />
   </head>
-<script src="logout.js"></script>
-<script>authentication();</script>
+  <script src="logout.js"></script>
+  <script>
+    authentication();
+  </script>
   <body>
     <div id="headerContainer"></div>
     <h1>Doctor Personal Information</h1>
@@ -128,21 +44,11 @@
           <div class="row">
             <div class="column">
               <label for="first_name">First Name:</label>
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                required
-              />
+              <input type="text" id="first_name" name="first_name" required />
             </div>
             <div class="column">
               <label for="last_name">Last Name:</label>
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                required
-              />
+              <input type="text" id="last_name" name="last_name" required />
             </div>
           </div>
           <div class="row">
@@ -185,12 +91,7 @@
             </div>
             <div class="column">
               <label for="birth_date">DOB:</label>
-              <input
-                type="text"
-                id="birth_date"
-                name="birth_date"
-                required
-              />
+              <input type="text" id="birth_date" name="birth_date" required />
             </div>
           </div>
           <div class="row">
@@ -211,12 +112,7 @@
           <div class="row">
             <div class="column">
               <label for="address">Address:</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                required
-              />
+              <input type="text" id="address" name="address" required />
             </div>
             <div class="column">
               <label for="specialisation">Specialisation:</label>
@@ -246,21 +142,11 @@
           <div class="row">
             <div class="column">
               <label for="country">Country:</label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                required
-              />
+              <input type="text" id="country" name="country" required />
             </div>
             <div class="column">
               <label for="institution">Institution:</label>
-              <input
-                type="text"
-                id="institution"
-                name="institution"
-                required
-              />
+              <input type="text" id="institution" name="institution" required />
             </div>
           </div>
           <div class="row">
@@ -276,9 +162,9 @@
               />
             </div>
           </div>
-        <div class="button-container">
+          <div class="button-container">
             <button type="submit" class="save">Save</button>
-        </div>
+          </div>
         </form>
       </div>
     </div>
@@ -304,7 +190,7 @@
         function fetchDoctorInformation() {
           const urlParams = new URLSearchParams(window.location.search);
           const DoctorId = urlParams.get("doctorId");
-          const doctorId = encodeURIComponent(DoctorId);// Encode the doctor ID
+          const doctorId = encodeURIComponent(DoctorId); // Encode the doctor ID
 
           fetch(`/retrieveDoctor/${doctorId}`)
             .then((response) => {
@@ -354,61 +240,68 @@
             document.getElementById(field).disabled = false;
           });*/
           const gender = jsonData.gender; // Retrieve gender from jsonData
-            // Enable gender radio buttons based on retrieved gender
-            const genderRadioButtons = document.querySelectorAll('input[type="radio"][name="gender"]');
-            genderRadioButtons.forEach((radio) => {
-              if (radio.value === gender) {
-                radio.checked = true; // Check the radio button that corresponds to the retrieved gender
-              }
-              //radio.disabled = false; // Enable the radio button
-            });
-          }
-            // Handle form submission
-            document.getElementById("registrationForm").addEventListener("submit", function(event) {
+          // Enable gender radio buttons based on retrieved gender
+          const genderRadioButtons = document.querySelectorAll(
+            'input[type="radio"][name="gender"]'
+          );
+          genderRadioButtons.forEach((radio) => {
+            if (radio.value === gender) {
+              radio.checked = true; // Check the radio button that corresponds to the retrieved gender
+            }
+            //radio.disabled = false; // Enable the radio button
+          });
+        }
+        // Handle form submission
+        document
+          .getElementById("registrationForm")
+          .addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent form submission
             // Validate form fields
             const form = this;
             if (!form.checkValidity()) {
-                window.alert("Please fill in all required fields.");
-                return;
+              window.alert("Please fill in all required fields.");
+              return;
             }
             // Confirmation dialog
-            const confirmation = window.confirm("Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information.");
+            const confirmation = window.confirm(
+              "Please Confirm\n\nThe old data will be removed, and the changes will be saved as the latest information."
+            );
             if (confirmation) {
-                // Gather updated data
-                const urlParams = new URLSearchParams(window.location.search);
-                const DoctorId = urlParams.get("doctorId");
-                const doctorId = encodeURIComponent(DoctorId);
-                const formData = new FormData(form);
-                const jsonData = {};
-                formData.forEach((value, key) => jsonData[key] = value);
-                const json = JSON.stringify(jsonData);
-                // Send updated data to the server via JSON
-                fetch(`/updateDoctor/${doctorId}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: json
+              // Gather updated data
+              const urlParams = new URLSearchParams(window.location.search);
+              const DoctorId = urlParams.get("doctorId");
+              const doctorId = encodeURIComponent(DoctorId);
+              const formData = new FormData(form);
+              const jsonData = {};
+              formData.forEach((value, key) => (jsonData[key] = value));
+              const json = JSON.stringify(jsonData);
+              // Send updated data to the server via JSON
+              fetch(`/updateDoctor/${doctorId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: json,
+              })
+                .then((response) => {
+                  if (!response.ok)
+                    throw new Error("Network response was not ok");
+                  return response.json(); //solved yay
                 })
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.json();//solved yay
+                .then((data) => {
+                  window.alert("Data updated successfully.");
+                  window.location.href = `Doctor_PersonalInformation01.html?doctorId=${doctorId}`;
                 })
-                .then(data => {
-                    window.alert("Data updated successfully.");
-                    window.location.href = `Doctor_PersonalInformation01.html?doctorId=${doctorId}`;
-                })
-                .catch(error => console.error("Error updating data:", error));
+                .catch((error) => console.error("Error updating data:", error));
             }
-        });
+          });
         // Initialize datepicker
-        $(function() {
-            $("#birth_date, #recognize_date").datepicker({
-                dateFormat: "yy-mm-dd",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-100:+0",
-                maxDate: new Date(),
-            });
+        $(function () {
+          $("#birth_date, #recognize_date").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0",
+            maxDate: new Date(),
+          });
         });
       });
     </script>

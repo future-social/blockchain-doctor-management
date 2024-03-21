@@ -1,277 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Information</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-            overflow-x: auto; /* Enable horizontal scrolling */
-        }
-        h1, p {
-            margin-left: 50px;
-        }
-        .search-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            justify-content: space-between;
-        }
-        .searchbar {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-        }
-        .dropdown {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-        .button-container {
-            display: flex;
-            align-items: center;
-        }
-        .search-container input[type="text"] {
-            padding: 8px;
-            margin-right: 0;
-            width: 200px;
-        }
-        .search-container select {
-            padding: 8px;
-            width: 200px;
-            margin-left: 0;
-        }
-        .search-container select option {
-            color: #999; /* Placeholder color */
-        }
-        .search-container .search-button {
-            cursor: pointer;
-            width: 35px;
-            height: 35px;
-            background: #CA1F7B center center;
-            background-size: cover;
-        }
-        .search-container .filter-button {
-            width: 35px;
-            height: 35px;
-            background: #CA1F7B center center;
-            background-size: cover;
-            margin-right: -5px;
-            margin-bottom: -13px;
-        }
-        .search-container .search-button:hover {
-            background-color: #8E004A;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-            position: sticky; /* Make headers sticky */
-            top: 0; /* Stick to the top */
-            z-index: 2; /* Ensure visibility */
-        }
-        .action-images {
-            display: flex;
-            justify-content: space-around;
-        }
-        .action-images img {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+      h1,
+      p {
+        margin-left: 50px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+        position: sticky; /* Make headers sticky */
+        top: 0; /* Stick to the top */
+        z-index: 2; /* Ensure visibility */
+      }
     </style>
-</head>
-<script src="logout.js"></script>
-<script>authentication();</script>
-<body>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <script src="logout.js"></script>
+  <script>
+    authentication();
+  </script>
+  <body>
     <div id="headerContainer"></div>
     <h1>Doctor Personal Information</h1>
     <p>Search doctor Information</p>
     <div class="container">
-        <div class="search-container">
-            <div class="searchbar">
-                <input type="text" placeholder="Search...">
-                <img class="search-button" src="search.png" alt="Search">
-            </div>
-            <div class="dropdown">
-                <img class="filter-button" src="filter.png" alt="Filter">
-                <select>
-                    <option value="">Filter by...</option>
-                    <option value="gender">Gender</option>
-                    <option value="specialisation">Specialisation</option>
-                    <!-- Add more options as needed -->
-                </select>
-            </div>
+      <div class="search-container">
+        <div class="searchbar">
+          <input type="text" placeholder="Search..." />
+          <img class="search-button" src="search.png" alt="Search" />
         </div>
-        <table id="doctorTable">
-            <thead>
-                <tr>
-                    <th style="width: 5%">NO.</th>
-                    <th style="width: 10%;">Doctor ID</th>
-                    <th style="width: 20%;">Name</th>
-                    <th style="width: 5%;">Gender</th>
-                    <th style="width: 20%;">Specialisation</th>
-                    <th style="width: 10%;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
+        <div class="dropdown">
+          <img class="filter-button" src="filter.png" alt="Filter" />
+          <select>
+            <option value="">Filter by...</option>
+            <option value="gender">Gender</option>
+            <option value="specialisation">Specialisation</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+      </div>
+      <table id="doctorTable">
+        <thead>
+          <tr>
+            <th style="width: 5%">NO.</th>
+            <th style="width: 10%">Doctor ID</th>
+            <th style="width: 20%">Name</th>
+            <th style="width: 5%">Gender</th>
+            <th style="width: 20%">Specialisation</th>
+            <th style="width: 10%">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be dynamically added here -->
+        </tbody>
+      </table>
     </div>
-    <br><br>
+    <br /><br />
     <div id="footerContainer"></div>
 
     <script>
-        // Fetch header and footer
-        fetch("Admin_Header.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("headerContainer").innerHTML = html;
-                appendAdmin();
-            });
+      // Fetch header and footer
+      fetch("Admin_Header.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("headerContainer").innerHTML = html;
+          appendAdmin();
+        });
 
-        fetch("Footer.html")
+      fetch("Footer.html")
         .then((response) => response.text())
         .then((html) => {
           document.getElementById("footerContainer").innerHTML = html;
-          document.getElementById("year").textContent = new Date().getFullYear();
+          document.getElementById("year").textContent =
+            new Date().getFullYear();
         });
 
-            // Fetch doctor data from backend and populate table
-        fetch("/retrieveAllDoctor")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to retrieve doctor data");
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tableBody = document.querySelector("#doctorTable tbody");
-                if (!data || data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='6'>No data available</td></tr>";
-                } else {
-                    data.forEach((doctor, index) => {
-                        if(doctor['doctor_id']){
-                            const row = tableBody.insertRow();
-                            row.innerHTML = `
+      // Fetch doctor data from backend and populate table
+      fetch("/retrieveAllDoctor")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to retrieve doctor data");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const tableBody = document.querySelector("#doctorTable tbody");
+          if (!data || data.length === 0) {
+            tableBody.innerHTML =
+              "<tr><td colspan='6'>No data available</td></tr>";
+          } else {
+            data.forEach((doctor, index) => {
+              if (doctor["doctor_id"]) {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
                                 <td>${index + 1}</td>
                                 <td>${doctor.doctor_id}</td>
-                                <td>${doctor.first_name} ${doctor.last_name}</td>
+                                <td>${doctor.first_name} ${
+                  doctor.last_name
+                }</td>
                                 <td>${doctor.gender}</td>
                                 <td>${doctor.specialisation}</td>
                                 <td class="action-images">
-                                    <img class="view-image" src="view.png" alt="View" data-id="${doctor.doctor_id}">
-                                    <img class="edit-image" src="edit.png" alt="Edit" data-id="${doctor.doctor_id}">
-                                    <img class="delete-image" src="delete.png" alt="Delete" data-id="${doctor.doctor_id}">
+                                    <img class="view-image" src="view.png" alt="View" data-id="${
+                                      doctor.doctor_id
+                                    }">
+                                    <img class="edit-image" src="edit.png" alt="Edit" data-id="${
+                                      doctor.doctor_id
+                                    }">
+                                    <img class="delete-image" src="delete.png" alt="Delete" data-id="${
+                                      doctor.doctor_id
+                                    }">
                                 </td>
                             `;
-                        }
-                    });
-
-                    // Add event listeners to image elements
-                const viewImages = document.querySelectorAll('.view-image');
-                const editImages = document.querySelectorAll('.edit-image');
-                const deleteImages = document.querySelectorAll('.delete-image');
-
-                viewImages.forEach(image => {
-                    image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
-                    });
-                });
-
-                editImages.forEach(image => {
-                    image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-id');
-                        window.location.href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
-                    });
-                });
-
-                deleteImages.forEach(image => {
-                    image.addEventListener('click', () => {
-                        const doctorId = image.getAttribute('data-id');
-                        const confirmation = confirm("Please confirm\n\nThe deleted data cannot be restored.");
-                        if (confirmation) {
-                            deleteDoctor(doctorId);
-                        }
-                    });
-                });
-
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching doctor data:", error);
-                // Display an error message to the user or handle the error appropriately
+              }
             });
 
-        // Function to delete doctor data
-        function deleteDoctor(doctorId) {
-            fetch(`/deleteDoctor/${doctorId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    throw new Error('Failed to delete doctor data');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting doctor data:', error);
-                // Display an error message to the user or handle the error appropriately
+            // Add event listeners to image elements
+            const viewImages = document.querySelectorAll(".view-image");
+            const editImages = document.querySelectorAll(".edit-image");
+            const deleteImages = document.querySelectorAll(".delete-image");
+
+            viewImages.forEach((image) => {
+              image.addEventListener("click", () => {
+                const doctorId = image.getAttribute("data-id");
+                window.location.href = `Admin_DoctorPersonalInformation02.html?doctorId=${doctorId}`;
+              });
             });
-        }
 
-// Function to handle search
-function handleSearch() {
-    const input = document.querySelector(".searchbar input[type='text']");
-    const filter = input.value.toUpperCase();
-    const table = document.getElementById("doctorTable");
-    const tbody = table.querySelector("tbody");
-    const rows = tbody.getElementsByTagName("tr");
+            editImages.forEach((image) => {
+              image.addEventListener("click", () => {
+                const doctorId = image.getAttribute("data-id");
+                window.location.href = `Admin_DoctorPersonalInformation03.html?doctorId=${doctorId}`;
+              });
+            });
 
-    // Separate table headers
-    const thead = table.querySelector("thead");
+            deleteImages.forEach((image) => {
+              image.addEventListener("click", () => {
+                const doctorId = image.getAttribute("data-id");
+                const confirmation = confirm(
+                  "Please confirm\n\nThe deleted data cannot be restored."
+                );
+                if (confirmation) {
+                  deleteDoctor(doctorId);
+                }
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching doctor data:", error);
+          // Display an error message to the user or handle the error appropriately
+        });
 
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        let found = false;
-        for (let j = 0; j < cells.length; j++) {
+      // Function to delete doctor data
+      function deleteDoctor(doctorId) {
+        fetch(`/deleteDoctor/${doctorId}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              throw new Error("Failed to delete doctor data");
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting doctor data:", error);
+            // Display an error message to the user or handle the error appropriately
+          });
+      }
+
+      // Function to handle search
+      function handleSearch() {
+        const input = document.querySelector(".searchbar input[type='text']");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("doctorTable");
+        const tbody = table.querySelector("tbody");
+        const rows = tbody.getElementsByTagName("tr");
+
+        // Separate table headers
+        const thead = table.querySelector("thead");
+
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName("td");
+          let found = false;
+          for (let j = 0; j < cells.length; j++) {
             const cell = cells[j];
             if (cell) {
-                const textValue = cell.textContent || cell.innerText;
-                if (textValue.toUpperCase().indexOf(filter) > -1) {
-                    found = true;
-                    break;
-                }
+              const textValue = cell.textContent || cell.innerText;
+              if (textValue.toUpperCase().indexOf(filter) > -1) {
+                found = true;
+                break;
+              }
             }
+          }
+          rows[i].style.display = found ? "" : "none";
         }
-        rows[i].style.display = found ? "" : "none";
-    }
 
-    // Append thead back to the table
-    table.appendChild(thead);
-}
+        // Append thead back to the table
+        table.appendChild(thead);
+      }
 
-
-    // Function to handle sorting based on filter dropdown
-    function handleFilter() {
+      // Function to handle sorting based on filter dropdown
+      function handleFilter() {
         const select = document.querySelector(".search-container select");
         const value = select.value;
         const table = document.getElementById("doctorTable");
@@ -279,29 +225,30 @@ function handleSearch() {
         const rows = Array.from(tbody.querySelectorAll("tr"));
 
         if (value === "gender") {
-            rows.sort((a, b) => {
-                const genderA = a.cells[3].textContent.trim();
-                const genderB = b.cells[3].textContent.trim();
-                return genderA.localeCompare(genderB);
-            });
+          rows.sort((a, b) => {
+            const genderA = a.cells[3].textContent.trim();
+            const genderB = b.cells[3].textContent.trim();
+            return genderA.localeCompare(genderB);
+          });
         } else if (value === "specialisation") {
-            rows.sort((a, b) => {
-                const specialisationA = a.cells[4].textContent.trim();
-                const specialisationB = b.cells[4].textContent.trim();
-                return specialisationA.localeCompare(specialisationB);
-            });
+          rows.sort((a, b) => {
+            const specialisationA = a.cells[4].textContent.trim();
+            const specialisationB = b.cells[4].textContent.trim();
+            return specialisationA.localeCompare(specialisationB);
+          });
         }
 
-        rows.forEach(row => tbody.appendChild(row));
-    }
+        rows.forEach((row) => tbody.appendChild(row));
+      }
 
-    // Add event listeners to search input and filter dropdown
-    const searchInput = document.querySelector('.searchbar input[type="text"]');
-    searchInput.addEventListener('input', handleSearch);
+      // Add event listeners to search input and filter dropdown
+      const searchInput = document.querySelector(
+        '.searchbar input[type="text"]'
+      );
+      searchInput.addEventListener("input", handleSearch);
 
-    const filterSelect = document.querySelector('.search-container select');
-    filterSelect.addEventListener('change', handleFilter);
-    
+      const filterSelect = document.querySelector(".search-container select");
+      filterSelect.addEventListener("change", handleFilter);
     </script>
-</body>
+  </body>
 </html>

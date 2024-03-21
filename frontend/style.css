@@ -1,0 +1,351 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+.searchbar {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.dropdown {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.button-container {
+  display: flex;
+  align-items: center;
+}
+.search-container input[type="text"] {
+  padding: 8px;
+  margin-right: 0;
+  width: 200px;
+}
+.search-container select {
+  padding: 8px;
+  width: 200px;
+  margin-left: 0;
+}
+.search-container select option {
+  color: #999; /* Placeholder color */
+}
+.search-container .search-button {
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  background: #ca1f7b center center;
+  background-size: cover;
+}
+.search-container .filter-button {
+  width: 35px;
+  height: 35px;
+  background: #ca1f7b center center;
+  background-size: cover;
+  margin-right: -5px;
+  margin-bottom: -13px;
+}
+.search-container .search-button:hover {
+  background-color: #8e004a;
+}
+
+.action-images {
+  display: flex;
+  justify-content: space-around;
+}
+.action-images img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.header {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+}
+.header img {
+  width: 200px;
+  height: auto;
+}
+.login-container {
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 5px;
+  text-align: center;
+  border: 2px solid #d3d3d3;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.big-container {
+  width: 80%;
+  margin: 0 auto 25px;
+  border: 2px solid #d3d3d3;
+  border-radius: 10px;
+  padding: 20px;
+}
+.circle-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background-color: #ccc; /* Placeholder color */
+}
+
+.circle-image img {
+  width: 120px;
+  height: 120px;
+}
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.register-container label {
+  font-weight: bold;
+}
+
+.register-container .row {
+  display: flex;
+  gap: 10px;
+}
+
+.register-container .column {
+  flex: 1;
+  padding: 5px;
+}
+
+.register-container input[type="text"],
+.register-container input[type="tel"],
+.register-container input[type="email"] {
+  width: 95%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.register-container input[type="text"][name="body_granting_qualifications"] {
+  width: 97.5%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.register-container input[type="radio"] {
+  margin: 5px;
+}
+
+.register-container button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100px;
+  margin: auto 10px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.info-label {
+  font-weight: bold;
+}
+.qualification-container {
+  border: 3px solid #f3f3f3;
+  padding: 10px;
+  margin: 20px auto;
+  width: 90%;
+}
+.qualification-header {
+  text-align: center;
+}
+.document-link {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.register-container button.edit,
+.register-container button.submit {
+  background-color: #ca1f7b;
+  color: white;
+}
+
+.register-container button.edit:hover,
+.register-container button.submit:hover {
+  background-color: #8e004a;
+}
+
+.circle-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background-color: #ccc; /* Placeholder color */
+}
+.circle-image img {
+  width: 120px;
+  height: 120px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.info-label {
+  font-weight: bold;
+}
+.qualification-container {
+  border: 3px solid #f3f3f3;
+  padding: 10px;
+  margin: 20px auto;
+  width: 90%;
+}
+.qualification-header {
+  text-align: center;
+}
+.document-link {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.register-container button.edit,
+.register-container button.save {
+  background-color: #ca1f7b;
+  color: white;
+}
+.register-container button.edit:hover,
+.register-container button.save:hover {
+  background-color: #8e004a;
+}
+
+.kiri {
+  width: 75%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.kanan {
+  width: 25%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.totalappointmentcontainer {
+  display: flex;
+  background-color: #4e9ea7;
+  width: 80%;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 15px;
+}
+
+.data-box {
+  width: 70%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.bottom-row {
+  margin-top: 10px;
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+
+.totaldoctorcontainer {
+  display: flex;
+  background-color: #4e9ea7;
+  width: 80%;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 15px;
+}
+
+.appointment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.appointment-container label {
+  font-weight: bold;
+}
+
+.appointment-container .row {
+  display: flex;
+  gap: 10px;
+}
+
+.appointment-container .column {
+  flex: 1;
+  padding: 5px;
+}
+
+.appointment-container input[type="text"],
+.appointment-container input[type="tel"],
+.appointment-container input[type="email"] {
+  width: 95%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.appointment-container input[type="radio"] {
+  margin: 5px;
+}
+
+.appointment-container select {
+  width: 99%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.appointment-container button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100px;
+  margin: auto 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.appointment-container button.submit,
+.appointment-container button.clear,
+.appointment-container button.back {
+  background-color: #ca1f7b;
+  color: white;
+}
+
+.appointment-container button.submit:hover,
+.appointment-container button.clear:hover,
+.appointment-container button.back:hover {
+  background-color: #8e004a;
+}
