@@ -89,28 +89,7 @@ async function registerAdminUser() {
     );
   } catch (error) {
     console.error(`Failed to register user : ${error}`);
-    // Register the user identity with the CA
-    /*
-    const registerRequest = {
-      enrollmentID: adminId,
-      affiliation: "org1.department1", // Specify the affiliation if necessary
-      role: "client", // Specify the role of the user (e.g., client, peer, orderer)
-      attrs: [{ name: "DMSrole", value: "admin", ecert: true }], // Additional attributes if needed
-    };
-    const enrollmentSecret = await ca.register(registerRequest, adminIdentity);
-    console.log(
-      `Successfully registered user ${adminId} with enrollment secret ${enrollmentSecret}`
-    );
-  } catch (error) {
-    console.error(`Failed to register user: ${error}`);
-    process.exit(1);
-  }
-
-  */
   }
 }
 
-
-
-//module.exports = registerAdminUser;
 registerAdminUser();
